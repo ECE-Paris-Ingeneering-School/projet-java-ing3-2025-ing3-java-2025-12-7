@@ -3,12 +3,13 @@ import javax.swing.*;
 import java.awt.*;
 
 public class FiltrerTrier extends JPanel {
+
     public FiltrerTrier() {
         setLayout(new FlowLayout(FlowLayout.LEFT));
 
 
         setMaximumSize(new Dimension(800, 50));
-        setBackground(new Color(230, 230, 230));
+        setBackground(new Color(220, 223, 197));
 
         // Bouton Filtres
         JButton filtreBouton = new JButton("Filtres");
@@ -21,17 +22,19 @@ public class FiltrerTrier extends JPanel {
         sctFiltres.add(filtre1);
         sctFiltres.add(filtre2);
         sctFiltres.add(filtre3);
-
         //  menu filtres déroulant
         filtreBouton.addActionListener(e -> sctFiltres.show(filtreBouton, 0, filtreBouton.getHeight()));
-
         // ComboBox pour le tri
         JComboBox<String> BTrie = new JComboBox<>(new String[]{" ","Prix croissant", "Prix décroissant", "Recommandé"});
-
         add(filtreBouton);
         add(new JLabel("Trier par "));
         add(BTrie);
     }
+    public void getFiltre(){
 
+    }
+    public void getTrie(){
+
+    }
 }
 
