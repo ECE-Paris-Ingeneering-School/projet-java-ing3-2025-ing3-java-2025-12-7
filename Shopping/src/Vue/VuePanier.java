@@ -79,8 +79,8 @@ public class VuePanier extends JFrame{
         panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
         panel.setBackground(new Color(220, 223, 1));
         String[] Infos = {"NomProduit", "Quantite", "Prix", "Description"};
-        for (int i = 0; i < Infos.length; i++) {
-            JLabel label = new JLabel(Infos[i], SwingConstants.CENTER);
+        for (String info : Infos) {
+            JLabel label = new JLabel(info, SwingConstants.CENTER);
             label.setFont(new Font("Arial", Font.BOLD, 14));
             panel.add(label);
         }
