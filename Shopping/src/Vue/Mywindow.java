@@ -16,7 +16,7 @@ public class Mywindow extends JFrame {
         JPanel mainPanel = new JPanel();
         mainPanel.setLayout(new BoxLayout(mainPanel, BoxLayout.Y_AXIS));
         mainPanel.setBackground(new Color(220, 223, 197));
-        // Ajout des différentes sectionsTop top = new Top();
+        // Ajout des différentes sections
         mainPanel.add(new Top());
         mainPanel.add(new Nav());
         mainPanel.add(new FiltrerTrier());
