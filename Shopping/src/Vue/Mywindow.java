@@ -21,6 +21,7 @@ public class Mywindow extends JFrame {
         mainPanel.add(new Nav());
         mainPanel.add(new FiltrerTrier());
         mainPanel.add(new ImageP());
+        mainPanel.add(new Bottom());
 
 
         add(mainPanel, BorderLayout.CENTER);

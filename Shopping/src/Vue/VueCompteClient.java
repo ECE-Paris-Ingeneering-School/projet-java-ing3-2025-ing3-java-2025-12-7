@@ -16,6 +16,7 @@ public class VueCompteClient extends JFrame{
         JPanel mainPanel = new JPanel();
         mainPanel.setLayout(new BoxLayout(mainPanel, BoxLayout.Y_AXIS));
         mainPanel.setBackground(new Color(240, 240, 240));
+
         // Ajout des différentes sections
         Top topVCC = new Top();
         topVCC.getIconTop(0);
@@ -23,11 +24,12 @@ public class VueCompteClient extends JFrame{
         mainPanel.add(new Nav());
 
 
+
         JPanel content = new JPanel();
         content.setBackground(new Color(220, 223, 197));
         JLabel titre = new JLabel("Votre compte");
         titre.setFont(new Font("Arial", Font.BOLD, 20));
-        content.add(titre, BorderLayout.CENTER);
+        mainPanel.add(titre, BorderLayout.CENTER);
 
         // Panel des informations client
         JPanel infoClient = createInfoClientPanel();
@@ -35,12 +37,19 @@ public class VueCompteClient extends JFrame{
         JPanel historiqueAchats = createHistoriqueAchatsPanel();
 
         content.add(infoClient, BorderLayout.CENTER);
+        JLabel messageCommande = new JLabel("Vous n'avez pas encore commandé ?");
+        JButton commande = new JButton("Commander");
+        messageCommande.setFont(new Font("Arial", Font.BOLD, 10));
+        content.add(messageCommande, BorderLayout.CENTER);
+        content.add(commande, BorderLayout.CENTER);
         content.add(historiqueAchats, BorderLayout.CENTER);
 
         // contraintes de taille
         content.setMaximumSize(new Dimension(800, 500));
         content.setPreferredSize(new Dimension(780, 450));
+
         mainPanel.add(content);
+        mainPanel.add(new Bottom());
 
         add(mainPanel, BorderLayout.CENTER);
         setVisible(true);

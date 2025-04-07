@@ -16,7 +16,7 @@ public class Top extends JPanel {
         nomSite.setForeground(Color.WHITE);
 
         JTextField BarreRecherche = new JTextField("Rechercher");
-
+        BarreRecherche.setEditable(true);
 
         JPanel icons = new JPanel(new FlowLayout(FlowLayout.RIGHT));
         icons.setBackground(new Color(51, 85, 140));
@@ -50,9 +50,11 @@ public class Top extends JPanel {
         switch(x){
             case 0 :
                 utilisateur.setBackground(new Color(220, 223, 197));
+                panier.setBackground(new Color(255, 255, 255));
                 break;
             case 1 :
                 panier.setBackground(new Color(220, 223, 197));
+                utilisateur.setBackground(new Color(255, 255, 255));
                 break;
 
         }

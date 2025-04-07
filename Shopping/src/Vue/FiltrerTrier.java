@@ -19,13 +19,29 @@ public class FiltrerTrier extends JPanel {
         JCheckBoxMenuItem filtre1 = new JCheckBoxMenuItem("Filtre 1");
         JCheckBoxMenuItem filtre2 = new JCheckBoxMenuItem("Filtre 2");
         JCheckBoxMenuItem filtre3 = new JCheckBoxMenuItem("Filtre 3");
+        JCheckBoxMenuItem reinitialiser = new JCheckBoxMenuItem("Réinitialiser");
         sctFiltres.add(filtre1);
         sctFiltres.add(filtre2);
         sctFiltres.add(filtre3);
+        sctFiltres.add(reinitialiser);
         //  menu filtres déroulant
         filtreBouton.addActionListener(e -> sctFiltres.show(filtreBouton, 0, filtreBouton.getHeight()));
+        reinitialiser.addActionListener(e -> {
+            filtre1.setSelected(false);
+            filtre2.setSelected(false);
+            filtre3.setSelected(false);
+        });
         // ComboBox pour le tri
-        JComboBox<String> BTrie = new JComboBox<>(new String[]{" ","Prix croissant", "Prix décroissant", "Recommandé"});
+        JComboBox<String> BTrie = new JComboBox<>(new String[]{" ","Prix croissant", "Prix décroissant", "Recommandé","Reinitialiser"});
+        BTrie.addActionListener(e -> {
+            String selected = (String) BTrie.getSelectedItem();
+            if ("Réinitialiser".equals(selected)) {
+                BTrie.setSelectedIndex(0);
+                //resetTri();
+            } else {
+                //getTrie(selected);
+            }
+        });
         add(filtreBouton);
         add(new JLabel("Trier par "));
         add(BTrie);
