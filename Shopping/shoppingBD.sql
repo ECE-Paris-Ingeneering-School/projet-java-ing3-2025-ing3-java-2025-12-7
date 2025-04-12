@@ -3,13 +3,13 @@ CREATE DATABASE shoppingBD;
 USE shoppingBD;
 
 -- Désactiver les vérifications des clés étrangères
-SET FOREIGN_KEY_CHECKS = 0;
+-- SET FOREIGN_KEY_CHECKS = 0;
 
 -- Suppression des tables
 DROP TABLE IF EXISTS Admin, Client, Commande, Produit, User, HistoriqueCommande, HistoriquePanier, Journalisation, Panier;
 
 -- Réactivation des clés étrangères
-SET FOREIGN_KEY_CHECKS = 1;
+-- SET FOREIGN_KEY_CHECKS = 1;
 
 -- Création des tables
 CREATE TABLE User (
@@ -52,6 +52,7 @@ CREATE TABLE Produit (
    categorieProduit     VARCHAR(254) NULL,
    reductionProduit     FLOAT NULL,
    dateAjoutProduit     DATE NULL,
+   photoProduit         VARCHAR(254) NULL,
    datePeremptionProduit TIMESTAMP NULL,
    PRIMARY KEY (idProduit)
 );
@@ -84,16 +85,91 @@ CREATE TABLE Journalisation (
    PRIMARY KEY (idJournalisation)
 );
 
--- Suppression des clés étrangères avant suppression des tables
-ALTER TABLE  Admin DROP FOREIGN KEY FK_ADMIN_GENERALIS_USER;
-ALTER TABLE Client DROP FOREIGN KEY FK_CLIENT_GENERALIS_USER;
-ALTER TABLE Commande DROP FOREIGN KEY FK_COMMANDE_ASSOCIATI_CLIENT;
-ALTER TABLE HistoriqueCommande DROP FOREIGN KEY FK_HISTORIQ_ASSOCIATI_COMMANDE;
-ALTER TABLE HistoriqueCommande DROP FOREIGN KEY FK_HISTORIQ_ASSOCIATI_PRODUIT;
-ALTER TABLE HistoriquePanier DROP FOREIGN KEY FK_HISTORIQ_ASSOCIATI_PANIER;
-ALTER TABLE HistoriquePanier DROP FOREIGN KEY FK_HISTORIQ_ASSOCIATI_PRODUIT;
-ALTER TABLE Journalisation DROP FOREIGN KEY FK_JOURNALI_ASSOCIATI_USER;
-ALTER TABLE Panier DROP FOREIGN KEY FK_PANIER_ASSOCIATI_CLIENT;
+
+-- Chargement des données de la table `client`
+
+-- Chargement des données de la table `produit`
+--
+
+INSERT INTO `produit` (`idProduit`, `nomProduit`, `quantiteProduit`, `prixProduit`, `marqueProduit`, `typeProduit`, `categorieProduit`, `reductionProduit`, `dateAjoutProduit`, `datePeremptionProduit`, `photoProduit`) VALUES
+     (1, 'FIZZ cassis basilic menthe', 10, 2.99, 'FIZZ', 1, 'Limonade', 0.1, '2025-04-03', '2026-04-02 22:00:00', 'PHOTOS/FIZZ_CASSIS_BASILIC_MENTHE.png'),
+     (2, 'FIZZ citron', 15, 1.99, 'FIZZ', 1, 'Limonade', 0.05, '2025-04-03', '2026-04-02 22:00:00', 'PHOTOS/FIZZ_CITRON.png'),
+     (3, 'FIZZ cola', 20, 2.5, 'FIZZ', 1, 'Limonade', 0.1, '2025-04-03', '2026-04-02 22:00:00', 'PHOTOS/FIZZ_COLA.png'),
+     (4, 'FIZZ Mojito', 12, 3.5, 'FIZZ', 1, 'Limonade', 0.15, '2025-04-03', '2026-04-02 22:00:00', 'PHOTOS/FIZZ_MOJITO.png'),
+     (5, 'FIZZ Orange', 18, 2.5, 'FIZZ', 1, 'Limonade', 0.07, '2025-04-03', '2026-04-02 22:00:00', 'PHOTOS/FIZZ_ORANGE.png'),
+     (6, 'FIZZ Pomme lavande', 11, 2.99, 'FIZZ', 1, 'Limonade', 0.12, '2025-04-03', '2026-04-02 22:00:00', 'PHOTOS/FIZZ_POMME_LAVANDE.png'),
+     (7, 'FIZZ Tropical', 14, 2.99, 'FIZZ', 1, 'Limonade', 0.08, '2025-04-03', '2026-04-02 22:00:00', 'PHOTOS/FIZZ_TROPICAL.png'),
+     (8, 'FIZZ verveine citron vert', 16, 2.99, 'FIZZ', 1, 'Limonade', 0.1, '2025-04-03', '2026-04-02 22:00:00', 'PHOTOS/FIZZ_VERVEINE_CITRON_VERT.png'),
+     (9, 'Nectar de Fruit de la Passion', 19, 3.59, 'Alain Milliat', 1, 'Jus de fruit', 0.15, '2025-04-03', '2026-04-02 22:00:00', 'PHOTOS/NECTAR_FRUIT_PASSION.png'),
+     (10, 'Nectar de Mangue', 10, 3.69, 'Alain Milliat', 1, 'Jus de fruit', 0.05, '2025-04-03', '2026-04-02 22:00:00', 'PHOTOS/NECTAR_MANGUE.png'),
+     (11, 'Nectar de Pêche de Vigne', 18, 3.39, 'Alain Milliat', 1, 'Jus de fruit', 0.08, '2025-04-03', '2026-04-02 22:00:00', 'PHOTOS/NECTAR_PECHE_VIGNE.png'),
+     (12, 'Nectar de Poire', 15, 3.19, 'Alain Milliat', 1, 'Jus de fruit', 0.1, '2025-04-03', '2026-04-02 22:00:00', 'PHOTOS/NECTAR_POIRE.png'),
+     (13, 'Nectar de Fraise', 20, 3.49, 'Alain Milliat', 1, 'Jus de fruit', 0.1, '2025-04-03', '2026-04-02 22:00:00', 'PHOTOS/NECTAR_FRAISE.png'),
+     (14, 'Nectar d Abricot', 13, 3.29, 'Alain Milliat', 1, 'Jus de fruit', 0.12, '2025-04-03', '2026-04-02 22:00:00', 'PHOTOS/NECTAR_ABRICOT.png'),
+     (15, 'Jus de Tomate', 16, 2.89, 'Alain Milliat', 1, 'Jus de fruit', 0.05, '2025-04-03', '2026-04-02 22:00:00', 'PHOTOS/JUS_TOMATE.png'),
+     (16, 'Jus de Raisin Rouge', 14, 3.49, 'Meneau', 1, 'Jus de fruit', 0.08, '2025-04-03', '2026-04-02 22:00:00', 'PHOTOS/JUS_RAISIN_ROUGE.png'),
+     (17, 'Jus de Raisin Blanc', 17, 3.39, 'Meneau', 1, 'Jus de fruit', 0.06, '2025-04-03', '2026-04-02 22:00:00', 'PHOTOS/JUS_RAISIN_BLANC.png'),
+     (18, 'Jus de Pomme', 12, 2.49, 'Alain Milliat', 1, 'Jus de fruit', 0.1, '2025-04-03', '2026-04-02 22:00:00', 'PHOTOS/JUS_POMME.png'),
+     (19, 'Jus d Orange', 18, 2.59, 'Alain Milliat', 1, 'Jus de fruit', 0.07, '2025-04-03', '2026-04-02 22:00:00', 'PHOTOS/JUS_ORANGE.png'),
+     (20, 'Jus d Ananas', 15, 3.19, 'Alain Milliat', 1, 'Jus de fruit', 0.05, '2025-04-03', '2026-04-02 22:00:00', 'PHOTOS/JUS_ANANAS.png'),
+     (21, 'Sirop de Citron', 15, 4.19, 'Meneau', 1, 'Sirop', 0.05, '2025-04-03', '2026-04-02 22:00:00', 'PHOTOS/SIROP_CITRON.png'),
+     (22, 'Sirop de Fraise', 12, 4.49, 'Meneau', 1, 'Sirop', 0.07, '2025-04-03', '2026-04-02 22:00:00', 'PHOTOS/SIROP_FRAISE.png'),
+     (23, 'Sirop de Myrtille', 18, 4.69, 'Meneau', 1, 'Sirop', 0.1, '2025-04-03', '2026-04-02 22:00:00', 'PHOTOS/SIROP_MYRTILLE.png'),
+     (24, 'Thé Glacé Citron Thym', 16, 3.99, 'Meneau', 1, 'Thé glacé', 0.08, '2025-04-03', '2026-04-02 22:00:00', 'PHOTOS/THE_GLACE_CITRON_THYM.png'),
+     (25, 'Thé Glacé Grenade', 14, 4.19, 'Meneau', 1, 'Thé glacé', 0.05, '2025-04-03', '2026-04-02 22:00:00', 'PHOTOS/THE_GLACE_GRENADE.png'),
+     (26, 'Thé Glacé Pêche', 17, 3.89, 'Meneau', 1, 'Thé glacé', 0.06, '2025-04-03', '2026-04-02 22:00:00', 'PHOTOS/THE_GLACE_PECHE.png'),
+     (27, 'Thé Glacé Citron vert Gingembre', 18, 4.49, 'Alain Milliat', 1, 'Thé glacé', 0.1, '2025-04-03', '2026-04-02 22:00:00', 'PHOTOS/THE_GLACE_CITRON_VERT_GINGEMBRE.png'),
+     (28, 'Thé Glacé Framboise Menthe', 12, 4.79, 'Alain Milliat', 1, 'Thé glacé', 0.08, '2025-04-03', '2026-04-02 22:00:00', 'PHOTOS/THE_GLACE_FRAMBOISE_MENTHE.png'),
+     (29, 'Thé Glacé Mangue Passion', 15, 4.59, 'Alain Milliat', 1, 'Thé glacé', 0.07, '2025-04-03', '2026-04-02 22:00:00', 'PHOTOS/THE_GLACE_MANGUE_PASSION.png'),
+     (30, 'Citron Gingembre', 16, 3.99, 'Buddy', 1, 'Boisson énergisante', 0.05, '2025-04-03', '2026-04-02 22:00:00', 'PHOTOS/BUDDY_GINGEMBRE_CITRON.png'),
+     (31, 'Grenade Hibiscus', 14, 4.29, 'Buddy', 1, 'Boisson énergisante', 0.08, '2025-04-03', '2026-04-02 22:00:00', 'PHOTOS/BUDDY_GRENADE_HIBISCUS.png'),
+     (32, 'Mangue Passion', 18, 4.49, 'Buddy', 1, 'Boisson énergisante', 0.1, '2025-04-03', '2026-04-02 22:00:00', 'PHOTOS/BUDDY_MANGUE_PASSION.png'),
+     (33, 'Myrtille Cannelle', 10, 4.19, 'Ossa', 1, 'Boisson énergisante', 0.06, '2025-04-03', '2026-04-02 22:00:00', 'PHOTOS/OSSA_MYRTILLE_CANNELLE.png'),
+     (34, 'Fleur de Sureau Pomme', 13, 4.29, 'Ossa', 1, 'Boisson énergisante', 0.07, '2025-04-03', '2026-04-02 22:00:00', 'PHOTOS/OSSA_FLEUR_DE_SUREAU_POMME.png'),
+     (35, 'Sirop de Grenadine', 17, 3.79, 'Monin', 1, 'Sirop', 0.05, '2025-04-03', '2026-04-02 22:00:00', 'PHOTOS/SIROP_GRENADINE.png'),
+     (36, 'Sirop de Menthe', 16, 3.89, 'Monin', 1, 'Sirop', 0.08, '2025-04-03', '2026-04-02 22:00:00', 'PHOTOS/SIROP_MENTHE.png'),
+     (37, 'Sirop de Pêche', 19, 4.09, 'Monin', 1, 'Sirop', 0.1, '2025-04-03', '2026-04-02 22:00:00', 'PHOTOS/SIROP_PECHE.png'),
+     (38, 'Cookies Caramel', 28, 8.99, 'Fauchon', 2, 'Cookies', 5, '2025-04-12', '2025-09-30 22:00:00', 'PHOTOS/FAUCHON_COOKIES_CARAMEL.png'),
+     (39, 'Cookies Chocolat Noisette', 22, 8.99, 'Fauchon', 2, 'Cookies', 10, '2025-04-12', '2025-09-29 22:00:00', 'PHOTOS/FAUCHON_COOKIES_CHOCOLAT_NOISETTE.png'),
+     (40, 'Cookies Fruits rouges', 27, 8.99, 'Fauchon', 2, 'Cookies', 5, '2025-04-12', '2025-09-04 22:00:00', 'PHOTOS/FAUCHON_COOKIES_FRUITS_ROUGES.png'),
+     (41, 'Biscuits Framboise', 26, 6.99, 'Fauchon', 2, 'Biscuits', 10, '2025-04-12', '2025-08-14 22:00:00', 'PHOTOS/FAUCHON_FRAMBOISE.png'),
+     (42, 'Biscuits Vanille', 24, 6.99, 'Fauchon', 2, 'Biscuits', 15, '2025-04-12', '2025-09-11 22:00:00', 'PHOTOS/FAUCHON_VANILLE.png'),
+     (43, 'Madeleines Chocolat', 28, 7.99, 'Maison Colibri', 2, 'Madeleines', 10, '2025-04-12', '2025-07-31 22:00:00', 'PHOTOS/MADELEINE_CHOCOLAT_CLASSIQUE.png'),
+     (44, 'Madeleines Chocolat au lait', 22, 7.99, 'Maison Colibri', 2, 'Madeleines', 15, '2025-04-12', '2025-08-09 22:00:00', 'PHOTOS/MADELEINE_CHOCOLAT_LAIT.png'),
+     (45, 'Madeleines Chocolat Noisette', 23, 7.99, 'Maison Colibri', 2, 'Madeleines', 10, '2025-04-12', '2025-08-31 22:00:00', 'PHOTOS/MADELEINE_CHOCOLAT_NOISETTE.png'),
+     (46, 'Madeleines Chocolat Noix de coco', 27, 8.99, 'Maison Colibri', 2, 'Madeleines', 5, '2025-04-12', '2025-08-11 22:00:00', 'PHOTOS/MADELEINE_CHOCOLAT_NOIX_DE_COCO.png'),
+     (47, 'Madeleines Nature', 20, 7.99, 'Maison Colibri', 2, 'Madeleines', 10, '2025-04-12', '2025-07-27 22:00:00', 'PHOTOS/MADELEINE_NATURE.png'),
+     (48, 'Madeleines Pistache', 26, 8.99, 'Maison Colibri', 2, 'Madeleines', 10, '2025-04-12', '2025-08-31 22:00:00', 'PHOTOS/MADELEINE_PISTACHE.png'),
+     (49, 'Madeleines Tout Chocolat', 24, 8.99, 'Maison Colibri', 2, 'Madeleines', 15, '2025-04-12', '2025-09-30 22:00:00', 'PHOTOS/MADELEINE_TOUT_CHOCOLAT.png'),
+     (50, 'Sablés Nature', 30, 5.99, 'La Sablésienne', 2, 'Sablés', 10, '2025-04-12', '2025-08-04 22:00:00', 'PHOTOS/SABLE_NATURE.png'),
+     (51, 'Sablés Pépites d Abricots', 28, 6.99, 'La Sablésienne', 2, 'Sablés', 15, '2025-04-12', '2025-08-31 22:00:00', 'PHOTOS/SABLES_PEPITES_ABRICOTS.png'),
+     (52, 'Sablés Pépites de Caramel', 22, 5.99, 'La Sablésienne', 2, 'Sablés', 10, '2025-04-12', '2025-08-14 22:00:00', 'PHOTOS/SABLES_PEPITES_CARAMEL.png'),
+     (53, 'Sablés Pépites de Chocolat', 25, 5.99, 'La Sablésienne', 2, 'Sablés', 5, '2025-04-12', '2025-09-09 22:00:00', 'PHOTOS/SABLES_PEPITES_CHOCOLAT.png'),
+     (54, 'Sablés Pépites de Citron', 24, 6.99, 'La Sablésienne', 2, 'Sablés', 10, '2025-04-12', '2025-08-24 22:00:00', 'PHOTOS/SABLES_PEPITES_CITRON.png'),
+     (55, 'Sablés Pépites de Framboise', 27, 6.99, 'La Sablésienne', 2, 'Sablés', 10, '2025-04-12', '2025-09-04 22:00:00', 'PHOTOS/SABLES_PEPITES_FRAMBOISE.png'),
+     (56, 'Sablés Tout Chocolat', 30, 6.99, 'La Sablésienne', 2, 'Sablés', 15, '2025-04-12', '2025-09-29 22:00:00', 'PHOTOS/SABLES_TOUT_CHOCOLAT.png'),
+     (57, 'Cookies Agrumes', 20, 8.99, 'Fauchon', 2, 'Cookies', 10, '2025-04-12', '2025-09-09 22:00:00', 'PHOTOS/FAUCHON_COOKIES_AGRUMES.png'),
+     (58, 'Biscuits Celine Citron', 25, 8.99, 'Generous', 2, 'Biscuits', 10, '2025-04-12', '2025-09-11 22:00:00', 'PHOTOS/CELINE_CITRON.png'),
+     (59, 'Biscuits Charlotte Chocolat', 28, 8.99, 'Generous', 2, 'Biscuits', 15, '2025-04-12', '2025-09-30 22:00:00', 'PHOTOS/CHARLOTTE_CHOCOLAT.png'),
+     (60, 'Biscuits Colette Coco', 27, 9.99, 'Generous', 2, 'Biscuits', 5, '2025-04-12', '2025-08-19 22:00:00', 'PHOTOS/COLETTE_COCO.png'),
+     (61, 'Biscuits Nicole Noisette', 22, 8.99, 'Generous', 2, 'Biscuits', 10, '2025-04-12', '2025-09-14 22:00:00', 'PHOTOS/NICOLE_NOISETTE.png'),
+     (62, 'Biscuits Sylvain Speculoos', 30, 9.99, 'Generous', 2, 'Biscuits', 5, '2025-04-12', '2025-10-04 22:00:00', 'PHOTOS/SYLVAIN_SPECULOOS.png'),
+     (63, 'Biscuits Victor Vanille', 24, 9.99, 'Generous', 2, 'Biscuits', 10, '2025-04-12', '2025-09-24 22:00:00', 'PHOTOS/VICTOR_VANILLE.png'),
+     (64, 'Cookies Beurre de cacahuètes', 26, 5.99, 'KoRo', 2, 'Cookies', 20, '2025-04-12', '2025-11-11 23:00:00', 'PHOTOS/COOKIES_BEURRE_CACAHUETES.png'),
+     (65, 'Gaufrettes Cannelle', 23, 5.99, 'KoRo', 2, 'Gaufrettes', 15, '2025-04-12', '2025-09-17 22:00:00', 'PHOTOS/GAUFRETTES_CANELLE.png'),
+     (66, 'Biscuits Caramel', 25, 6.99, 'Fauchon', 2, 'Biscuits', 10, '2025-04-12', '2025-08-24 22:00:00', 'PHOTOS/FAUCHON_CARAMEL.png');
+
+
+-- -- Suppression des clés étrangères avant suppression des tables
+-- ALTER TABLE  Admin DROP FOREIGN KEY FK_ADMIN_GENERALIS_USER;
+-- ALTER TABLE Client DROP FOREIGN KEY FK_CLIENT_GENERALIS_USER;
+-- ALTER TABLE Commande DROP FOREIGN KEY FK_COMMANDE_ASSOCIATI_CLIENT;
+-- ALTER TABLE HistoriqueCommande DROP FOREIGN KEY FK_HISTORIQ_ASSOCIATI_COMMANDE;
+-- ALTER TABLE HistoriqueCommande DROP FOREIGN KEY FK_HISTORIQ_ASSOCIATI_PRODUIT;
+-- ALTER TABLE HistoriquePanier DROP FOREIGN KEY FK_HISTORIQ_ASSOCIATI_PANIER;
+-- ALTER TABLE HistoriquePanier DROP FOREIGN KEY FK_HISTORIQ_ASSOCIATI_PRODUIT;
+-- ALTER TABLE Journalisation DROP FOREIGN KEY FK_JOURNALI_ASSOCIATI_USER;
+-- ALTER TABLE Panier DROP FOREIGN KEY FK_PANIER_ASSOCIATI_CLIENT;
 
 -- Ajout des contraintes de clé étrangère après la création des tables
 ALTER TABLE Admin ADD CONSTRAINT FK_ADMIN_GENERALIS_USER FOREIGN KEY (idUser) REFERENCES User (idUser);
@@ -106,4 +182,4 @@ ALTER TABLE HistoriquePanier ADD CONSTRAINT FK_HISTORIQ_ASSOCIATI_PRODUIT FOREIG
 ALTER TABLE Journalisation ADD CONSTRAINT FK_JOURNALI_ASSOCIATI_USER FOREIGN KEY (idUser) REFERENCES User (idUser);
 ALTER TABLE Panier ADD CONSTRAINT FK_PANIER_ASSOCIATI_CLIENT FOREIGN KEY (idUser) REFERENCES Client (idUser);
 
-SET FOREIGN_KEY_CHECKS = 1;
+-- SET FOREIGN_KEY_CHECKS = 1;
