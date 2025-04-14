@@ -1,15 +1,13 @@
 package Vue;
+import Vue.createInfoRow;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
-public class VueCompteClient extends JFrame{
+public class VueCompteClient extends JPanel{
     public VueCompteClient() {
-        super("Compte Client - Biscuits&Drinks.co");
-        setSize(800, 600);
-        setLocationRelativeTo(null);
-        setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+
         setLayout(new BorderLayout());
 
         // Panel principal avec disposition verticale
@@ -60,12 +58,19 @@ public class VueCompteClient extends JFrame{
         panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
         panel.setBackground(Color.WHITE);
         panel.setBorder(BorderFactory.createTitledBorder("Informations "));
-        panel.add(createInfoRow("Nom:", "Dupont"));
-        panel.add(createInfoRow("Prénom:", "Jean"));
-        panel.add(createInfoRow("Email:", "jean.dupont@example.com"));
-        panel.add(createInfoRow("Téléphone:", "06 12 34 56 78"));
-        panel.add(createInfoRow("Adresse:", "123 Rue des Biscuits, 75000 Paris"));
-        panel.add(createInfoRow("Date de naissance:", "13/04/2000"));
+        createInfoRow Nom = new createInfoRow("Nom:", "Dupont");
+        createInfoRow Prenom = new createInfoRow("Prénom:", "Jean");
+        createInfoRow Email = new createInfoRow("Email:", "jean.dupont@example.com");
+        createInfoRow Telephone = new createInfoRow("Téléphone:", "06 12 34 56 78");
+        createInfoRow Adresse = new createInfoRow("Adresse:", "123 Rue des Biscuits, 75000 Paris");
+        createInfoRow DateNaissance = new createInfoRow("Date de naissance:", "13/04/2000");
+        panel.add(Nom);
+        panel.add(Prenom);
+        panel.add(Email);
+        panel.add(Telephone);
+        panel.add(Adresse);
+        panel.add(DateNaissance);
+
         return panel;
     }
 
@@ -101,20 +106,7 @@ public class VueCompteClient extends JFrame{
         panel.add(scrollPane, BorderLayout.CENTER);
         return panel;
     }
-    // pour les informations du client
-    private JPanel createInfoRow(String label, String value) {
-        JPanel row = new JPanel(new FlowLayout(FlowLayout.LEFT));
-        row.setBackground(Color.WHITE);
-        JLabel labelComp = new JLabel(label);
-        labelComp.setPreferredSize(new Dimension(150, 25));
-        labelComp.setFont(new Font("Arial", Font.BOLD, 12));
-        JLabel valueComp = new JLabel(value);
-        valueComp.setFont(new Font("Arial", Font.PLAIN, 12));
-        row.add(labelComp);
-        row.add(valueComp);
 
-        return row;
-    }
 
 
 

@@ -5,6 +5,7 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 public class Nav extends JPanel{
     private JButton[] boutons;
+    Mywindow contentPanel;
     public Nav() {
         setLayout(new FlowLayout(FlowLayout.CENTER));
         setMaximumSize(new Dimension(800, 50));
@@ -20,8 +21,15 @@ public class Nav extends JPanel{
                 @Override
                 public void mouseClicked(MouseEvent e) {
                     getButtonNav(index);
+                    if (index ==1){
+                        VueProduitsBoissons boissons = new VueProduitsBoissons();
+                    }
                     if (index == 5){
                         NousConnaitre nousConnaitre = new NousConnaitre();
+                        contentPanel.add(nousConnaitre);
+                    }
+                    if (index ==2){
+                        VueProduitsBiscuits biscuits = new VueProduitsBiscuits();
                     }
                 }
             });

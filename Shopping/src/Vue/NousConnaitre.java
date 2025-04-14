@@ -11,51 +11,71 @@ public class NousConnaitre extends JFrame {
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         setLayout(new BorderLayout());
 
-        // Panel principal avec disposition verticale
         JPanel mainPanel = new JPanel();
         mainPanel.setLayout(new BoxLayout(mainPanel, BoxLayout.Y_AXIS));
         mainPanel.setBackground(new Color(220, 223, 197));
-
 
         Nav navNC = new Nav();
         navNC.getButtonNav(5);
         mainPanel.add(new Top());
         mainPanel.add(navNC);
 
-
-        // Titre centré
+        // Titre
         JPanel titlePanel = new JPanel();
         titlePanel.setBackground(new Color(220, 223, 197));
         JLabel titre = new JLabel("Qui sommes-nous ?");
-        titre.setFont(new Font("Arial", Font.BOLD, 20));
+        titre.setFont(new Font("Serif", Font.BOLD, 26));
         titre.setForeground(new Color(51, 85, 140));
         titlePanel.add(titre);
+        mainPanel.add(Box.createVerticalStrut(20));
         mainPanel.add(titlePanel);
 
-        JPanel NousC = createInfoNousConnaitre();
-        NousC.setSize(300,200);
-        mainPanel.add(NousC);
+        // Panel centré avec effet carte
+        JPanel centerPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
+        centerPanel.setBackground(new Color(220, 223, 197));
+        JPanel infoPanel = createInfoNousConnaitre();
+        centerPanel.add(infoPanel);
+        mainPanel.add(centerPanel);
+
+        mainPanel.add(Box.createVerticalGlue());
         mainPanel.add(new Bottom());
 
         add(mainPanel);
-
         setVisible(true);
     }
-    private JPanel createInfoNousConnaitre() {
-        JPanel panel = new JPanel();
-        panel.setBackground(Color.WHITE);
-        panel.setBorder(BorderFactory.createTitledBorder("Qui sommes nous ? "));
 
-        JTextArea textArea = new JTextArea("Qui sommes-nous ? \n\n" +
-                "Chez Biscuits&Drinks.co, nous avons à cœur de vous offrir une expérience gustative unique, où la qualité rencontre la convivialité. Notre mission est simple : vous apporter les meilleurs biscuits et boissons, soigneusement sélectionnés pour ravir vos papilles et égayer vos moments de détente.\n\n" +
-                "Nos biscuits sont confectionnés à partir des meilleurs ingrédients, avec une attention particulière portée à leur goût, leur texture et leur fraîcheur. Qu'ils soient croquants, moelleux ou fondants, nos biscuits sont conçus pour satisfaire toutes vos envies gourmandes.\n\n" +
-                "Nous proposons également une sélection de boissons pour accompagner vos petites pauses sucrées. Du thé parfumé au café riche, en passant par des jus de fruits rafraîchissants et des boissons plus exotiques, chaque boisson est choisie pour se marier parfaitement avec nos délicieux biscuits.\n\n" +
-                "Notre engagement ? Vous offrir des produits de qualité, tout en vous faisant découvrir de nouvelles saveurs à chaque bouchée et gorgée. Nous croyons que la simplicité et la qualité font toute la différence, et c’est pourquoi nous travaillons avec des producteurs et artisans locaux pour garantir la meilleure expérience possible.\n\n" +
-                "Alors, que vous soyez en quête de douceur ou à la recherche de nouvelles saveurs, nous avons quelque chose pour vous. Laissez-vous tenter par nos produits et partagez un moment de gourmandise avec Biscuits&Drinks.co !");
+    private JPanel createInfoNousConnaitre() {
+        JPanel panel = new JPanel() {
+            @Override
+            protected void paintComponent(Graphics g) {
+                super.paintComponent(g);
+                Graphics2D g2 = (Graphics2D) g;
+                g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+                g2.setColor(Color.WHITE);
+                g2.fillRoundRect(0, 0, getWidth(), getHeight(), 25, 25);
+            }
+        };
+        panel.setLayout(new BorderLayout());
+        panel.setPreferredSize(new Dimension(700, 180));
+        panel.setBackground(new Color(0, 0, 0, 0));
+        panel.setBorder(BorderFactory.createEmptyBorder(15, 20, 15, 20));
+        panel.setOpaque(false);
+
+        // Contenu
+        JTextArea textArea = new JTextArea(
+                "Chez Biscuits&Drinks.co, nous sommes passionnés par l'art de découvrir et proposer des produits uniques et savoureux. Notre objectif est de vous offrir une expérience gustative originale, avec une sélection artisanale de biscuits,boissons, et autres curiosités venues du monde entier.\n\n" +
+                        "Bienvenue dans notre univers ! "
+        );
+        textArea.setFont(new Font("Segoe UI", Font.PLAIN, 14));
         textArea.setEditable(false);
-        textArea.setFont(new Font("Arial", Font.BOLD, 12));
-        panel.add(textArea);
-        panel.setSize(100, 200);
+        textArea.setOpaque(false);
+        textArea.setLineWrap(true);
+        textArea.setWrapStyleWord(true);
+        textArea.setFocusable(false);
+
+        panel.add(textArea, BorderLayout.CENTER);
+
+
 
         return panel;
     }

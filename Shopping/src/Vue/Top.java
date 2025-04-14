@@ -1,8 +1,7 @@
 package Vue;
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
+
 
 public class Top extends JPanel {
     public JButton utilisateur;
@@ -21,24 +20,12 @@ public class Top extends JPanel {
         JPanel icons = new JPanel(new FlowLayout(FlowLayout.RIGHT));
         icons.setBackground(new Color(51, 85, 140));
         this.utilisateur = new JButton("👤");
+        this.utilisateur.setBackground(new Color(255, 255, 255));
         this.panier = new JButton("🛒");
+        this.panier.setBackground(new Color(255, 255, 255));
 
 
-        utilisateur.addMouseListener(new MouseAdapter() {
-            @Override
-            public void mouseClicked(MouseEvent e) {
-                getIconTop(0);// Change la couleur de l'icône utilisateur
-                VueCompteClient pageClient = new VueCompteClient();
-            }
-        });
-        panier.addMouseListener(new MouseAdapter() {
-            @Override
-            public void mouseClicked(MouseEvent e) {
-                getIconTop(1); // Change la couleur de l'icône panier
-                VuePanier pagePanier = new VuePanier();
 
-            }
-        });
         icons.add(utilisateur);
         icons.add(panier);
 
@@ -46,19 +33,21 @@ public class Top extends JPanel {
         add(BarreRecherche, BorderLayout.CENTER);
         add(icons, BorderLayout.EAST);
     }
-    public void getIconTop(int x){
+    public JButton getIconTop(int x){
         switch(x){
             case 0 :
                 utilisateur.setBackground(new Color(220, 223, 197));
                 panier.setBackground(new Color(255, 255, 255));
-                break;
+                return utilisateur;
+
             case 1 :
                 panier.setBackground(new Color(220, 223, 197));
                 utilisateur.setBackground(new Color(255, 255, 255));
-                break;
+                return panier;
 
         }
 
+        return null;
     }
 }
 

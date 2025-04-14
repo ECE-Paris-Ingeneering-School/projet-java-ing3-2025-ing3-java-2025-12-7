@@ -1,182 +1,478 @@
 package Vue;
+import Vue.createInfoRow;
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
+import java.awt.event.*;
+import java.awt.image.BufferedImage;
+import javax.swing.border.*;
+import java.util.ArrayList;
 
-public class VuePanier extends JFrame{
+public class VuePanier extends JPanel {
+    private final Color backgroundColor = new Color(220, 223, 197);
+    private final Color headerColor = new Color(200, 203, 177);
+    private final Color productColor = new Color(235, 238, 212);
+    private JPanel productsContainer;
+    private JLabel totalLabel;
+    private double totalPrice = 0.0;
+    private int nbProducts = 0;
+    private createInfoRow sousTotalRow;
+    private createInfoRow nbProduitsRow;
+
     public VuePanier() {
-        super("Panier - Biscuits&Drinks.co");
-        setSize(800, 600);
-        setLocationRelativeTo(null);
-        setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         setLayout(new BorderLayout());
 
         // Panel principal avec disposition verticale
         JPanel mainPanel = new JPanel();
         mainPanel.setLayout(new BoxLayout(mainPanel, BoxLayout.Y_AXIS));
-        mainPanel.setBackground(new Color(220, 223, 197));
+        mainPanel.setBackground(backgroundColor);
+
         // Ajout des différentes sections
         Top topVCC = new Top();
         topVCC.getIconTop(1);
         mainPanel.add(topVCC);
         mainPanel.add(new Nav());
 
-
-        JPanel content = new JPanel(new BorderLayout());
-        content.setBackground(new Color(220, 223, 197));
-
+        // Titre centré avec marge
+        JPanel titrePanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
+        titrePanel.setBackground(backgroundColor);
         JLabel titre = new JLabel("Votre Panier");
-        titre.setFont(new Font("Arial", Font.BOLD, 20));
-        mainPanel.add(titre , BorderLayout.CENTER);
-        content.setMaximumSize(new Dimension(700, 300));
-        content.setPreferredSize(new Dimension(680, 250));
-        JPanel infoPanier = createInfoPanierPanel();
+        titre.setFont(new Font("Arial", Font.BOLD, 24));
+        titrePanel.add(titre);
+        mainPanel.add(titrePanel);
+        mainPanel.add(Box.createVerticalStrut(15)); // Espace après le titre
+
+        // Conteneur principal pour le contenu, centré
+        JPanel contentContainer = new JPanel(new FlowLayout(FlowLayout.CENTER));
+        contentContainer.setBackground(backgroundColor);
+
+        // Panel de contenu avec bordure et insets
+        JPanel content = new JPanel(new BorderLayout(10, 0)); // Espacement horizontal entre les panneaux
+        content.setBackground(backgroundColor);
+        content.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
+        content.setMaximumSize(new Dimension(900, 400));
+        content.setPreferredSize(new Dimension(900, 400));
+
+        // Création des panneaux d'information
         JPanel infosPanier = createInfoPanier();
+        JPanel infoPanier = createInfoPanierPanel();
+
         content.add(infosPanier, BorderLayout.CENTER);
         content.add(infoPanier, BorderLayout.EAST);
 
+        contentContainer.add(content);
+        mainPanel.add(contentContainer);
 
-        mainPanel.add(content);
+        mainPanel.add(Box.createVerticalStrut(20));
         mainPanel.add(new Bottom());
+
         add(mainPanel, BorderLayout.CENTER);
         setVisible(true);
-
     }
 
     private JPanel createInfoPanierPanel() {
         JPanel panel = new JPanel();
         panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
         panel.setBackground(Color.WHITE);
-        panel.setBorder(BorderFactory.createTitledBorder("Ma commande"));
-        panel.setPreferredSize(new Dimension(300, 350)); // Hauteur augmentée
+        panel.setBorder(BorderFactory.createCompoundBorder(
+                BorderFactory.createLineBorder(new Color(180, 180, 180), 1),
+                BorderFactory.createEmptyBorder(15, 15, 15, 15)
+        ));
+        panel.setPreferredSize(new Dimension(300, 400));
+
+        // Titre de la section
+        JLabel titreSection = new JLabel("Ma commande");
+        titreSection.setFont(new Font("Arial", Font.BOLD, 16));
+        titreSection.setAlignmentX(Component.CENTER_ALIGNMENT);
+        panel.add(titreSection);
+        panel.add(Box.createVerticalStrut(15));
 
         // Information de commande
-        panel.add(createInfoRow("Sous total:", "XXX"));
-        panel.add(createInfoRow("Nombre de produits:", "12"));
+        sousTotalRow = new createInfoRow("Sous total:", String.format("%.2f €", totalPrice));
+        panel.add(sousTotalRow);
+
+        nbProduitsRow= new createInfoRow("Nombre de produits:", String.valueOf(nbProducts));
+        panel.add(nbProduitsRow);
         panel.add(Box.createVerticalStrut(20));
 
-        // Connexion
-        JPanel connexionPanel = new JPanel();
-        connexionPanel.setLayout(new BoxLayout(connexionPanel, BoxLayout.Y_AXIS));
-        connexionPanel.setBackground(Color.WHITE);
+        // Séparateur
+        JSeparator separator = new JSeparator();
+        separator.setMaximumSize(new Dimension(280, 1));
+        panel.add(separator);
+        panel.add(Box.createVerticalStrut(15));
 
+        // Connexion
         JLabel messageConnexion = new JLabel("Veuillez vous connecter pour commander");
         messageConnexion.setAlignmentX(Component.CENTER_ALIGNMENT);
-        connexionPanel.add(messageConnexion);
+        messageConnexion.setFont(new Font("Arial", Font.ITALIC, 12));
+        panel.add(messageConnexion);
+        panel.add(Box.createVerticalStrut(10));
 
-        JButton connectButton = new JButton("Se Connecter");
-        connectButton.setAlignmentX(Component.CENTER_ALIGNMENT);
-        connectButton.addMouseListener(new MouseAdapter() {
-            public void mouseClicked(MouseEvent e) {
-                VueConnexion connexion = new VueConnexion();
-
-            }
-        });
-        connexionPanel.add(connectButton);
-
-        connexionPanel.add(Box.createVerticalStrut(10));
+        JButton connectButton = createStyledButton("Se Connecter");
+        panel.add(connectButton);
+        panel.add(Box.createVerticalStrut(15));
 
         // Inscription
-        JLabel messageInscription = new JLabel("Vous n'êtes pas encore inscrit ? ");
+        JLabel messageInscription = new JLabel("Vous n'êtes pas encore inscrit ?");
         messageInscription.setAlignmentX(Component.CENTER_ALIGNMENT);
-        connexionPanel.add(messageInscription);
+        messageInscription.setFont(new Font("Arial", Font.ITALIC, 12));
+        panel.add(messageInscription);
+        panel.add(Box.createVerticalStrut(5));
 
-        JButton inscriptionButton = new JButton("S'inscrire");
-        inscriptionButton.setAlignmentX(Component.CENTER_ALIGNMENT);
-        inscriptionButton.addMouseListener(new MouseAdapter() {
-            public void mouseClicked(MouseEvent e) {
-                VueConnexion connexion = new VueConnexion();
-            }
-        });
-        connexionPanel.add(inscriptionButton);
+        JButton inscriptionButton = createStyledButton("S'inscrire");
+        panel.add(inscriptionButton);
+        panel.add(Box.createVerticalStrut(25));
 
-        connexionPanel.add(Box.createVerticalStrut(20));
-
+        // Bouton de validation avec couleur différente
         JButton validerButton = new JButton("VALIDER MA COMMANDE");
         validerButton.setAlignmentX(Component.CENTER_ALIGNMENT);
-        validerButton.addMouseListener(new MouseAdapter() {
-            public void mouseClicked(MouseEvent e) {
-                //Popup popupMessage = new Popup("Votre commande a été validée");
+        validerButton.setBackground(new Color(76, 175, 80));
+        validerButton.setForeground(Color.WHITE);
+        validerButton.setFont(new Font("Arial", Font.BOLD, 14));
+        validerButton.setFocusPainted(false);
+        validerButton.setBorder(BorderFactory.createEmptyBorder(8, 15, 8, 15));
+        validerButton.setCursor(new Cursor(Cursor.HAND_CURSOR));
+        validerButton.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                showConfirmationPopup();
             }
         });
-        connexionPanel.add(validerButton);
-        panel.add(connexionPanel);
+        panel.add(validerButton);
 
         return panel;
     }
+
+
+
+
+
     private JPanel createInfoPanier() {
-        JPanel panel = new JPanel();
-        panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
-        panel.setBackground(new Color(200, 203, 177));
-        panel.setPreferredSize(new Dimension(600, 300));
+        JPanel panel = new JPanel(new BorderLayout());
+        panel.setBackground(backgroundColor);
+        panel.setBorder(BorderFactory.createCompoundBorder(
+                BorderFactory.createLineBorder(new Color(180, 180, 180), 1),
+                BorderFactory.createEmptyBorder(10, 10, 10, 10)
+        ));
+        panel.setPreferredSize(new Dimension(580, 400));
 
-        JPanel headerPanel = new JPanel(new GridLayout(1, 5));
-        headerPanel.setBackground(new Color(200, 203, 177));
+        // En-tête
+        JPanel headerPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
+        headerPanel.setBackground(headerColor);
+        headerPanel.setBorder(BorderFactory.createEmptyBorder(5, 10, 5, 10));
 
-        String[] Infos = {"Photo","Nom du produit", "Quantite", "Prix", "Description"};
-        for (String info : Infos) {
-            JLabel label = new JLabel(info, SwingConstants.CENTER);
-            label.setFont(new Font("Arial", Font.BOLD, 14));
-            headerPanel.add(label);
-        }
+        JLabel headerLabel = new JLabel("Produits dans votre panier");
+        headerLabel.setFont(new Font("Arial", Font.BOLD, 14));
+        headerPanel.add(headerLabel);
+
         panel.add(headerPanel, BorderLayout.NORTH);
 
         // Zone de contenu pour les produits
-        JPanel productsPanel = new JPanel();
-        productsPanel.setLayout(new BoxLayout(productsPanel, BoxLayout.Y_AXIS));
-        productsPanel.setBackground(new Color(220, 223, 197));
-        String[][] produits = {
-                {"","Cookies chocolat", "2", "5.99 €", "Cookies aux pépites de chocolat"},
-                {"","Sablés", "1", "4.50 €", "Sablés traditionnels"},
-                {"","Thé Earl Grey", "1", "7.25 €", "Thé noir aromatisé à la bergamote"},
-                {"","Café Arabica", "3", "8.99 €", "Café en grains, torréfaction moyenne"},
+        productsContainer = new JPanel();
+        productsContainer.setLayout(new BoxLayout(productsContainer, BoxLayout.Y_AXIS));
+        productsContainer.setBackground(backgroundColor);
+        productsContainer.setBorder(BorderFactory.createEmptyBorder(5, 0, 5, 0));
+
+        // Données des produits avec leur prix unitaire
+        Object[][] produits = {
+                {"Cookies chocolat", "Cookies aux pépites de chocolat", 2, 5.99},
+                {"Sablés", "Sablés traditionnels", 1, 4.50},
+                {"Thé Earl Grey", "Thé noir aromatisé à la bergamote", 1, 7.25},
+                {"Café Arabica", "Café en grains, torréfaction moyenne", 3, 8.99},
         };
 
-        // Panneau de chaque produit
-        for (String[] produit : produits) {
-            JPanel produitPanel = new JPanel(new GridLayout(1, 5));
-            produitPanel.setBackground(new Color(235, 238, 212));
-            produitPanel.setBorder(BorderFactory.createMatteBorder(0, 0, 1, 0, new Color(200, 200, 200)));
-            produitPanel.setMaximumSize(new Dimension(450, 30));
-            produitPanel.setPreferredSize(new Dimension(450, 30));
+        // Calculer le prix total initial et nombre de produits
+        totalPrice = 0;
+        nbProducts = 0;
 
-            JLabel imageLabel = new JLabel(produit[0], SwingConstants.CENTER);
-            JLabel nomLabel = new JLabel(produit[1], SwingConstants.CENTER);
-            JLabel quantiteLabel = new JLabel(produit[2], SwingConstants.CENTER);
-            JLabel prixLabel = new JLabel(produit[3], SwingConstants.CENTER);
-            JLabel descriptionLabel = new JLabel(produit[4], SwingConstants.CENTER);
+        for (Object[] produit : produits) {
+            totalPrice += (int)produit[2] * (double)produit[3];
+            nbProducts += (int)produit[2];
 
-            produitPanel.add(imageLabel);
-            produitPanel.add(nomLabel);
-            produitPanel.add(quantiteLabel);
-            produitPanel.add(prixLabel);
-            produitPanel.add(descriptionLabel);
-
-            productsPanel.add(produitPanel);
-            productsPanel.add(Box.createVerticalStrut(5));
         }
+
+        // Ajout de chaque produit dans son propre cadre
+        for (Object[] produit : produits) {
+            JPanel productPanel = createProductPanel(
+                    (String)produit[0],
+                    (String)produit[1],
+                    (int)produit[2],
+                    (double)produit[3]
+            );
+            productsContainer.add(productPanel);
+            productsContainer.add(Box.createVerticalStrut(10));
+        }
+
         // ScrollPane pour défiler si jamais il y a plusieurs produits
-        JScrollPane scrollPane = new JScrollPane(productsPanel);
+        JScrollPane scrollPane = new JScrollPane(productsContainer);
         scrollPane.setBorder(null);
-        scrollPane.setBackground(new Color(220, 223, 197));
+        scrollPane.setBackground(backgroundColor);
+        scrollPane.getVerticalScrollBar().setUnitIncrement(16);
 
         panel.add(scrollPane, BorderLayout.CENTER);
+
+        // Panneau de sous-total en bas
+        JPanel totalPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT));
+        totalPanel.setBackground(headerColor);
+        totalPanel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 20));
+
+        totalLabel = new JLabel(String.format("Total: %.2f €", totalPrice));
+        totalLabel.setFont(new Font("Arial", Font.BOLD, 16));
+        totalPanel.add(totalLabel);
+
+        panel.add(totalPanel, BorderLayout.SOUTH);
+
         return panel;
-
     }
-    // Panel pour les infos total de la commande
-    private JPanel createInfoRow(String label, String value) {
-        JPanel row = new JPanel(new FlowLayout(FlowLayout.LEFT));
-        row.setBackground(Color.WHITE);
-        JLabel labelComp = new JLabel(label);
-        labelComp.setPreferredSize(new Dimension(100, 25));
-        labelComp.setFont(new Font("Arial", Font.BOLD, 12));
-        JLabel valueComp = new JLabel(value);
-        valueComp.setFont(new Font("Arial", Font.PLAIN, 12));
-        row.add(labelComp);
-        row.add(valueComp);
 
-        return row;
+
+    private JPanel createProductPanel(String name, String description, int quantity, double price) {
+        // Création du panneau principal du produit
+        JPanel productPanel = new JPanel(new BorderLayout(10, 0));
+        productPanel.setBackground(productColor);
+        productPanel.setBorder(BorderFactory.createCompoundBorder(
+                BorderFactory.createLineBorder(new Color(180, 180, 180), 1),
+                BorderFactory.createEmptyBorder(5, 10, 10, 10)
+        ));
+        productPanel.setMaximumSize(new Dimension(550, 90));
+        productPanel.setPreferredSize(new Dimension(550, 90));
+
+        // Panneau supérieur pour le nom et le bouton de suppression
+        JPanel topPanel = new JPanel(new BorderLayout());
+        topPanel.setBackground(productColor);
+
+        // Nom du produit
+        JLabel nameLabel = new JLabel(name);
+        nameLabel.setFont(new Font("Arial", Font.BOLD, 14));
+        nameLabel.setBorder(BorderFactory.createEmptyBorder(0, 0, 5, 0));
+        topPanel.add(nameLabel, BorderLayout.WEST);
+
+        // Bouton de suppression (X)
+        JButton deleteButton = new JButton("×");
+        deleteButton.setFont(new Font("Arial", Font.BOLD, 20));
+        deleteButton.setForeground(Color.RED);
+        deleteButton.setContentAreaFilled(false);
+        deleteButton.setBorder(BorderFactory.createEmptyBorder(0, 5, 0, 0));
+        deleteButton.setCursor(new Cursor(Cursor.HAND_CURSOR));
+        deleteButton.setToolTipText("Supprimer ce produit");
+
+        // Données référencées depuis la closure pour manipulation
+        final double[] productTotalPrice = {quantity * price};
+
+
+        topPanel.add(deleteButton, BorderLayout.EAST);
+
+        productPanel.add(topPanel, BorderLayout.NORTH);
+
+        // Panneau central avec image et détails
+        JPanel contentPanel = new JPanel(new BorderLayout(10, 0));
+        contentPanel.setBackground(productColor);
+
+        // Image du produit
+        JLabel imageLabel = new JLabel(createPlaceholderIcon());
+        imageLabel.setBorder(BorderFactory.createLineBorder(Color.GRAY));
+        contentPanel.add(imageLabel, BorderLayout.WEST);
+
+        // Panneau d'information
+        JPanel infoPanel = new JPanel(new BorderLayout());
+        infoPanel.setBackground(productColor);
+
+        // Description
+        JLabel descLabel = new JLabel(description);
+        descLabel.setFont(new Font("Arial", Font.ITALIC, 12));
+        infoPanel.add(descLabel, BorderLayout.CENTER);
+
+        // Panneau inférieur avec quantité et prix
+        JPanel bottomInfoPanel = new JPanel(new BorderLayout(10, 0));
+        bottomInfoPanel.setBackground(productColor);
+
+        // Panneau de quantité avec contrôles + et -
+        JPanel quantityPanel = new JPanel(new FlowLayout(FlowLayout.LEFT, 5, 0));
+        quantityPanel.setBackground(productColor);
+
+        JLabel quantityTextLabel = new JLabel("Quantité: ");
+        quantityTextLabel.setFont(new Font("Arial", Font.PLAIN, 12));
+
+        JButton minusButton = new JButton("-");
+        minusButton.setPreferredSize(new Dimension(25, 25));
+        minusButton.setFocusPainted(false);
+        minusButton.setCursor(new Cursor(Cursor.HAND_CURSOR));
+
+        // Référence au JLabel pour la quantité
+        JLabel quantityLabel = new JLabel(String.valueOf(quantity));
+        quantityLabel.setFont(new Font("Arial", Font.BOLD, 12));
+        quantityLabel.setHorizontalAlignment(SwingConstants.CENTER);
+        quantityLabel.setPreferredSize(new Dimension(30, 25));
+        quantityLabel.setBorder(BorderFactory.createLineBorder(Color.LIGHT_GRAY));
+
+        // Référence au JLabel pour le prix
+        JLabel priceLabel = new JLabel(String.format("%.2f €", price * quantity));
+        priceLabel.setFont(new Font("Arial", Font.BOLD, 14));
+        priceLabel.setHorizontalAlignment(SwingConstants.RIGHT);
+
+        JButton plusButton = new JButton("+");
+        plusButton.setPreferredSize(new Dimension(25, 25));
+        plusButton.setFocusPainted(false);
+        plusButton.setCursor(new Cursor(Cursor.HAND_CURSOR));
+
+        // Actions pour les boutons + et -
+        minusButton.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                int value = Integer.parseInt(quantityLabel.getText());
+                if (value > 1) {
+                    value--;
+                    quantityLabel.setText(String.valueOf(value));
+                    totalPrice -= price;
+                    productTotalPrice[0] = price * value;
+
+                    priceLabel.setText(String.format("%.2f €", price * value));
+                    totalLabel.setText(String.format("Total: %.2f €", totalPrice));
+                    sousTotalRow.setText(String.format("%.2f €", totalPrice));
+                    nbProducts--;
+                    nbProduitsRow.setText(String.valueOf(nbProducts));
+                }
+            }
+        });
+
+        plusButton.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                int value = Integer.parseInt(quantityLabel.getText());
+                value++;
+                quantityLabel.setText(String.valueOf(value));
+
+                totalPrice += price;
+                productTotalPrice[0] = price * value;
+
+                priceLabel.setText(String.format("%.2f €", price * value));
+                totalLabel.setText(String.format("Total: %.2f €", totalPrice));
+                sousTotalRow.setText(String.format("%.2f €", totalPrice));
+                nbProducts++;
+                nbProduitsRow.setText(String.valueOf(nbProducts));
+            }
+        });
+        deleteButton.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                // Récupérer l'indice du produit dans le conteneur
+                int index = -1;
+                Component[] components = productsContainer.getComponents();
+                for (int i = 0; i < components.length; i++) {
+                    if (components[i] == productPanel) {
+                        index = i;
+                        break;
+                    }
+                }
+
+                if (index != -1) {
+                    // Supprimer le produit
+                    productsContainer.remove(productPanel);
+                    if (index + 1 < components.length && components[index + 1] instanceof Box.Filler) {
+                        productsContainer.remove(components[index + 1]);
+                    }
+
+                    totalPrice -= productTotalPrice[0];
+                    totalLabel.setText(String.format("Total: %.2f €", totalPrice));
+                    sousTotalRow.setText(String.format("%.2f €", totalPrice));
+                    nbProducts -= Integer.parseInt(quantityLabel.getText());
+                    nbProduitsRow.setText(String.valueOf(nbProducts));
+                    // Rafraîchir l'affichage
+                    productsContainer.revalidate();
+                    productsContainer.repaint();
+                }
+            }
+        });
+
+        quantityPanel.add(quantityTextLabel);
+        quantityPanel.add(minusButton);
+        quantityPanel.add(quantityLabel);
+        quantityPanel.add(plusButton);
+
+        bottomInfoPanel.add(quantityPanel, BorderLayout.WEST);
+        bottomInfoPanel.add(priceLabel, BorderLayout.EAST);
+
+        infoPanel.add(bottomInfoPanel, BorderLayout.SOUTH);
+        contentPanel.add(infoPanel, BorderLayout.CENTER);
+
+        productPanel.add(contentPanel, BorderLayout.CENTER);
+
+        return productPanel;
     }
+
+    private ImageIcon createPlaceholderIcon() {
+        // Création d'une icône
+        BufferedImage img = new BufferedImage(60, 60, BufferedImage.TYPE_INT_ARGB);
+        Graphics2D g = img.createGraphics();
+        g.setColor(new Color(240, 240, 240));
+        g.fillRect(0, 0, 60, 60);
+        g.setColor(Color.GRAY);
+        g.drawRect(0, 0, 59, 59);
+
+        // Dessiner une forme représentant un produit
+        g.setColor(new Color(200, 200, 200));
+        g.fillOval(15, 15, 30, 30);
+        g.setColor(Color.DARK_GRAY);
+        g.drawOval(15, 15, 30, 30);
+
+        g.dispose();
+        return new ImageIcon(img);
+    }
+    private void showConfirmationPopup() {
+        // Création de la fenêtre popup
+        JDialog popup = new JDialog();
+
+        popup.setTitle("Confirmation de commande");
+        popup.setSize(350, 200);
+        popup.setLocationRelativeTo(null); // Centre la fenêtre
+        popup.setModal(true);
+
+        // Panneau principal pour le popup
+        JPanel popupPanel = new JPanel();
+        popupPanel.setLayout(new BoxLayout(popupPanel, BoxLayout.Y_AXIS));
+        popupPanel.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
+        popupPanel.setBackground(Color.WHITE);
+
+        // Icône de confirmation
+        JLabel iconLabel = new JLabel(UIManager.getIcon("OptionPane.informationIcon"));
+        iconLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
+        popupPanel.add(iconLabel);
+        popupPanel.add(Box.createVerticalStrut(15));
+
+        // Message de confirmation
+        JLabel messageLabel = new JLabel("Votre commande a été validée");
+        messageLabel.setFont(new Font("Arial", Font.BOLD, 16));
+        messageLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
+        popupPanel.add(messageLabel);
+
+        // Message supplémentaire
+        JLabel detailLabel = new JLabel("Merci pour votre achat !");
+        detailLabel.setFont(new Font("Arial", Font.PLAIN, 14));
+        detailLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
+        popupPanel.add(detailLabel);
+        popupPanel.add(Box.createVerticalStrut(20));
+
+        // Bouton OK
+        JButton okButton = new JButton("OK");
+        okButton.setAlignmentX(Component.CENTER_ALIGNMENT);
+        okButton.addActionListener(e -> popup.dispose());
+        popupPanel.add(okButton);
+
+        popup.add(popupPanel);
+        popup.setVisible(true);
+    }
+    private JButton createStyledButton(String text) {
+        JButton button = new JButton(text);
+        button.setAlignmentX(Component.CENTER_ALIGNMENT);
+        button.setBackground(new Color(240, 240, 240));
+        button.setFocusPainted(false);
+        button.setBorder(BorderFactory.createEmptyBorder(5, 15, 5, 15));
+        button.setCursor(new Cursor(Cursor.HAND_CURSOR));
+
+        // Ajouter les listeners appropriés
+        button.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                VueConnexion connexion = new VueConnexion();
+            }
+        });
+
+        return button;
+    }
+
+
 }
