@@ -39,11 +39,11 @@ public class Nav extends JPanel {
                             VueProduitsBiscuits biscuits = new VueProduitsBiscuits();
                             parent.addAndShowPanel(biscuits, "biscuits");
                             break;
-                        /*case 3:
-                            BestSellers bestSellers = new BestSellers();
+                        case 3:
+                            VueBestSellers bestSellers = new VueBestSellers();
                             parent.addAndShowPanel(bestSellers, "bestSellers");
                             break;
-                        case 4:
+                        /*case 4:
                             Marques marques = new Marques();
                             parent.addAndShowPanel(marques, "marques");
                             break;*/

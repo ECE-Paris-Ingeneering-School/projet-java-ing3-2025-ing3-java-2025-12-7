@@ -4,10 +4,11 @@ import java.util.*;
 
 public class Panier {
 
-    private Article[] articles;
-    private int[] quantite;
+    private int IDProduit;
+    private String articles;
+    private String quantite;
     private float montant;
-    private Client client;
+    private  int IDClient;
     private Date dateJour;
 
     /**
@@ -15,11 +16,12 @@ public class Panier {
      */
 
     public Panier() {
-        this.quantite = new int[0];
+        this.IDProduit = 0;
+        this.quantite = "";
         this.montant = 0;
-        this.client = new Client();
+        this.IDClient = 0;
         this.dateJour = new Date(0);
-        this.articles = new Article[0];
+        this.articles = "";
     }
 
     /**
@@ -27,30 +29,33 @@ public class Panier {
      * @param articles
      * @param quantite
      * @param montant
-     * @param client
+     * @param IDP
+     * @param IDC
      * @param dateJour
      */
-    public Panier(Article[] articles, int[] quantite, float montant, Client client, Date dateJour) {
+    public Panier(int IDP, int IDC ,String articles, String quantite, float montant, Date dateJour) {
+        this.IDProduit = IDP;
+        this.IDClient = IDC;
         this.articles = articles;
         this.quantite = quantite;
         this.montant = montant;
-        this.client = client;
         this.dateJour = dateJour;
 
     }
 
     //getters
-    public Article[] getArticles() {
+    public int getIDProduit() {return IDProduit;}
+    public String getArticles() {
         return articles;
     }
-    public int[] getQuantite() {
+    public String getQuantite() {
         return quantite;
     }
     public float getMontant() {
         return montant;
     }
-    public Client getClient() {
-        return client;
+    public int getIDClient() {
+        return IDClient;
     }
     public Date getDateJour() {
         return dateJour;

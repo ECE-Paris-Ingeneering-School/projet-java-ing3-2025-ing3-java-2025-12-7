@@ -1,6 +1,5 @@
 package Modele;
 import java.util.*;
-import java.awt.*;
 
 public class Article {
 
@@ -9,10 +8,13 @@ public class Article {
     private int quantiteArticle;
     private float prixArticle;
     private String marqueArticle;
-    private int categorieArticle; // 1-> Boisson 2-> Biscuit
-    //private File imageArticle;
+    private String typeArticle; // 1-> Boisson 2-> Biscuit
+    private String categorieArticle;
     private float reductionArticle;
+    private Date dateAjoutArticle;
     private Date datePeremptionArticle;
+    private String imageArticle;
+
     private Date aujourdhui;
 
     /**
@@ -24,11 +26,12 @@ public class Article {
         this.quantiteArticle = 0;
         this.prixArticle = 0;
         this.marqueArticle = "";
-        this.categorieArticle = 0;
-        //this.imageArticle = "";
+        this.typeArticle = "";
+        this.categorieArticle = "";
         this.reductionArticle = 0;
+        this.dateAjoutArticle = null;
         this.datePeremptionArticle = null;
-        this.aujourdhui = null;
+        this.imageArticle = "";
     }
 
     /**
@@ -41,16 +44,20 @@ public class Article {
      * @param marque
      * @param reduction
      * @param peremption
+     * @param type
+     * @param ajout
      */
-    public Article (int ID, String nom, int quantite, float prix, int categorie, String marque,float reduction,Date peremption){
+    public Article (int ID, String nom, int quantite, float prix, String marque, String type, String categorie,float reduction,Date ajout,Date peremption, String image){
         this.IDArticle = ID;
         this.nomArticle = nom;
         this.quantiteArticle = quantite;
         this.prixArticle = prix;
         this.marqueArticle = marque;
+        this.typeArticle = type;
         this.categorieArticle = categorie;
-        //this.imageArticle = "";
+        this.imageArticle = image;
         this.reductionArticle = reduction;
+        this.dateAjoutArticle = ajout;
         this.datePeremptionArticle = peremption;
 
     }
@@ -71,17 +78,19 @@ public class Article {
     public String getMarqueArticle() {
         return marqueArticle;
     }
-    public int getCategorieArticle() {
-        return categorieArticle;
-    }
+    public String getTypeArticle() {return typeArticle;}
+    public String getCategorieArticle() {return categorieArticle;}
+    public String getImageArticle() {return imageArticle;}
     public float getReductionArticle() {
         return reductionArticle;
     }
     public Date getDatePeremptionArticle() {
         return datePeremptionArticle;
     }
+    public Date getDateAjoutArticle() {return dateAjoutArticle;}
     public Date getAujourdhui() {
         return aujourdhui;
     }
+
 
 }
