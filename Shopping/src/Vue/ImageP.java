@@ -1,7 +1,7 @@
 package Vue;
 import javax.swing.*;
 import java.awt.*;
-
+//classe pour l'image de la page d'acceuil
 public class ImageP extends JPanel {
     public ImageP() {
         setLayout(new FlowLayout(FlowLayout.CENTER));

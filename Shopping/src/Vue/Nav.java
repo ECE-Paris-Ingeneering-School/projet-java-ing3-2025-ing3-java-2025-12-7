@@ -3,10 +3,14 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-public class Nav extends JPanel{
+
+//classe qui gere les boutons de navigation dans le site
+public class Nav extends JPanel {
     private JButton[] boutons;
-    Mywindow contentPanel;
-    public Nav() {
+    private Mywindow parent;
+
+    public Nav(Mywindow parent) {
+        this.parent = parent;
         setLayout(new FlowLayout(FlowLayout.CENTER));
         setMaximumSize(new Dimension(800, 50));
         setBackground(new Color(51, 85, 140));
@@ -16,30 +20,46 @@ public class Nav extends JPanel{
         for (int i = 0; i < nomsBoutons.length; i++) {
             boutons[i] = new JButton(nomsBoutons[i]);
             boutons[i].setBackground(new Color(255, 255, 255));
-            final int index = i; // variable finale pour usage dans la classe anonyme
+            final int index = i;
             boutons[i].addMouseListener(new MouseAdapter() {
                 @Override
                 public void mouseClicked(MouseEvent e) {
                     getButtonNav(index);
-                    if (index ==1){
-                        VueProduitsBoissons boissons = new VueProduitsBoissons();
-                    }
-                    if (index == 5){
-                        NousConnaitre nousConnaitre = new NousConnaitre();
-                        contentPanel.add(nousConnaitre);
-                    }
-                    if (index ==2){
-                        VueProduitsBiscuits biscuits = new VueProduitsBiscuits();
+
+                    switch(index) {
+                        case 0:
+                            JPanel produits = new JPanel(); // À remplacer par votre panel de produits
+                            parent.addAndShowPanel(produits, "produits");
+                            break;
+                        case 1:
+                            VueProduitsBoissons boissons = new VueProduitsBoissons();
+                            parent.addAndShowPanel(boissons, "boissons");
+                            break;
+                        case 2:
+                            VueProduitsBiscuits biscuits = new VueProduitsBiscuits();
+                            parent.addAndShowPanel(biscuits, "biscuits");
+                            break;
+                        /*case 3:
+                            BestSellers bestSellers = new BestSellers();
+                            parent.addAndShowPanel(bestSellers, "bestSellers");
+                            break;
+                        case 4:
+                            Marques marques = new Marques();
+                            parent.addAndShowPanel(marques, "marques");
+                            break;*/
+                        case 5:
+                            NousConnaitre nousConnaitre = new NousConnaitre();
+                            parent.addAndShowPanel(nousConnaitre, "nousConnaitre");
+                            break;
                     }
                 }
             });
-
             add(boutons[i]);
-
         }
-
     }
-    public void getButtonNav(int y){
+
+    public void getButtonNav(int y) {
+        // Réinitialiser tous les boutons
         for (int i = 0; i < boutons.length; i++) {
             boutons[i].setBackground(new Color(255, 255, 255));
         }
@@ -49,10 +69,4 @@ public class Nav extends JPanel{
             boutons[y].setBackground(new Color(220, 223, 197));
         }
     }
-
-
-
-
-
 }
-

@@ -1,7 +1,7 @@
 package Vue;
 import javax.swing.*;
 import java.awt.*;
-
+//Classe du footer
 public class Bottom extends JPanel {
     public Bottom() {
         setLayout(new FlowLayout(FlowLayout.CENTER));

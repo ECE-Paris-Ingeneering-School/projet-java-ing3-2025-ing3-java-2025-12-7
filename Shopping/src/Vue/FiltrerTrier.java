@@ -1,7 +1,7 @@
 package Vue;
 import javax.swing.*;
 import java.awt.*;
-
+//classe pour gerer les filtres et le tri
 public class FiltrerTrier extends JPanel {
 
     public FiltrerTrier() {

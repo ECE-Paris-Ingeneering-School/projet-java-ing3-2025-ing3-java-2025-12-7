@@ -3,22 +3,14 @@ package Vue;
 import javax.swing.*;
 import java.awt.*;
 
-public class NousConnaitre extends JFrame {
+public class NousConnaitre extends JPanel {
     public NousConnaitre() {
-        super("Nous connaitre - Biscuits&Drinks.co");
-        setSize(800, 600);
-        setLocationRelativeTo(null);
-        setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         setLayout(new BorderLayout());
+        setBackground(new Color(220, 223, 197));
 
         JPanel mainPanel = new JPanel();
         mainPanel.setLayout(new BoxLayout(mainPanel, BoxLayout.Y_AXIS));
         mainPanel.setBackground(new Color(220, 223, 197));
-
-        Nav navNC = new Nav();
-        navNC.getButtonNav(5);
-        mainPanel.add(new Top());
-        mainPanel.add(navNC);
 
         // Titre
         JPanel titlePanel = new JPanel();
@@ -40,8 +32,7 @@ public class NousConnaitre extends JFrame {
         mainPanel.add(Box.createVerticalGlue());
         mainPanel.add(new Bottom());
 
-        add(mainPanel);
-        setVisible(true);
+        add(mainPanel, BorderLayout.CENTER);
     }
 
     private JPanel createInfoNousConnaitre() {
@@ -74,8 +65,6 @@ public class NousConnaitre extends JFrame {
         textArea.setFocusable(false);
 
         panel.add(textArea, BorderLayout.CENTER);
-
-
 
         return panel;
     }

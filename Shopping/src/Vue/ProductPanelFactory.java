@@ -4,27 +4,24 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-
+//cette classe est faite pour creer le panel individuelle de chaque produit.
 public class ProductPanelFactory {
 
     public static JPanel createProductPanel(String name, String description, double price, String imageKey) {
-        // Création du panneau principal du produit
+
         JPanel productPanel = new JPanel();
         productPanel.setLayout(new BoxLayout(productPanel, BoxLayout.Y_AXIS));
 
-        productPanel.setBorder(BorderFactory.createCompoundBorder(
-                BorderFactory.createLineBorder(new Color(180, 180, 180), 1),
-                BorderFactory.createEmptyBorder(10, 10, 10, 10)
-        ));
+        productPanel.setBorder(BorderFactory.createCompoundBorder(BorderFactory.createLineBorder(new Color(180, 180, 180), 1), BorderFactory.createEmptyBorder(10, 10, 10, 10)));
         productPanel.setPreferredSize(new Dimension(250, 300));
         productPanel.setBackground(new Color(220, 223, 197));
 
-        // Image du produit (centrée)
+        // Image du produit
         JLabel imageLabel = new JLabel();
         imageLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
         imageLabel.setBorder(BorderFactory.createEmptyBorder(5, 5, 10, 5));
 
-        // Panel contenant l'image
+        // Panel de l'image
         JPanel imagePanel = new JPanel();
         imagePanel.add(imageLabel);
         imagePanel.setAlignmentX(Component.CENTER_ALIGNMENT);
@@ -32,7 +29,7 @@ public class ProductPanelFactory {
 
         productPanel.add(imagePanel);
 
-        // Panel pour le nom et le prix (disposition horizontale)
+        // Panel pour le nom et le prix
         JPanel infoPanel = new JPanel(new BorderLayout(10, 0));
         infoPanel.setBackground(new Color(220, 223, 197));
         infoPanel.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
@@ -93,7 +90,6 @@ public class ProductPanelFactory {
         });
 
         productPanel.add(addToCartButton);
-
         return productPanel;
     }
 }

@@ -1,28 +1,21 @@
 package Vue;
 import javax.swing.*;
 import java.awt.*;
-
 import java.awt.image.BufferedImage;
 
-
-public class VueProduitsBiscuits extends JFrame {
+public class VueProduitsBiscuits extends JPanel {
     private final Color backgroundColor = new Color(220, 223, 197);
 
     public VueProduitsBiscuits() {
         setLayout(new BorderLayout());
-        setSize(800, 600);
-        // Panel principal avec disposition verticale
+
+        // Panel principal
         JPanel mainPanel = new JPanel();
         mainPanel.setLayout(new BoxLayout(mainPanel, BoxLayout.Y_AXIS));
         mainPanel.setBackground(backgroundColor);
 
-        // Ajout des différentes sections
-
-        mainPanel.add(new Top());
-        mainPanel.add(new Nav());
         mainPanel.add(new FiltrerTrier());
 
-        // Titre centré avec marge
         JPanel titrePanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
         titrePanel.setBackground(backgroundColor);
         JLabel titre = new JLabel("Nos Biscuits");
@@ -32,18 +25,21 @@ public class VueProduitsBiscuits extends JFrame {
         mainPanel.add(titrePanel);
         mainPanel.add(Box.createVerticalStrut(15)); // Espace après le titre
 
-        // Conteneur principal pour le contenu, centré
+        // Conteneur principal pour le contenu
         JPanel contentContainer = new JPanel(new FlowLayout(FlowLayout.CENTER));
         contentContainer.setBackground(backgroundColor);
         JPanel content = createBiscuitsPanel();
         contentContainer.add(content);
         mainPanel.add(contentContainer);
-        // Ajouter un peu d'espace avant le footer
+
+        // espace avant le footer
         mainPanel.add(Box.createVerticalStrut(20));
         mainPanel.add(new Bottom());
 
         add(mainPanel, BorderLayout.CENTER);
-        setVisible(true);
+
+
+        setPreferredSize(new Dimension(800, 600));
     }
 
     private JPanel createBiscuitsPanel() {
@@ -75,8 +71,6 @@ public class VueProduitsBiscuits extends JFrame {
         for (Object[] produit : produits) {
             JPanel productPanel = ProductPanelFactory.createProductPanel((String)produit[0], (String)produit[1], (double)produit[2], (String)produit[3]);
             productsPanel.add(productPanel);
-
-
         }
 
         // ScrollPane pour défiler
@@ -91,14 +85,4 @@ public class VueProduitsBiscuits extends JFrame {
 
         return containerPanel;
     }
-
-
-
-    private ImageIcon createProductIcon(String imageKey) {
-        int width = 150;
-        int height = 120;
-        BufferedImage img = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);
-        return null;
-    }
-
 }

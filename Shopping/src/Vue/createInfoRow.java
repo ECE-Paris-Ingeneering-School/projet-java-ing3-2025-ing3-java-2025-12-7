@@ -2,7 +2,7 @@ package Vue;
 
 import javax.swing.*;
 import java.awt.*;
-
+//classe pour creer un panel d informations
 public class createInfoRow extends JPanel {
     private JLabel valueComp;
 

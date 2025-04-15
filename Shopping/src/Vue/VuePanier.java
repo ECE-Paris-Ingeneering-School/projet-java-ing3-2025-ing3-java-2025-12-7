@@ -3,7 +3,6 @@ import Vue.createInfoRow;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
-import java.awt.image.BufferedImage;
 import javax.swing.border.*;
 import java.util.ArrayList;
 
@@ -21,31 +20,23 @@ public class VuePanier extends JPanel {
     public VuePanier() {
         setLayout(new BorderLayout());
 
-        // Panel principal avec disposition verticale
+        // Panel principal
         JPanel mainPanel = new JPanel();
         mainPanel.setLayout(new BoxLayout(mainPanel, BoxLayout.Y_AXIS));
         mainPanel.setBackground(backgroundColor);
-
-        // Ajout des différentes sections
-        Top topVCC = new Top();
-        topVCC.getIconTop(1);
-        mainPanel.add(topVCC);
-        mainPanel.add(new Nav());
 
         // Titre centré avec marge
         JPanel titrePanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
         titrePanel.setBackground(backgroundColor);
         JLabel titre = new JLabel("Votre Panier");
-        titre.setFont(new Font("Arial", Font.BOLD, 24));
+        titre.setFont(new Font("Serif", Font.BOLD, 26));
         titrePanel.add(titre);
         mainPanel.add(titrePanel);
         mainPanel.add(Box.createVerticalStrut(15)); // Espace après le titre
 
-        // Conteneur principal pour le contenu, centré
+        // Conteneur principal pour le contenu
         JPanel contentContainer = new JPanel(new FlowLayout(FlowLayout.CENTER));
         contentContainer.setBackground(backgroundColor);
-
-        // Panel de contenu avec bordure et insets
         JPanel content = new JPanel(new BorderLayout(10, 0)); // Espacement horizontal entre les panneaux
         content.setBackground(backgroundColor);
         content.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
@@ -122,7 +113,7 @@ public class VuePanier extends JPanel {
         panel.add(inscriptionButton);
         panel.add(Box.createVerticalStrut(25));
 
-        // Bouton de validation avec couleur différente
+        // Bouton de validation
         JButton validerButton = new JButton("VALIDER MA COMMANDE");
         validerButton.setAlignmentX(Component.CENTER_ALIGNMENT);
         validerButton.setBackground(new Color(76, 175, 80));
@@ -140,10 +131,6 @@ public class VuePanier extends JPanel {
 
         return panel;
     }
-
-
-
-
 
     private JPanel createInfoPanier() {
         JPanel panel = new JPanel(new BorderLayout());
@@ -186,7 +173,6 @@ public class VuePanier extends JPanel {
         for (Object[] produit : produits) {
             totalPrice += (int)produit[2] * (double)produit[3];
             nbProducts += (int)produit[2];
-
         }
 
         // Ajout de chaque produit dans son propre cadre
@@ -223,7 +209,6 @@ public class VuePanier extends JPanel {
         return panel;
     }
 
-
     private JPanel createProductPanel(String name, String description, int quantity, double price) {
         // Création du panneau principal du produit
         JPanel productPanel = new JPanel(new BorderLayout(10, 0));
@@ -238,8 +223,6 @@ public class VuePanier extends JPanel {
         // Panneau supérieur pour le nom et le bouton de suppression
         JPanel topPanel = new JPanel(new BorderLayout());
         topPanel.setBackground(productColor);
-
-        // Nom du produit
         JLabel nameLabel = new JLabel(name);
         nameLabel.setFont(new Font("Arial", Font.BOLD, 14));
         nameLabel.setBorder(BorderFactory.createEmptyBorder(0, 0, 5, 0));
@@ -257,19 +240,24 @@ public class VuePanier extends JPanel {
         // Données référencées depuis la closure pour manipulation
         final double[] productTotalPrice = {quantity * price};
 
-
         topPanel.add(deleteButton, BorderLayout.EAST);
-
         productPanel.add(topPanel, BorderLayout.NORTH);
 
-        // Panneau central avec image et détails
+        // Panneau central
         JPanel contentPanel = new JPanel(new BorderLayout(10, 0));
         contentPanel.setBackground(productColor);
 
-        // Image du produit
-        JLabel imageLabel = new JLabel(createPlaceholderIcon());
-        imageLabel.setBorder(BorderFactory.createLineBorder(Color.GRAY));
-        contentPanel.add(imageLabel, BorderLayout.WEST);
+        // Cadre simple pour l'image
+        JPanel imagePanel = new JPanel();
+        imagePanel.setPreferredSize(new Dimension(60, 60));
+        imagePanel.setBackground(new Color(240, 240, 240));
+        imagePanel.setBorder(BorderFactory.createLineBorder(Color.GRAY));
+        JLabel imageLabel = new JLabel("Image");
+        imageLabel.setForeground(Color.GRAY);
+        imageLabel.setHorizontalAlignment(SwingConstants.CENTER);
+        imagePanel.add(imageLabel);
+
+        contentPanel.add(imagePanel, BorderLayout.WEST);
 
         // Panneau d'information
         JPanel infoPanel = new JPanel(new BorderLayout());
@@ -291,8 +279,17 @@ public class VuePanier extends JPanel {
         JLabel quantityTextLabel = new JLabel("Quantité: ");
         quantityTextLabel.setFont(new Font("Arial", Font.PLAIN, 12));
 
+        //Boutons + - pour la quantite
+        JButton plusButton = new JButton("+");
+        plusButton.setFont(new Font("Arial", Font.PLAIN, 12));
+        plusButton.setPreferredSize(new Dimension(30, 25));
+        plusButton.setMargin(new Insets(0, 0, 0, 0)); // reduction des marges internes
+        plusButton.setFocusPainted(false);
+        plusButton.setCursor(new Cursor(Cursor.HAND_CURSOR));
         JButton minusButton = new JButton("-");
-        minusButton.setPreferredSize(new Dimension(25, 25));
+        minusButton.setFont(new Font("Arial", Font.PLAIN, 12));
+        minusButton.setPreferredSize(new Dimension(30, 25));
+        minusButton.setMargin(new Insets(0, 0, 0, 0));
         minusButton.setFocusPainted(false);
         minusButton.setCursor(new Cursor(Cursor.HAND_CURSOR));
 
@@ -308,10 +305,7 @@ public class VuePanier extends JPanel {
         priceLabel.setFont(new Font("Arial", Font.BOLD, 14));
         priceLabel.setHorizontalAlignment(SwingConstants.RIGHT);
 
-        JButton plusButton = new JButton("+");
-        plusButton.setPreferredSize(new Dimension(25, 25));
-        plusButton.setFocusPainted(false);
-        plusButton.setCursor(new Cursor(Cursor.HAND_CURSOR));
+
 
         // Actions pour les boutons + et -
         minusButton.addActionListener(new ActionListener() {
@@ -348,6 +342,7 @@ public class VuePanier extends JPanel {
                 nbProduitsRow.setText(String.valueOf(nbProducts));
             }
         });
+
         deleteButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 // Récupérer l'indice du produit dans le conteneur
@@ -395,24 +390,6 @@ public class VuePanier extends JPanel {
         return productPanel;
     }
 
-    private ImageIcon createPlaceholderIcon() {
-        // Création d'une icône
-        BufferedImage img = new BufferedImage(60, 60, BufferedImage.TYPE_INT_ARGB);
-        Graphics2D g = img.createGraphics();
-        g.setColor(new Color(240, 240, 240));
-        g.fillRect(0, 0, 60, 60);
-        g.setColor(Color.GRAY);
-        g.drawRect(0, 0, 59, 59);
-
-        // Dessiner une forme représentant un produit
-        g.setColor(new Color(200, 200, 200));
-        g.fillOval(15, 15, 30, 30);
-        g.setColor(Color.DARK_GRAY);
-        g.drawOval(15, 15, 30, 30);
-
-        g.dispose();
-        return new ImageIcon(img);
-    }
     private void showConfirmationPopup() {
         // Création de la fenêtre popup
         JDialog popup = new JDialog();
@@ -456,6 +433,7 @@ public class VuePanier extends JPanel {
         popup.add(popupPanel);
         popup.setVisible(true);
     }
+
     private JButton createStyledButton(String text) {
         JButton button = new JButton(text);
         button.setAlignmentX(Component.CENTER_ALIGNMENT);
@@ -464,7 +442,7 @@ public class VuePanier extends JPanel {
         button.setBorder(BorderFactory.createEmptyBorder(5, 15, 5, 15));
         button.setCursor(new Cursor(Cursor.HAND_CURSOR));
 
-        // Ajouter les listeners appropriés
+        // Ajouter les listeners
         button.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 VueConnexion connexion = new VueConnexion();
@@ -473,6 +451,4 @@ public class VuePanier extends JPanel {
 
         return button;
     }
-
-
 }
