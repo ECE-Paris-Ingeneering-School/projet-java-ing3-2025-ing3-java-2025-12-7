@@ -1,21 +1,36 @@
 package Vue;
-import Vue.createInfoRow;
+
+import Modele.Client;
+import DAO.DAOClient;
+import DAO.DAOClientIMPL;
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.*;
-import java.awt.image.BufferedImage;
-import javax.swing.border.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.SQLException;
+import java.text.SimpleDateFormat;
+import java.util.List;
+import java.util.ArrayList;
+import java.util.Map;
+import java.util.HashMap;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
 
 public class VueCompteClient extends JPanel {
     private final Color backgroundColor = new Color(220, 223, 197);
     private final Color headerColor = new Color(200, 203, 177);
     private final Color contentColor = new Color(235, 238, 212);
+    private Client client;
 
     // Référence au JFrame parent pour changer de panel
     private JFrame parentFrame;
 
-    public VueCompteClient(JFrame parentFrame) {
+    public VueCompteClient(JFrame parentFrame, int idClient) {
         this.parentFrame = parentFrame;
+        this.client = getClientFromDB(idClient);
         setLayout(new BorderLayout());
 
         JPanel mainPanel = new JPanel();
@@ -73,9 +88,31 @@ public class VueCompteClient extends JPanel {
     }
 
     // Constructeur sans paramètre pour la compatibilité
-    public VueCompteClient() {
-        this(null);
+
+    // public VueCompteClient() {
+    //    this(null);
+    //}
+
+    public VueCompteClient(JFrame parentFrame) {
+        this(parentFrame, 1); // ID par défaut (à adapter selon votre logique)
     }
+
+    private Client getClientFromDB(int idClient) {
+        try {
+            Connection connection = DriverManager.getConnection(
+                    "jdbc:mysql://localhost:3306/shoppingBD",
+                    "root",
+                    ""
+            );
+            DAOClient daoClient = new DAOClientIMPL(connection);
+            return daoClient.getClientById(idClient);
+        } catch (SQLException e) {
+            Logger.getLogger(VueCompteClient.class.getName()).log(Level.SEVERE, null, e);
+            return null;
+        }
+
+    }
+
 
     private JPanel createInfoClientPanel() {
         JPanel panel = new JPanel();
@@ -98,29 +135,39 @@ public class VueCompteClient extends JPanel {
         titreSectionPanel.add(titreSection);
 
 
+        // Utilisation des données du client si disponible, sinon valeurs par défaut
+        String nom = (client != null) ? client.getNomUser() : "Dupont";
+        String prenom = (client != null) ? client.getPrenomUser() : "Jean";
+        String email = (client != null) ? client.getMailUser() : "jean.dupont@example.com";
+        String telephone = (client != null) ? client.getTelephoneUser() : "06 12 34 56 78";
+        String adresse = (client != null) ? client.getAdresseUser() : "123 Rue des Biscuits, 75015 Paris";
+        String dateNaissance = (client != null && client.getDateNaissanceClient() != null)
+                ? client.getDateNaissanceClient().toString().substring(0, 10)
+                : "13/04/2000";
+
         JLabel nomLabel = new JLabel("Nom:");
         nomLabel.setFont(new Font("Arial", Font.BOLD, 12));
-        JLabel nomValue = new JLabel("Dupont");
+        JLabel nomValue = new JLabel(nom);
 
         JLabel prenomLabel = new JLabel("Prénom:");
         prenomLabel.setFont(new Font("Arial", Font.BOLD, 12));
-        JLabel prenomValue = new JLabel("Jean");
+        JLabel prenomValue = new JLabel(prenom);
 
         JLabel emailLabel = new JLabel("Email:");
         emailLabel.setFont(new Font("Arial", Font.BOLD, 12));
-        JLabel emailValue = new JLabel("jean.dupont@example.com");
+        JLabel emailValue = new JLabel(email);
 
         JLabel telephoneLabel = new JLabel("Téléphone:");
         telephoneLabel.setFont(new Font("Arial", Font.BOLD, 12));
-        JLabel telephoneValue = new JLabel("06 12 34 56 78");
+        JLabel telephoneValue = new JLabel(telephone);
 
         JLabel adresseLabel = new JLabel("Adresse:");
         adresseLabel.setFont(new Font("Arial", Font.BOLD, 12));
-        JLabel adresseValue = new JLabel("123 Rue des Biscuits, 75000 Paris");
+        JLabel adresseValue = new JLabel(adresse);
 
         JLabel dateNaissanceLabel = new JLabel("Date de naissance:");
         dateNaissanceLabel.setFont(new Font("Arial", Font.BOLD, 12));
-        JLabel dateNaissanceValue = new JLabel("13/04/2000");
+        JLabel dateNaissanceValue = new JLabel(dateNaissance);
 
         panel.add(titreSectionPanel);
         JPanel emptyPanel = new JPanel();
@@ -235,18 +282,37 @@ public class VueCompteClient extends JPanel {
 
         panel.add(headerPanel, BorderLayout.NORTH);
 
-        // Contenu du tableau des commandes
+        // Récupération des données réelles
+        List<Map<String, Object>> commandes = new ArrayList<>();
+        float totalAchats = 0;
+
+        try (Connection connection = DriverManager.getConnection(
+                "jdbc:mysql://localhost:3306/shoppingBD", "root", "")) {
+            DAOClient daoClient = new DAOClientIMPL(connection);
+            commandes = daoClient.getCommandesByClientId(client.getIdUser());
+
+            // Calcul du total
+            for (Map<String, Object> cmd : commandes) {
+                totalAchats += (float) cmd.get("montant");
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        // Conversion en format de tableau
         String[] columns = {"N° Commande", "Date", "Produits", "Quantité", "Montant", "Statut"};
-        Object[][] data = {
-                {"#12345", "01/04/2025", "Biscuits Chocolat", "2", "9.98€", "Expédiée"},
-                {"#12345", "01/04/2025", "Thé Earl Grey", "1", "5.50€", "Expédiée"},
-                {"#12346", "25/03/2025", "Soda Citron", "6", "12.00€", "Livrée"},
-                {"#12346", "25/03/2025", "Biscuits Vanille", "3", "12.99€", "Livrée"},
-                {"#12347", "10/03/2025", "Café Arabica", "1", "8.50€", "Livrée"},
-                {"#12347", "10/03/2025", "Cookies Pépites", "2", "7.80€", "Livrée"},
-                {"#12348", "15/02/2025", "Chocolat Noir", "4", "15.96€", "Livrée"},
-                {"#12349", "01/02/2025", "Tisane Bio", "2", "9.98€", "Livrée"}
-        };
+        Object[][] data = new Object[commandes.size()][6];
+
+        for (int i = 0; i < commandes.size(); i++) {
+            Map<String, Object> cmd = commandes.get(i);
+            data[i][0] = "#" + cmd.get("idCommande");
+            data[i][1] = new SimpleDateFormat("dd/MM/yyyy").format(cmd.get("date"));
+            data[i][2] = cmd.get("produit");
+            data[i][3] = cmd.get("quantite");
+            data[i][4] = String.format("%.2f€", cmd.get("montant"));
+            data[i][5] = cmd.get("statut");
+        }
+
 
         // Création du tableau
         JTable table = new JTable(data, columns);
@@ -272,7 +338,7 @@ public class VueCompteClient extends JPanel {
         totalPanel.setBackground(headerColor);
         totalPanel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 20));
 
-        JLabel totalLabel = new JLabel("Total de vos achats: 72.71 €");
+        JLabel totalLabel = new JLabel(String.format("Total de vos achats: %.2f €", totalAchats));
         totalLabel.setFont(new Font("Arial", Font.BOLD, 16));
         totalPanel.add(totalLabel);
 

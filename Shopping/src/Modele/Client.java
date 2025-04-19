@@ -1,51 +1,47 @@
 package Modele;
 
-import java.util.*;
-import java.text.DateFormat;
+import java.sql.Timestamp;
+import java.util.Date;
 
 public class Client extends User{
 
-    private Date naissanceClient;
-    private Date ajoutCompteClient;
+    private Date dateNaissanceClient;
+    private Timestamp dateAjoutClient;
     private Article[] articlesClient;
-    private Date aujourdhui;
 
     /**
      * Constructeur par défaut
      */
 
-    public Client (){
-        this.naissanceClient = new Date(0);
-        this.ajoutCompteClient = new Date(0);
-        this.articlesClient = new Article[0];
-        this.aujourdhui = new Date(0);
-    }
-
     /**
      * Constructeur
-     * @param naissanceClient
-     * @param ajoutCompteClient
-     * @param ID
-     * @param nom
-     * @param mail
+     * @param dateNaissance
+     * @param dateAjout
+     * @param id
+     * @param login
      * @param mdp
+     * @param mail
      * @param statut
+     * @param nom
+     * @param prenom
+     * @param telephone
+     * @param adresse
      */
-    public Client (Date naissanceClient, Date ajoutCompteClient, int ID, String nom, String mail, String mdp, int statut){
-        super(ID, nom, mail, mdp, statut);
-        this.naissanceClient = naissanceClient;
-        this.ajoutCompteClient = ajoutCompteClient;
+    public Client(int id, String login, String mdp, String mail,
+                  int statut, String nom, String prenom,
+                  String telephone, String adresse,
+                  Date dateNaissance, Timestamp dateAjout) {
+        super(id, login, mdp, mail, statut, nom, prenom, telephone, adresse);
+        this.dateNaissanceClient = dateNaissance;
+        this.dateAjoutClient = dateAjout;
         this.articlesClient = new Article[0];
     }
+
 
     //getters
 
-    public Date getNaissanceClient() {
-        return naissanceClient;
-    }
-    public Date getAjoutCompteClient() {
-        return ajoutCompteClient;
-    }
+    public Date getDateNaissanceClient() { return dateNaissanceClient; }
+    public Timestamp getDateAjoutClient() { return dateAjoutClient; }
     public Article[] getArticlesClient() {
         return articlesClient;
     }

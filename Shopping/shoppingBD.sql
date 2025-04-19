@@ -17,12 +17,16 @@ SET time_zone = "+00:00";
 
 -- Création des tables
 CREATE TABLE User (
-   idUser               INT NOT NULL,
-   loginUser            VARCHAR(254) NULL,
-   mdpUser              VARCHAR(254) NULL,
-   mailUser             VARCHAR(254) NULL,
-   statutUser           SMALLINT NULL,
-   PRIMARY KEY (idUser)
+    idUser          INT NOT NULL,
+    loginUser       VARCHAR(254) NULL,
+    mdpUser         VARCHAR(254) NULL,
+    mailUser        VARCHAR(254) NULL,
+    statutUser      SMALLINT NULL,
+    nomUser         VARCHAR(100) NULL,
+    prenomUser      VARCHAR(100) NULL,
+    telephoneUser   VARCHAR(20) NULL,
+    adresseUser     TEXT NULL,
+    PRIMARY KEY (idUser)
 )ENGINE=MyISAM;
 
 CREATE TABLE Admin (
@@ -99,6 +103,28 @@ CREATE TABLE Journalisation (
 INSERT INTO `panier` (idPanier, idUser, listeIDProduits, listeQuantite, montantPanier)  VALUES
     (1,23,'[2,5,35]', '[2,1,1]',10.27),
     (2,4,'[12,44]', '[8,1]',30.55);
+
+-- Insertion des utilisateurs (10 utilisateurs)
+INSERT INTO User (idUser, loginUser, mdpUser, mailUser, statutUser, nomUser, prenomUser, telephoneUser, adresseUser) VALUES
+    (1, 'client1', 'mdp1', 'client1@example.com', 0, 'Dupont', 'Jean', '0612345678', '123 Rue des Biscuits, 75000 Paris'),
+    (2, 'client2', 'mdp2', 'client2@example.com', 0, 'Martin', 'Sophie', '0698765432', '456 Avenue des Boissons, 69000 Lyon'),
+    (3, 'admin1', 'mdp3', 'admin1@example.com', 1, 'Bernard', 'Pierre', '0678912345', '789 Boulevard des Snacks, 13000 Marseille'),
+    (4, 'client4', 'mdp4', 'client4@example.com', 0, 'Thomas', 'Julie', '0654321876', '321 Rue des Confiseries, 31000 Toulouse'),
+    (5, 'admin2', 'mdp5', 'admin2@example.com', 1, 'Petit', 'Luc', '0687654321', '654 Allée des Gourmandises, 33000 Bordeaux'),
+    (6, 'client6', 'mdp6', 'client6@example.com', 0, 'Robert', 'Anne', '0612348765', '987 Chemin des Saveurs, 06000 Nice'),
+    (7, 'client7', 'mdp7', 'client7@example.com', 0, 'Richard', 'Paul', '0698761234', '159 Route des Délices, 59000 Lille'),
+    (8, 'admin3', 'mdp8', 'admin3@example.com', 1, 'Durand', 'Camille', '0678915623', '753 Impasse des Friandises, 67000 Strasbourg'),
+    (9, 'client9', 'mdp9', 'client9@example.com', 0, 'Dubois', 'Thomas', '0654329087', '951 Avenue des Gourmets, 44000 Nantes'),
+    (10, 'admin4', 'mdp10', 'admin4@example.com', 1, 'Moreau', 'Élise', '0612376509', '284 Boulevard des Créations, 34000 Montpellier');
+
+-- Insertion des clients correspondants (10 clients)
+INSERT INTO Client (idUser, dateNaissanceClient, dateAjoutClient) VALUES
+    (1, '1990-01-15 00:00:00', '2023-01-10'),
+    (2, '1985-05-22 00:00:00', '2023-02-15'),
+    (4, '1988-07-04 00:00:00', '2023-04-05'),
+    (6, '1983-09-25 00:00:00', '2023-06-18'),
+    (7, '1998-12-08 00:00:00', '2023-07-22'),
+    (9, '1993-06-27 00:00:00', '2023-09-05');
 
 -- Chargement des données de la table `produit`
 --
