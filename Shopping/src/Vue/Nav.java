@@ -28,7 +28,7 @@ public class Nav extends JPanel {
 
                     switch(index) {
                         case 0:
-                            JPanel produits = new JPanel(); // À remplacer par votre panel de produits
+                            VueProduits produits = new VueProduits();
                             parent.addAndShowPanel(produits, "produits");
                             break;
                         case 1:
@@ -43,10 +43,10 @@ public class Nav extends JPanel {
                             VueBestSellers bestSellers = new VueBestSellers();
                             parent.addAndShowPanel(bestSellers, "bestSellers");
                             break;
-                        /*case 4:
+                        case 4:
                             Marques marques = new Marques();
                             parent.addAndShowPanel(marques, "marques");
-                            break;*/
+                            break;
                         case 5:
                             NousConnaitre nousConnaitre = new NousConnaitre();
                             parent.addAndShowPanel(nousConnaitre, "nousConnaitre");

@@ -2,7 +2,7 @@ package Vue;
 
 import javax.swing.*;
 import java.awt.*;
-
+// classe qui affiche les informations du site
 public class NousConnaitre extends JPanel {
     public NousConnaitre() {
         setLayout(new BorderLayout());

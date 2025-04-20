@@ -6,7 +6,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
-
+//classe qui affiche les boissons
 public class VueProduitsBoissons extends JPanel {
     private final Color backgroundColor = new Color(220, 223, 197);
 
@@ -100,7 +100,7 @@ public class VueProduitsBoissons extends JPanel {
                     JPanel productPanel = ProductPanelFactory.createProductPanel(
                             article.getNomArticle(),         // Nom du produit
                             article.getCategorieArticle(),   // Description ou catégorie
-                            article.getPrixArticle(),        // Prix
+                            (Double)(double) article.getPrixArticle(),        // Prix
                             article.getNomArticle()        // Nom du porduit
                     );
 

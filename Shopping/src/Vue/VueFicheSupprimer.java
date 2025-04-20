@@ -7,7 +7,7 @@ import javax.swing.border.EmptyBorder;
 import java.text.SimpleDateFormat;
 import java.util.Scanner;
 
-public class VueFicheAjouter extends JFrame {
+public class VueFicheSupprimer extends JFrame {
     private JTextField ID;
     private JTextField NOM;
     private JTextField QUANTITE;
@@ -15,12 +15,12 @@ public class VueFicheAjouter extends JFrame {
     private JTextField PRIX;
     private JComboBox<String> categorie;
     private JTextField datePeremp;
-    private JButton AjouterArticle;
+    private JButton SupprimerArticle;
     private JButton Annuler;
     private final Color backgroundColor = new Color(220, 223, 197);
 
-    public VueFicheAjouter() {
-        super("Ajouter un Produit");
+    public VueFicheSupprimer() {
+        super("Supprimer un Produit");
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         setSize(450, 450);
         setLocationRelativeTo(null);
@@ -31,7 +31,7 @@ public class VueFicheAjouter extends JFrame {
 
         JPanel titrePanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
         titrePanel.setBackground(backgroundColor);
-        JLabel titre = new JLabel("Ajouter un Produit");
+        JLabel titre = new JLabel("Supprimer un Produit");
         titre.setFont(new Font("Serif", Font.BOLD, 18));
         titre.setForeground(new Color(102, 51, 0));
         titrePanel.add(titre);
@@ -83,22 +83,22 @@ public class VueFicheAjouter extends JFrame {
         // Panneau des boutons
         JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.CENTER, 10, 5)); // Espacement réduit
         buttonPanel.setBackground(backgroundColor);
-        AjouterArticle = createStyledButton("AJOUTER", new Color(51, 85, 140));
+        SupprimerArticle = createStyledButton("SUPPRIMER", new Color(220, 80, 80));
         Annuler = createStyledButton("ANNULER", new Color(0, 0, 0));
 
 
-        buttonPanel.add(AjouterArticle);
+        buttonPanel.add(SupprimerArticle);
         buttonPanel.add(Annuler);
 
 
         mainPanel.add(buttonPanel, BorderLayout.SOUTH);
 
-        // Listeners pour les boutons ajouter et annuler
-        AjouterArticle.addActionListener(new ActionListener() {
+        // Listeners pour les boutons supprimer et annuler
+        SupprimerArticle.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 JOptionPane.showMessageDialog(
-                        VueFicheAjouter.this,"Produit ajoute avec succès!", "Confirmation", JOptionPane.INFORMATION_MESSAGE);
+                        VueFicheSupprimer.this,"Produit supprimé avec succès!", "Confirmation", JOptionPane.INFORMATION_MESSAGE);
             }
         });
 
@@ -151,5 +151,4 @@ public class VueFicheAjouter extends JFrame {
         button.setPreferredSize(new Dimension(100, 30));
         return button;
     }
-
 }

@@ -445,7 +445,7 @@ public class VuePanier extends JPanel {
         // Ajouter les listeners
         button.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                VueConnexion connexion = new VueConnexion();
+                ;
             }
         });
 

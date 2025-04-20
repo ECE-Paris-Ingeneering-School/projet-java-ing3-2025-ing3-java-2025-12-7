@@ -200,7 +200,10 @@ public class VueCompteAdmin extends JPanel {
         modifierProduitButton.setAlignmentX(Component.CENTER_ALIGNMENT);
         modifierProduitButton.addActionListener(new ActionListener() {
             @Override
-            public void actionPerformed(ActionEvent e) {}
+            public void actionPerformed(ActionEvent e) {
+                VueFicheModifier vueModifP = new VueFicheModifier();
+                vueModifP.setVisible(true);
+            }
 
         });
         panel.add(modifierProduitButton);
@@ -216,7 +219,8 @@ public class VueCompteAdmin extends JPanel {
         supprimerProduitButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-
+                VueFicheSupprimer vueSupP = new VueFicheSupprimer();
+                vueSupP.setVisible(true);
             }
 
         });
