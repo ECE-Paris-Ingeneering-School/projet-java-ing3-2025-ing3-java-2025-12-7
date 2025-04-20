@@ -13,15 +13,15 @@ public class Top extends JPanel {
         this.parent = parent;
         setLayout(new BorderLayout());
         setMaximumSize(new Dimension(800, 50));
-        setBackground(new Color(51, 85, 140));
+        setBackground(new Color(245, 225, 207));
         JLabel nomSite = new JLabel("Biscuits&Drinks.co", JLabel.LEFT);
-        nomSite.setForeground(Color.WHITE);
+        nomSite.setForeground(Color.BLACK);
 
         JTextField BarreRecherche = new JTextField("Rechercher");
         BarreRecherche.setEditable(true);
 
         JPanel icons = new JPanel(new FlowLayout(FlowLayout.RIGHT));
-        icons.setBackground(new Color(51, 85, 140));
+        icons.setBackground(new Color(245, 225, 207));
         this.utilisateur = new JButton("👤");
         this.utilisateur.setBackground(new Color(255, 255, 255));
         this.panier = new JButton("🛒");
@@ -72,10 +72,10 @@ public class Top extends JPanel {
 
         switch(x) {
             case 0:
-                utilisateur.setBackground(new Color(220, 223, 197));
+                utilisateur.setBackground(new Color(115, 162, 191));
                 return utilisateur;
             case 1:
-                panier.setBackground(new Color(220, 223, 197));
+                panier.setBackground(new Color(115, 162, 191));
                 return panier;
             default:
                 return null;

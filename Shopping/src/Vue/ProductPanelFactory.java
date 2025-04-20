@@ -4,12 +4,13 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.*;
 
 //cette classe est faite pour creer le panel individuelle de chaque produit.
 public class ProductPanelFactory {
 
 
-    public static JPanel createProductPanel(String name, String description, double price, String imageKey) {
+    public static JPanel createProductPanel(String name, String description, double price, String imageKey,JButton addToCartButton) {
 
         JPanel productPanel = new JPanel();
         productPanel.setLayout(new BoxLayout(productPanel, BoxLayout.Y_AXIS));
@@ -21,15 +22,23 @@ public class ProductPanelFactory {
         productPanel.setBackground(new Color(220, 223, 197));
 
         // Image du produit
-        JLabel imageLabel = new JLabel();
+
+
+        File imgFile = new File(imageKey);
+        if (!imgFile.exists()) {
+            System.out.println("Image non trouvée : " + imgFile.getAbsolutePath());
+        } else {
+            System.out.println("Image trouvée : " + imgFile.getAbsolutePath());
+        }
+        ImageIcon imageIcon = new ImageIcon("Shopping/"+imageKey);
+        Image image = imageIcon.getImage().getScaledInstance(120, 120, Image.SCALE_SMOOTH); // redimensionne l’image
+        JLabel imageLabel = new JLabel(new ImageIcon(image));
         imageLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
         imageLabel.setBorder(BorderFactory.createEmptyBorder(5, 5, 10, 5));
-        ImageIcon icon = new ImageIcon(imageKey);
-        Image img = icon.getImage().getScaledInstance(120, 120, Image.SCALE_SMOOTH);
-        icon = new ImageIcon(img);
-        imageLabel.setIcon(icon);
+
 
         // Panel de l'image
+
         JPanel imagePanel = new JPanel();
         imagePanel.add(imageLabel);
         imagePanel.setAlignmentX(Component.CENTER_ALIGNMENT);
@@ -37,10 +46,13 @@ public class ProductPanelFactory {
         imagePanel.setBackground(new Color(220, 223, 197)); // pour avoir un fond d image de la meme couleur
 
         productPanel.add(imagePanel);
+//        imagePanel.setAlignmentX(Component.CENTER_ALIGNMENT);
+//        imagePanel.setMaximumSize(new Dimension(220, 250));
+
 
         // Nom du produit
         JLabel nameLabel = new JLabel(name);
-        nameLabel.setFont(new Font("Arial", Font.BOLD, 14));
+        nameLabel.setFont(new Font("Arial", Font.BOLD, 15));
         nameLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
         productPanel.add(nameLabel);
 
@@ -81,23 +93,24 @@ public class ProductPanelFactory {
         productPanel.add(Box.createVerticalStrut(15));
 
         // Bouton Ajouter au panier
-        JButton addToCartButton = new JButton("Ajouter au panier");
+        addToCartButton.setText("Ajouter au panier");
         addToCartButton.setAlignmentX(Component.CENTER_ALIGNMENT);
         addToCartButton.setBackground(new Color(76, 175, 80));
         addToCartButton.setForeground(Color.WHITE);
         addToCartButton.setFocusPainted(false);
         addToCartButton.setCursor(new Cursor(Cursor.HAND_CURSOR));
 
-        addToCartButton.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                JOptionPane.showMessageDialog(
-                        null,
-                        name + " ajouté à votre panier !",
-                        "Produit ajouté",
-                        JOptionPane.INFORMATION_MESSAGE
-                );
-            }
-        });
+//        addToCartButton.addActionListener(new ActionListener() {
+//            public void actionPerformed(ActionEvent e) {
+//
+//                JOptionPane.showMessageDialog(
+//                        null,
+//                        name + " ajouté à votre panier !",
+//                        "Produit ajouté",
+//                        JOptionPane.INFORMATION_MESSAGE
+//                );
+//            }
+//        });
 
         productPanel.add(addToCartButton);
         return productPanel;

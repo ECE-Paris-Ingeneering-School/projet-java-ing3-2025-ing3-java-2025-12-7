@@ -2,6 +2,8 @@ package Vue;
 import DAO.DAOArticle;
 import DAO.DAOFactory;
 import Modele.Article;
+import Modele.Client;
+import Controleur.ControleurPanier;
 
 import javax.swing.*;
 import java.awt.*;
@@ -9,7 +11,7 @@ import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 //classe qui affiche les produits biscuits
 public class VueProduitsBiscuits extends JPanel {
-    private final Color backgroundColor = new Color(220, 223, 197);
+    private final Color backgroundColor = new Color(245, 225, 207);
     private JPanel productsPanel;
 
     public VueProduitsBiscuits() {
@@ -26,7 +28,7 @@ public class VueProduitsBiscuits extends JPanel {
         titrePanel.setBackground(backgroundColor);
         JLabel titre = new JLabel("Nos Biscuits");
         titre.setFont(new Font("Serif", Font.BOLD, 26));
-        titre.setForeground(new Color(102, 51, 0));
+        titre.setForeground(new Color(2, 48, 89));
         titrePanel.add(titre);
         mainPanel.add(titrePanel);
         mainPanel.add(Box.createVerticalStrut(15)); // Espace après le titre
@@ -60,25 +62,25 @@ public class VueProduitsBiscuits extends JPanel {
         productsPanel.setBackground(backgroundColor);
         productsPanel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
 
-//        // Données des produits avec leur prix unitaire
-        Object[][] produits = {
-               {"Cookies Pépites Chocolat", "Cookies croustillants aux pépites de chocolat noir et lait", 5.99, "cookies_chocolat"},
-              {"Sablés Vanille", "Sablés fondants à la vanille de Madagascar", 4.50, "sables_vanille"},
-              {"Galettes Bretonnes", "Galettes pur beurre de tradition bretonne", 3.99, "galettes_bretonnes"},
-              {"Spéculoos", "Biscuits croustillants à la cannelle et aux épices", 4.25, "speculoos"},
-              {"Macarons Amandes", "Délicats macarons à l'amande sans gluten", 6.99, "macarons_amandes"},
-               {"Palmiers", "Biscuits feuilletés caramélisés en forme de cœur", 4.95, "palmiers"},
-               {"Crinkles Chocolat", "Biscuits moelleux au chocolat saupoudrés de sucre glace", 5.50, "crinkles_chocolat"},
-               {"Langues de Chat", "Fins biscuits allongés au beurre et à la vanille", 3.75, "langues_chat"},
-              {"Palets Bretons", "Palets dorés au beurre salé de Bretagne", 4.80, "palets_bretons"}
-       };
-//
-//        // Ajout de chaque produit dans son propre cadre
-        for (Object[] produit : produits) {
-            JPanel productPanel = ProductPanelFactory.createProductPanel((String)produit[0], (String)produit[1], (double)produit[2], "C:\\Users\\kawid\\OneDrive\\Desktop\\ING3\\POO Java\\Projet\\welcomeSSSite.jpg");
-           productsPanel.add(productPanel);
-       }
-/*
+////        // Données des produits avec leur prix unitaire
+//        Object[][] produits = {
+//               {"Cookies Pépites Chocolat", "Cookies croustillants aux pépites de chocolat noir et lait", 5.99, "cookies_chocolat"},
+//              {"Sablés Vanille", "Sablés fondants à la vanille de Madagascar", 4.50, "sables_vanille"},
+//              {"Galettes Bretonnes", "Galettes pur beurre de tradition bretonne", 3.99, "galettes_bretonnes"},
+//              {"Spéculoos", "Biscuits croustillants à la cannelle et aux épices", 4.25, "speculoos"},
+//              {"Macarons Amandes", "Délicats macarons à l'amande sans gluten", 6.99, "macarons_amandes"},
+//               {"Palmiers", "Biscuits feuilletés caramélisés en forme de cœur", 4.95, "palmiers"},
+//               {"Crinkles Chocolat", "Biscuits moelleux au chocolat saupoudrés de sucre glace", 5.50, "crinkles_chocolat"},
+//               {"Langues de Chat", "Fins biscuits allongés au beurre et à la vanille", 3.75, "langues_chat"},
+//              {"Palets Bretons", "Palets dorés au beurre salé de Bretagne", 4.80, "palets_bretons"}
+//       };
+////
+////        // Ajout de chaque produit dans son propre cadre
+//        for (Object[] produit : produits) {
+//            JPanel productPanel = ProductPanelFactory.createProductPanel((String)produit[0], (String)produit[1], (double)produit[2], "C:\\Users\\kawid\\OneDrive\\Desktop\\ING3\\POO Java\\Projet\\welcomeSSSite.jpg");
+//           productsPanel.add(productPanel);
+//       }
+
         // Récupérer tous les produits depuis la base de données
         DAOFactory daoFactory = DAOFactory.getInstance("shoppingbd","root","root");
 
@@ -93,24 +95,28 @@ public class VueProduitsBiscuits extends JPanel {
             JLabel noProductsLabel = new JLabel("Aucun produit disponible");
             productsPanel.add(noProductsLabel);
         } else {
+            Client client = new Client();
+            ControleurPanier controleurPanier = new ControleurPanier();
             // Ajout de chaque produit dans son propre cadre
             for (Article article : produits) {
                 String type= article.getNomArticle();
                 System.out.println(type);
                 if (article.getTypeArticle().equals("Biscuit")) {
+                    JButton bouton = new JButton();
                     // Création du panneau produit à partir des informations de l'article
                     JPanel productPanel = ProductPanelFactory.createProductPanel(
                             article.getNomArticle(),         // Nom du produit
                             article.getCategorieArticle(),   // Description ou catégorie
-                            article.getPrixArticle(),        // Prix
-                            article.getNomArticle()        // Nom du porduit
+                            (Double)(double)article.getPrixArticle(),        // Prix
+                            article.getImageArticle(),       // Nom du porduit
+                            bouton
                     );
-
+                    controleurPanier.attacherBouton(bouton,article,client);
                     productsPanel.add(productPanel);
                 }
 
             }
-        }*/
+        }
 
         // ScrollPane pour défiler
         JScrollPane scrollPane = new JScrollPane(productsPanel);
@@ -127,11 +133,13 @@ public class VueProduitsBiscuits extends JPanel {
     public void updateProducts(ArrayList<Article> articles) {
         productsPanel.removeAll();
         for (Article article : articles) {
+            JButton bouton = new JButton();
             JPanel productPanel = ProductPanelFactory.createProductPanel(
                     article.getNomArticle(),
                     article.getCategorieArticle(),
                     article.getPrixArticle(),
-                    article.getNomArticle()
+                    article.getNomArticle(),
+                    bouton
             );
             productsPanel.add(productPanel);
         }

@@ -70,14 +70,14 @@ public class DAOFactory {
         return new DAOArticleIMPL(this);
     }
 
-//    /**
-//     * Récupération du Dao pour les commandes
-//     * @return : objet de la classe CommanderDAOImpl
-//     */
-//    public CommanderDAO getCommanderDAO() {
-//        // Retourner un objet de CommanderDAOImpl qui implémente CommanderDAO
-//        return new CommanderDAOImpl(this);
-//    }
+    /**
+     * Récupération du Dao pour les commandes
+     * @return : objet de la classe CommanderDAOImpl
+     */
+    public DAOPanier getPanierDAO() {
+        // Retourner un objet de CommanderDAOImpl qui implémente CommanderDAO
+        return new DAOPanierIMPL(this);
+    }
 
     /**
      *     Fermer la connexion à la base de données

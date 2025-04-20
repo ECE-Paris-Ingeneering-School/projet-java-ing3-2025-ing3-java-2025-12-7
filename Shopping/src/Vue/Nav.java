@@ -4,6 +4,14 @@ import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
+//
+//rgb(93, 124, 166) bleu moyen
+//rgb(2, 48, 89) bleu foncé
+// rgb(115, 162, 191) bleu clair
+// rgb(245, 225, 207) beige
+//rgb(89, 54, 46) marron
+//
+
 //classe qui gere les boutons de navigation dans le site
 public class Nav extends JPanel {
     private JButton[] boutons;
@@ -13,12 +21,13 @@ public class Nav extends JPanel {
         this.parent = parent;
         setLayout(new FlowLayout(FlowLayout.CENTER));
         setMaximumSize(new Dimension(800, 50));
-        setBackground(new Color(51, 85, 140));
+        setBackground(new Color(245, 225, 207));
         String[] nomsBoutons = {"Produits", "Boissons", "Biscuits", "Best-Sellers", "Marques", "Nous connaitre"};
         boutons = new JButton[nomsBoutons.length];
 
         for (int i = 0; i < nomsBoutons.length; i++) {
             boutons[i] = new JButton(nomsBoutons[i]);
+            boutons[i].setForeground(new Color(255, 255, 255));
             boutons[i].setBackground(new Color(255, 255, 255));
             final int index = i;
             boutons[i].addMouseListener(new MouseAdapter() {
@@ -61,12 +70,12 @@ public class Nav extends JPanel {
     public void getButtonNav(int y) {
         // Réinitialiser tous les boutons
         for (int i = 0; i < boutons.length; i++) {
-            boutons[i].setBackground(new Color(255, 255, 255));
+            boutons[i].setBackground(new Color(115, 162, 191));
         }
 
         // Met en surbrillance le bouton cliqué
         if (y >= 0 && y < boutons.length) {
-            boutons[y].setBackground(new Color(220, 223, 197));
+            boutons[y].setBackground(new Color(2, 48, 89));
         }
     }
 }

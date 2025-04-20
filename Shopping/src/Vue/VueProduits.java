@@ -1,7 +1,15 @@
 package Vue;
 
+import Controleur.ControleurPanier;
+import DAO.DAOArticle;
+import DAO.DAOFactory;
+import Modele.Article;
+import Modele.Client;
+
 import javax.swing.*;
 import java.awt.*;
+import java.util.ArrayList;
+
 //classe qui affiche tous les produits
 public class VueProduits extends JPanel {
     private final Color backgroundColor = new Color(220, 223, 197);
@@ -48,40 +56,76 @@ public class VueProduits extends JPanel {
         productsPanel.setBackground(backgroundColor);
         productsPanel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
 
-        Object[][] produitsBiscuits = {
-                {"Cookies Pépites Chocolat", "Cookies croustillants aux pépites de chocolat noir et lait", 5.99, "cookies_chocolat"},
-                {"Sablés Vanille", "Sablés fondants à la vanille de Madagascar", 4.50, "sables_vanille"},
-                {"Galettes Bretonnes", "Galettes pur beurre de tradition bretonne", 3.99, "galettes_bretonnes"},
-                {"Spéculoos", "Biscuits croustillants à la cannelle et aux épices", 4.25, "speculoos"},
-                {"Macarons Amandes", "Délicats macarons à l'amande sans gluten", 6.99, "macarons_amandes"},
-                {"Palmiers", "Biscuits feuilletés caramélisés en forme de cœur", 4.95, "palmiers"},
-                {"Crinkles Chocolat", "Biscuits moelleux au chocolat saupoudrés de sucre glace", 5.50, "crinkles_chocolat"},
-                {"Langues de Chat", "Fins biscuits allongés au beurre et à la vanille", 3.75, "langues_chat"},
-                {"Palets Bretons", "Palets dorés au beurre salé de Bretagne", 4.80, "palets_bretons"}
-        };
+//        Object[][] produitsBiscuits = {
+//                {"Cookies Pépites Chocolat", "Cookies croustillants aux pépites de chocolat noir et lait", 5.99, "cookies_chocolat"},
+//                {"Sablés Vanille", "Sablés fondants à la vanille de Madagascar", 4.50, "sables_vanille"},
+//                {"Galettes Bretonnes", "Galettes pur beurre de tradition bretonne", 3.99, "galettes_bretonnes"},
+//                {"Spéculoos", "Biscuits croustillants à la cannelle et aux épices", 4.25, "speculoos"},
+//                {"Macarons Amandes", "Délicats macarons à l'amande sans gluten", 6.99, "macarons_amandes"},
+//                {"Palmiers", "Biscuits feuilletés caramélisés en forme de cœur", 4.95, "palmiers"},
+//                {"Crinkles Chocolat", "Biscuits moelleux au chocolat saupoudrés de sucre glace", 5.50, "crinkles_chocolat"},
+//                {"Langues de Chat", "Fins biscuits allongés au beurre et à la vanille", 3.75, "langues_chat"},
+//                {"Palets Bretons", "Palets dorés au beurre salé de Bretagne", 4.80, "palets_bretons"}
+//        };
+//
+//        Object[][] produitsBoissons = {
+//                {"Thé Glacé", "Boisson rafraîchissante au thé noir et citron", 2.50, "the_glace"},
+//                {"Smoothie Fraise", "Smoothie aux fraises fraîches et yaourt", 3.80, "smoothie_fraise"},
+//                {"Café Latte", "Café doux au lait entier", 2.90, "cafe_latte"},
+//                {"Jus d'Orange", "Pur jus d'orange pressé", 2.70, "jus_orange"},
+//                {"Limonade Artisanale", "Limonade pétillante au citron naturel", 3.20, "limonade_artisanale"},
+//                {"Eau Pétillante", "Eau gazeuse naturelle", 1.50, "eau_petillante"},
+//                {"Chocolat Chaud", "Boisson chaude au chocolat noir", 3.00, "chocolat_chaud"},
+//                {"Matcha Latte", "Boisson japonaise au thé vert matcha", 3.60, "matcha_latte"},
+//                {"Bubble Tea", "Thé au lait avec perles de tapioca", 4.50, "bubble_tea"}
+//        };
+//
+//        // j ai alterne chaque produit comme ca on a un melange boissons et bicuits
+//        int maxLength = Math.max(produitsBiscuits.length, produitsBoissons.length);
+//        for (int i = 0; i < maxLength; i++) {
+//            if (i < produitsBiscuits.length) {
+//                Object[] p = produitsBiscuits[i];
+//                productsPanel.add(ProductPanelFactory.createProductPanel((String)p[0], (String)p[1], (Double)p[2], "C:\\Users\\kawid\\OneDrive\\Desktop\\ING3\\POO Java\\Projet\\welcomeSSSite.jpg"));
+//            }
+//            if (i < produitsBoissons.length) {
+//                Object[] p = produitsBoissons[i];
+//                productsPanel.add(ProductPanelFactory.createProductPanel((String)p[0], (String)p[1], (Double)p[2], "C:\\Users\\kawid\\OneDrive\\Desktop\\ING3\\POO Java\\Projet\\welcomeSSSite.jpg"));
+//            }
+//        }
+        // Récupérer tous les produits depuis la base de données
+        DAOFactory daoFactory = DAOFactory.getInstance("shoppingbd","root","root");
 
-        Object[][] produitsBoissons = {
-                {"Thé Glacé", "Boisson rafraîchissante au thé noir et citron", 2.50, "the_glace"},
-                {"Smoothie Fraise", "Smoothie aux fraises fraîches et yaourt", 3.80, "smoothie_fraise"},
-                {"Café Latte", "Café doux au lait entier", 2.90, "cafe_latte"},
-                {"Jus d'Orange", "Pur jus d'orange pressé", 2.70, "jus_orange"},
-                {"Limonade Artisanale", "Limonade pétillante au citron naturel", 3.20, "limonade_artisanale"},
-                {"Eau Pétillante", "Eau gazeuse naturelle", 1.50, "eau_petillante"},
-                {"Chocolat Chaud", "Boisson chaude au chocolat noir", 3.00, "chocolat_chaud"},
-                {"Matcha Latte", "Boisson japonaise au thé vert matcha", 3.60, "matcha_latte"},
-                {"Bubble Tea", "Thé au lait avec perles de tapioca", 4.50, "bubble_tea"}
-        };
+        // Utiliser DAOFactory pour obtenir une instance de DAOArticle
+        DAOArticle daoArticle = daoFactory.getDAOArticle();
 
-        // j ai alterne chaque produit comme ca on a un melange boissons et bicuits
-        int maxLength = Math.max(produitsBiscuits.length, produitsBoissons.length);
-        for (int i = 0; i < maxLength; i++) {
-            if (i < produitsBiscuits.length) {
-                Object[] p = produitsBiscuits[i];
-                productsPanel.add(ProductPanelFactory.createProductPanel((String)p[0], (String)p[1], (Double)p[2], "C:\\Users\\kawid\\OneDrive\\Desktop\\ING3\\POO Java\\Projet\\welcomeSSSite.jpg"));
-            }
-            if (i < produitsBoissons.length) {
-                Object[] p = produitsBoissons[i];
-                productsPanel.add(ProductPanelFactory.createProductPanel((String)p[0], (String)p[1], (Double)p[2], "C:\\Users\\kawid\\OneDrive\\Desktop\\ING3\\POO Java\\Projet\\welcomeSSSite.jpg"));
+        // Récupérer tous les produits depuis la base de données via la méthode getAll() de DAOArticle
+        ArrayList<Article> produits = daoArticle.getAll();
+
+        // Si la liste de produits est vide
+        if (produits.isEmpty()) {
+            JLabel noProductsLabel = new JLabel("Aucun produit disponible");
+            productsPanel.add(noProductsLabel);
+        } else {
+            Client client= new Client();//RAJOUTER LE CODE POUR RECUPERER LE BON CLIENT, CELUI QUI EST CONNECTE
+            ControleurPanier controleurPanier = new ControleurPanier();
+            // Ajout de chaque produit dans son propre cadre
+            for (Article article : produits) {
+                String type= article.getImageArticle();
+                System.out.println(type);
+
+                    JButton bouton = new JButton();
+                    // Création du panneau produit à partir des informations de l'article
+                    JPanel productPanel = ProductPanelFactory.createProductPanel(
+                            article.getNomArticle(),         // Nom du produit
+                            article.getCategorieArticle(),   // Description ou catégorie
+                            article.getPrixArticle(),        // Prix
+                            article.getImageArticle(),        // Nom du porduit
+                            bouton
+                    );
+                    controleurPanier.attacherBouton(bouton,article,client);
+                    productsPanel.add(productPanel);
+
+
             }
         }
 

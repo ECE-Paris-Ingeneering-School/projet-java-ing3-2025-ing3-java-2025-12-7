@@ -12,7 +12,12 @@ public class Client extends User{
     /**
      * Constructeur par défaut
      */
+    public Client() {
 
+        this.dateNaissanceClient = null;
+        this.dateAjoutClient = null;
+        this.articlesClient = new Article[0];
+    }
     /**
      * Constructeur
      * @param dateNaissance

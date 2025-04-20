@@ -6,9 +6,12 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
+import Controleur.ControleurPanier;
+import Modele.Client;
+
 //classe qui affiche les boissons
 public class VueProduitsBoissons extends JPanel {
-    private final Color backgroundColor = new Color(220, 223, 197);
+    private final Color backgroundColor = new Color(245, 225, 207);
 
     public VueProduitsBoissons() {
         setLayout(new BorderLayout());
@@ -24,7 +27,7 @@ public class VueProduitsBoissons extends JPanel {
         titrePanel.setBackground(backgroundColor);
         JLabel titre = new JLabel("Nos Boissons");
         titre.setFont(new Font("Serif", Font.BOLD, 26));
-        titre.setForeground(new Color(0, 102, 59));
+        titre.setForeground(new Color(2, 48, 89));
         titrePanel.add(titre);
         mainPanel.add(titrePanel);
         mainPanel.add(Box.createVerticalStrut(15)); // Espace après le titre
@@ -91,19 +94,23 @@ public class VueProduitsBoissons extends JPanel {
             JLabel noProductsLabel = new JLabel("Aucun produit disponible");
             productsPanel.add(noProductsLabel);
         } else {
+            Client client= new Client();//RAJOUTER LE CODE POUR RECUPERER LE BON CLIENT, CELUI QUI EST CONNECTE
+            ControleurPanier controleurPanier = new ControleurPanier();
             // Ajout de chaque produit dans son propre cadre
             for (Article article : produits) {
-                String type= article.getNomArticle();
+                String type= article.getImageArticle();
                 System.out.println(type);
                 if (article.getTypeArticle().equals("Boisson")) {
+                    JButton bouton = new JButton();
                     // Création du panneau produit à partir des informations de l'article
                     JPanel productPanel = ProductPanelFactory.createProductPanel(
                             article.getNomArticle(),         // Nom du produit
                             article.getCategorieArticle(),   // Description ou catégorie
                             article.getPrixArticle(),        // Prix
-                            article.getNomArticle()        // Nom du porduit
+                            article.getImageArticle(),        // Nom du porduit
+                            bouton
                     );
-
+                    controleurPanier.attacherBouton(bouton,article,client);
                     productsPanel.add(productPanel);
                 }
 

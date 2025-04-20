@@ -14,13 +14,12 @@ public class Mywindow extends JFrame {
     public Mywindow() {
         super("www.Biscuits&Drinks.co");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        setSize(1500, 800);
+        setSize(1920, 1080);
 
         // Panel principal avec BoxLayout vertical
         mainPanel = new JPanel();
         mainPanel.setLayout(new BoxLayout(mainPanel, BoxLayout.Y_AXIS));
         mainPanel.setBackground(new Color(220, 223, 197));
-
         // Créer les composants Top et Nav avec référence à cette fenêtre
         top = new Top(this);
         nav = new Nav(this);

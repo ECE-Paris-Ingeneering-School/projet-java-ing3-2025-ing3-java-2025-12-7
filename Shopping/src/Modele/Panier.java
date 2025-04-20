@@ -4,23 +4,23 @@ import java.util.*;
 
 public class Panier {
 
-    private int IDProduit;
+    private int IDPanier;
     private String articles;
     private String quantite;
     private float montant;
     private  int IDClient;
-    private Date dateJour;
+    //private Date dateJour;
 
     /**
      * Constructeur par défaut
      */
 
     public Panier() {
-        this.IDProduit = 0;
+        this.IDPanier = 0;
         this.quantite = "";
         this.montant = 0;
         this.IDClient = 0;
-        this.dateJour = new Date(0);
+      // this.dateJour = new Date(0);
         this.articles = "";
     }
 
@@ -31,20 +31,19 @@ public class Panier {
      * @param montant
      * @param IDP
      * @param IDC
-     * @param dateJour
      */
-    public Panier(int IDP, int IDC ,String articles, String quantite, float montant, Date dateJour) {
-        this.IDProduit = IDP;
+    public Panier(int IDP, int IDC ,String articles, String quantite, float montant) {
+        this.IDPanier = IDP;
         this.IDClient = IDC;
         this.articles = articles;
         this.quantite = quantite;
         this.montant = montant;
-        this.dateJour = dateJour;
+    //  this.dateJour = dateJour;
 
     }
 
     //getters
-    public int getIDProduit() {return IDProduit;}
+    public int getIDPanier() {return IDPanier;}
     public String getArticles() {
         return articles;
     }
@@ -57,9 +56,9 @@ public class Panier {
     public int getIDClient() {
         return IDClient;
     }
-    public Date getDateJour() {
-        return dateJour;
-    }
+//    public Date getDateJour() {
+//        return dateJour;
+//    }
 
 
 

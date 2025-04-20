@@ -1,4 +1,5 @@
 package Vue;
+import Controleur.ControleurPanier;
 import Vue.createInfoRow;
 import javax.swing.*;
 import java.awt.*;
@@ -177,11 +178,17 @@ public class VuePanier extends JPanel {
 
         // Ajout de chaque produit dans son propre cadre
         for (Object[] produit : produits) {
+            JButton boutoncroix = new JButton();
+            JButton boutonplus = new JButton();
+            JButton boutonmoins = new JButton();
             JPanel productPanel = createProductPanel(
                     (String)produit[0],
                     (String)produit[1],
                     (int)produit[2],
-                    (double)produit[3]
+                    (double)produit[3],
+                    boutonmoins,
+                    boutonplus,
+                    boutoncroix
             );
             productsContainer.add(productPanel);
             productsContainer.add(Box.createVerticalStrut(10));
@@ -209,7 +216,7 @@ public class VuePanier extends JPanel {
         return panel;
     }
 
-    private JPanel createProductPanel(String name, String description, int quantity, double price) {
+    private JPanel createProductPanel(String name, String description, int quantity, double price, JButton minusButton, JButton plusButton, JButton deleteButton ) {
         // Création du panneau principal du produit
         JPanel productPanel = new JPanel(new BorderLayout(10, 0));
         productPanel.setBackground(productColor);
@@ -229,7 +236,8 @@ public class VuePanier extends JPanel {
         topPanel.add(nameLabel, BorderLayout.WEST);
 
         // Bouton de suppression (X)
-        JButton deleteButton = new JButton("×");
+        //JButton deleteButton = new JButton("×");
+        deleteButton.setText("×");
         deleteButton.setFont(new Font("Arial", Font.BOLD, 20));
         deleteButton.setForeground(Color.RED);
         deleteButton.setContentAreaFilled(false);
@@ -280,13 +288,15 @@ public class VuePanier extends JPanel {
         quantityTextLabel.setFont(new Font("Arial", Font.PLAIN, 12));
 
         //Boutons + - pour la quantite
-        JButton plusButton = new JButton("+");
+        //JButton plusButton = new JButton("+");
+        plusButton.setText("+");
         plusButton.setFont(new Font("Arial", Font.PLAIN, 12));
         plusButton.setPreferredSize(new Dimension(30, 25));
         plusButton.setMargin(new Insets(0, 0, 0, 0)); // reduction des marges internes
         plusButton.setFocusPainted(false);
         plusButton.setCursor(new Cursor(Cursor.HAND_CURSOR));
-        JButton minusButton = new JButton("-");
+        //JButton minusButton = new JButton("-");
+        minusButton.setText("-");
         minusButton.setFont(new Font("Arial", Font.PLAIN, 12));
         minusButton.setPreferredSize(new Dimension(30, 25));
         minusButton.setMargin(new Insets(0, 0, 0, 0));
@@ -305,74 +315,108 @@ public class VuePanier extends JPanel {
         priceLabel.setFont(new Font("Arial", Font.BOLD, 14));
         priceLabel.setHorizontalAlignment(SwingConstants.RIGHT);
 
+        ControleurPanier controleur = new ControleurPanier();
 
+        controleur.boutonPLUS(
+                plusButton,
+                quantityLabel,
+                priceLabel,
+                totalLabel,
+                sousTotalRow,
+                nbProduitsRow,
+                price,
+                productTotalPrice
+        );
 
-        // Actions pour les boutons + et -
-        minusButton.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                int value = Integer.parseInt(quantityLabel.getText());
-                if (value > 1) {
-                    value--;
-                    quantityLabel.setText(String.valueOf(value));
-                    totalPrice -= price;
-                    productTotalPrice[0] = price * value;
+        controleur.boutonMOINS(
+                minusButton,
+                quantityLabel,
+                priceLabel,
+                totalLabel,
+                sousTotalRow,
+                nbProduitsRow,
+                price,
+                productTotalPrice
+        );
 
-                    priceLabel.setText(String.format("%.2f €", price * value));
-                    totalLabel.setText(String.format("Total: %.2f €", totalPrice));
-                    sousTotalRow.setText(String.format("%.2f €", totalPrice));
-                    nbProducts--;
-                    nbProduitsRow.setText(String.valueOf(nbProducts));
-                }
-            }
-        });
+        controleur.boutonCROIX(
+                deleteButton,
+                productPanel,
+                productsContainer,
+                quantityLabel,
+                priceLabel,
+                sousTotalRow,
+                totalLabel,
+                nbProduitsRow,
+                productTotalPrice
+        );
 
-        plusButton.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                int value = Integer.parseInt(quantityLabel.getText());
-                value++;
-                quantityLabel.setText(String.valueOf(value));
-
-                totalPrice += price;
-                productTotalPrice[0] = price * value;
-
-                priceLabel.setText(String.format("%.2f €", price * value));
-                totalLabel.setText(String.format("Total: %.2f €", totalPrice));
-                sousTotalRow.setText(String.format("%.2f €", totalPrice));
-                nbProducts++;
-                nbProduitsRow.setText(String.valueOf(nbProducts));
-            }
-        });
-
-        deleteButton.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                // Récupérer l'indice du produit dans le conteneur
-                int index = -1;
-                Component[] components = productsContainer.getComponents();
-                for (int i = 0; i < components.length; i++) {
-                    if (components[i] == productPanel) {
-                        index = i;
-                        break;
-                    }
-                }
-
-                if (index != -1) {
-                    // Supprimer le produit
-                    productsContainer.remove(productPanel);
-                    if (index + 1 < components.length && components[index + 1] instanceof Box.Filler) {
-                        productsContainer.remove(components[index + 1]);
-                    }
-
-                    totalPrice -= productTotalPrice[0];
-                    totalLabel.setText(String.format("Total: %.2f €", totalPrice));
-                    sousTotalRow.setText(String.format("%.2f €", totalPrice));
-                    nbProducts -= Integer.parseInt(quantityLabel.getText());
-                    nbProduitsRow.setText(String.valueOf(nbProducts));
-                    // Rafraîchir l'affichage
-                    productsContainer.revalidate();
-                    productsContainer.repaint();
-                }
-            }
-        });
+//        // Actions pour les boutons + et -
+//        minusButton.addActionListener(new ActionListener() {
+//            public void actionPerformed(ActionEvent e) {
+//                int value = Integer.parseInt(quantityLabel.getText());
+//                if (value > 1) {
+//                    value--;
+//                    quantityLabel.setText(String.valueOf(value));
+//                    totalPrice -= price;
+//                    productTotalPrice[0] = price * value;
+//
+//                    priceLabel.setText(String.format("%.2f €", price * value));
+//                    totalLabel.setText(String.format("Total: %.2f €", totalPrice));
+//                    sousTotalRow.setText(String.format("%.2f €", totalPrice));
+//                    nbProducts--;
+//                    nbProduitsRow.setText(String.valueOf(nbProducts));
+//                }
+//            }
+//        });
+//
+//        plusButton.addActionListener(new ActionListener() {
+//            public void actionPerformed(ActionEvent e) {
+//                int value = Integer.parseInt(quantityLabel.getText());
+//                value++;
+//                quantityLabel.setText(String.valueOf(value));
+//
+//                totalPrice += price;
+//                productTotalPrice[0] = price * value;
+//
+//                priceLabel.setText(String.format("%.2f €", price * value));
+//                totalLabel.setText(String.format("Total: %.2f €", totalPrice));
+//                sousTotalRow.setText(String.format("%.2f €", totalPrice));
+//                nbProducts++;
+//                nbProduitsRow.setText(String.valueOf(nbProducts));
+//            }
+//        });
+//
+//        deleteButton.addActionListener(new ActionListener() {
+//            public void actionPerformed(ActionEvent e) {
+//                // Récupérer l'indice du produit dans le conteneur
+//                int index = -1;
+//                Component[] components = productsContainer.getComponents();
+//                for (int i = 0; i < components.length; i++) {
+//                    if (components[i] == productPanel) {
+//                        index = i;
+//                        break;
+//                    }
+//                }
+//
+//                if (index != -1) {
+//                    // Supprimer le produit
+//                    productsContainer.remove(productPanel);
+//                    if (index + 1 < components.length && components[index + 1] instanceof Box.Filler) {
+//                        productsContainer.remove(components[index + 1]);
+//                    }
+//
+//                    totalPrice -= productTotalPrice[0];
+//                    totalLabel.setText(String.format("Total: %.2f €", totalPrice));
+//                    sousTotalRow.setText(String.format("%.2f €", totalPrice));
+//                    nbProducts -= Integer.parseInt(quantityLabel.getText());
+//                    nbProduitsRow.setText(String.valueOf(nbProducts));
+//                    // Rafraîchir l'affichage
+//                    productsContainer.revalidate();
+//                    productsContainer.repaint();
+//                }
+//            }
+//        });
 
         quantityPanel.add(quantityTextLabel);
         quantityPanel.add(minusButton);

@@ -11,6 +11,18 @@ public class User {
     protected String telephoneUser;
     protected String adresseUser;
 
+    public User() {
+        idUser = 0;
+        loginUser = "";
+        mdpUser = "";
+        mailUser = "";
+        statutUser = 0;
+        nomUser = "";
+        prenomUser = "";
+        telephoneUser = "";
+        adresseUser = "";
+    }
+
     /**
      * Constructeur
      * @param id
@@ -23,6 +35,7 @@ public class User {
      * @param telephone
      * @param adresse
      */
+
 
     public User(int id, String login, String mdp, String mail,
                 int statut, String nom, String prenom,

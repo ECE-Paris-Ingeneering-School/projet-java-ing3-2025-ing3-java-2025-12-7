@@ -1,10 +1,13 @@
 package Vue;
 import Modele.Article;
+import Modele.Client;
 import DAO.*;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
+import Controleur.ControleurPanier;
+
 //classe qui affiche les produits les plus achetes
 public class VueBestSellers extends JPanel {
     private final Color backgroundColor = new Color(220, 223, 197);
@@ -90,22 +93,25 @@ public class VueBestSellers extends JPanel {
             JLabel noProductsLabel = new JLabel("Aucun produit disponible");
             productsPanel.add(noProductsLabel);
         } else {
+            Client client = new Client();
+            ControleurPanier controleurPanier = new ControleurPanier();
             // Ajout de chaque produit dans son propre cadre
             for (Article article : produits) {
-                String type = article.getNomArticle();
+                String type= article.getNomArticle();
                 System.out.println(type);
-
-                // Création du panneau produit à partir des informations de l'article
-                JPanel productPanel = ProductPanelFactory.createProductPanel(
-                        article.getNomArticle(),         // Nom du produit
-                        article.getCategorieArticle(),   // Description ou catégorie
-                        article.getPrixArticle(),        // Prix
-                        article.getNomArticle()        // Nom du porduit
-                );
-
-                productsPanel.add(productPanel);
-
-
+                if (article.getIDArticle()==6||article.getIDArticle()==11||article.getIDArticle()==23||article.getIDArticle()==28||article.getIDArticle()==36||article.getIDArticle()==37||article.getIDArticle()==44||article.getIDArticle()==49||article.getIDArticle()==56||article.getIDArticle()==62) {
+                    JButton bouton = new JButton();
+                    // Création du panneau produit à partir des informations de l'article
+                    JPanel productPanel = ProductPanelFactory.createProductPanel(
+                            article.getNomArticle(),         // Nom du produit
+                            article.getCategorieArticle(),   // Description ou catégorie
+                            article.getPrixArticle(),        // Prix
+                            article.getImageArticle(),      // Nom du porduit
+                            bouton
+                    );
+                    controleurPanier.attacherBouton(bouton,article, client);
+                    productsPanel.add(productPanel);
+                }
             }
         }
 

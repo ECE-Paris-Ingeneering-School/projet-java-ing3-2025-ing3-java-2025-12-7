@@ -45,6 +45,7 @@ CREATE TABLE Commande (
    idCommande           INT NOT NULL,
    idUser               INT NULL,
    montantCommande      FLOAT NULL,
+   produitsCommandes    VARCHAR (254) NULL,
    quantiteProdCom      INT NULL,
    dateCommande         DATE NULL,
    PRIMARY KEY (idCommande)
@@ -101,8 +102,8 @@ CREATE TABLE Journalisation (
 -- Chargement des données de la table `panier`
 
 INSERT INTO `panier` (idPanier, idUser, listeIDProduits, listeQuantite, montantPanier)  VALUES
-    (1,23,'[2,5,35]', '[2,1,1]',10.27),
-    (2,4,'[12,44]', '[8,1]',30.55);
+    (1,23,'2,5,35', '2,1,1',10.27),
+    (2,4,'12,44', '8,1',30.55);
 
 -- Insertion des utilisateurs (10 utilisateurs)
 INSERT INTO User (idUser, loginUser, mdpUser, mailUser, statutUser, nomUser, prenomUser, telephoneUser, adresseUser) VALUES

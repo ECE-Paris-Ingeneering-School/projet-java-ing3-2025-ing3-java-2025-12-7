@@ -19,7 +19,7 @@ public class FiltrerTrier extends JPanel {
 
 
         setMaximumSize(new Dimension(800, 50));
-        setBackground(new Color(220, 223, 197));
+        setBackground(new Color(245, 225, 207));
 
         // Bouton Filtres
         JButton filtreBouton = new JButton("Filtres");
