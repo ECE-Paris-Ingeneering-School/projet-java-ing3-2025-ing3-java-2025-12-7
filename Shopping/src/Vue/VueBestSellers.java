@@ -99,7 +99,7 @@ public class VueBestSellers extends JPanel {
                 JPanel productPanel = ProductPanelFactory.createProductPanel(
                         article.getNomArticle(),         // Nom du produit
                         article.getCategorieArticle(),   // Description ou catégorie
-                        (Double)(double)article.getPrixArticle(),        // Prix
+                        article.getPrixArticle(),        // Prix
                         article.getNomArticle()        // Nom du porduit
                 );
 

@@ -130,7 +130,7 @@ public class VueProduitsBiscuits extends JPanel {
             JPanel productPanel = ProductPanelFactory.createProductPanel(
                     article.getNomArticle(),
                     article.getCategorieArticle(),
-                    (Double)(double)article.getPrixArticle(),
+                    article.getPrixArticle(),
                     article.getNomArticle()
             );
             productsPanel.add(productPanel);

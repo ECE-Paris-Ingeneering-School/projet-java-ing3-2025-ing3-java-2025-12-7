@@ -9,7 +9,7 @@ import java.awt.event.ActionListener;
 public class ProductPanelFactory {
 
 
-    public static JPanel createProductPanel(String name, String description, Double price, String imageKey) {
+    public static JPanel createProductPanel(String name, String description, double price, String imageKey) {
 
         JPanel productPanel = new JPanel();
         productPanel.setLayout(new BoxLayout(productPanel, BoxLayout.Y_AXIS));
@@ -56,7 +56,7 @@ public class ProductPanelFactory {
         descPricePanel.setMaximumSize(new Dimension(230, 60));
 
         // Description
-        JTextArea descLabel = new JTextArea(description != null ? description : "");
+        JTextArea descLabel = new JTextArea(description);
         descLabel.setFont(new Font("Arial", Font.ITALIC, 12));
         descLabel.setLineWrap(true);
         descLabel.setWrapStyleWord(true);
@@ -66,7 +66,7 @@ public class ProductPanelFactory {
         descLabel.setAlignmentX(Component.RIGHT_ALIGNMENT);
 
         // Prix
-        JLabel priceLabel = new JLabel(price != null ? String.format("%.2f €", price) : "");
+        JLabel priceLabel = new JLabel(String.format("%.2f €", price));
         priceLabel.setFont(new Font("Arial", Font.BOLD, 14));
         priceLabel.setForeground(new Color(102, 51, 0));
         priceLabel.setBorder(BorderFactory.createEmptyBorder(5, 10, 5, 5));
