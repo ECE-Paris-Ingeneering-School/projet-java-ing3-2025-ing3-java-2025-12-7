@@ -41,7 +41,7 @@ public class DAOFormulaireIMPL implements DAOFormulaire {
                 preparedStatement.setString(1, nom);
                 preparedStatement.setString(2, email);
                 preparedStatement.setString(3, mdp);
-                preparedStatement.setInt(4, 1); // 1 = client, 0 = admin
+                preparedStatement.setInt(4, 0); //  0 = client, 1 = admin
 
                 //Execution
                 preparedStatement.executeUpdate();
@@ -89,7 +89,7 @@ public class DAOFormulaireIMPL implements DAOFormulaire {
 
         //Requete SQL de vérification des infos rentrées par l'utilisateur dans la base de données
         try (Connection connexion = daoFactory.getConnection()){
-            String query = "SELECT * FROM user WHERE mailUser = ? AND mdpUser = ?";
+            String query = "SELECT * FROM User WHERE mailUser = ? AND mdpUser = ?";
             PreparedStatement preparedStatement = connexion.prepareStatement(query);
             preparedStatement.setString(1, email);
             preparedStatement.setString(2, mdp);

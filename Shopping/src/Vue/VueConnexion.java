@@ -75,8 +75,8 @@ public class VueConnexion extends JDialog {
                 showMessage("Connexion réussie !");
                 dispose();
 
-                //Vérification du statut de l'user pour le renvoyer vers la bonne page : Admin si statut=0 ou Client
-                if (utilisateur.getStatutUser() == 0) {
+                //Vérification du statut de l'user pour le renvoyer vers la bonne page : Admin si statut=1 ou Client si =0
+                if (utilisateur.getStatutUser() == 1) {
                     new VueCompteAdmin().setVisible(true);
                 } else {
                     JFrame clientFrame = new JFrame("Compte Client");
