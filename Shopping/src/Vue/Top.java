@@ -31,7 +31,7 @@ public class Top extends JPanel {
             @Override
             public void mouseClicked(MouseEvent e) {
                 getIconTop(0);
-                //VueCompteClient pageClient = new VueCompteClient();
+                //VueCompteClient pageClient = new VueCompteClient(parent,1);
                 //parent.addAndShowPanel(pageClient, "compteClient");
                 VueCompteAdmin pageAdmin = new VueCompteAdmin();
                 parent.addAndShowPanel(pageAdmin, "compteAdmin");

@@ -139,7 +139,7 @@ public class VueCompteClient extends JPanel {
         String nom = (client != null) ? client.getNomUser() : "Dupont";
         String prenom = (client != null) ? client.getPrenomUser() : "Jean";
         String email = (client != null) ? client.getMailUser() : "jean.dupont@example.com";
-        String telephone = (client != null) ? client.getTelephoneUser() : "06 12 34 56 78";
+        //String telephone = (client != null) ? client.getTelephoneUser() : "06 12 34 56 78";
         String adresse = (client != null) ? client.getAdresseUser() : "123 Rue des Biscuits, 75015 Paris";
         String dateNaissance = (client != null && client.getDateNaissanceClient() != null)
                 ? client.getDateNaissanceClient().toString().substring(0, 10)
@@ -157,9 +157,9 @@ public class VueCompteClient extends JPanel {
         emailLabel.setFont(new Font("Arial", Font.BOLD, 12));
         JLabel emailValue = new JLabel(email);
 
-        JLabel telephoneLabel = new JLabel("Téléphone:");
+       /* JLabel telephoneLabel = new JLabel("Téléphone:");
         telephoneLabel.setFont(new Font("Arial", Font.BOLD, 12));
-        JLabel telephoneValue = new JLabel(telephone);
+        JLabel telephoneValue = new JLabel(telephone);*/
 
         JLabel adresseLabel = new JLabel("Adresse:");
         adresseLabel.setFont(new Font("Arial", Font.BOLD, 12));
@@ -180,8 +180,8 @@ public class VueCompteClient extends JPanel {
         panel.add(prenomValue);
         panel.add(emailLabel);
         panel.add(emailValue);
-        panel.add(telephoneLabel);
-        panel.add(telephoneValue);
+        /*panel.add(telephoneLabel);
+        panel.add(telephoneValue);*/
         panel.add(adresseLabel);
         panel.add(adresseValue);
         panel.add(dateNaissanceLabel);

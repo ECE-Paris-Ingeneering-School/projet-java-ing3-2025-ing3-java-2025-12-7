@@ -108,13 +108,13 @@ public class VueCompteAdmin extends JPanel {
         emailLabel.setFont(new Font("Arial", Font.BOLD, 12));
         JLabel emailValue = new JLabel("jean.dupont@example.com");
 
-        JLabel telephoneLabel = new JLabel("Téléphone:");
+        /*JLabel telephoneLabel = new JLabel("Téléphone:");
         telephoneLabel.setFont(new Font("Arial", Font.BOLD, 12));
         JLabel telephoneValue = new JLabel("06 12 34 56 78");
 
         JLabel adresseLabel = new JLabel("Adresse:");
         adresseLabel.setFont(new Font("Arial", Font.BOLD, 12));
-        JLabel adresseValue = new JLabel("123 Rue des Biscuits, 75000 Paris");
+        JLabel adresseValue = new JLabel("123 Rue des Biscuits, 75000 Paris");*/
 
         JLabel dateNaissanceLabel = new JLabel("Date de naissance:");
         dateNaissanceLabel.setFont(new Font("Arial", Font.BOLD, 12));
@@ -131,10 +131,10 @@ public class VueCompteAdmin extends JPanel {
         panel.add(prenomValue);
         panel.add(emailLabel);
         panel.add(emailValue);
-        panel.add(telephoneLabel);
+        /*panel.add(telephoneLabel);
         panel.add(telephoneValue);
         panel.add(adresseLabel);
-        panel.add(adresseValue);
+        panel.add(adresseValue);*/
         panel.add(dateNaissanceLabel);
         panel.add(dateNaissanceValue);
 
