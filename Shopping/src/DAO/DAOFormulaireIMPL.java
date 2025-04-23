@@ -1,3 +1,10 @@
+/// * Ajouter un controle pour vérifier qu'il n'y a pas 2 logins identiques
+/// * Numéro de tel formaté
+/// *
+/// *
+///
+
+
 package DAO;
 
 import Modele.User;
@@ -17,10 +24,10 @@ public class DAOFormulaireIMPL implements DAOFormulaire {
     }
 
     //Méthode inscrireClient(), vérifie le remplissage des champs, enregistrement du client dans la table mère User et fille Client
-    public boolean inscrireClient(String nom, String dateNaissance, String email, String mdp, String confirmerMdp) {
+    public boolean inscrireClient(String nom, String prenom, String dateNaissance, String email, String adresse, String mdp, String confirmerMdp) {
 
         // Vérification du remplissage des champs
-        if (nom.isEmpty() || email.isEmpty() || mdp.isEmpty()) {
+        if (nom.isEmpty() || prenom.isEmpty() || email.isEmpty() || adresse.isEmpty()|| mdp.isEmpty()) {
             return false;
         }
 
@@ -34,14 +41,15 @@ public class DAOFormulaireIMPL implements DAOFormulaire {
             int newIdUser= -1;
 
             // 1. Requete SQL d'insertion d'un nouvel utilisateur dans la table User
-            String insertUserSQL= "INSERT INTO user (loginUser, mailUser, mdpUser, statutUser) VALUES (?, ?, ?, ?)";
+            String insertUserSQL= "INSERT INTO user (nomUser, prenomUser, mailUser, mdpUser, statutUser) VALUES (?,?,?,?,?)";
             try(PreparedStatement preparedStatement = connexion.prepareStatement(insertUserSQL, Statement.RETURN_GENERATED_KEYS)) {
 
                 //Remplissage des paramètres de la requête
                 preparedStatement.setString(1, nom);
-                preparedStatement.setString(2, email);
-                preparedStatement.setString(3, mdp);
-                preparedStatement.setInt(4, 0); //  0 = client, 1 = admin
+                preparedStatement.setString(2, prenom);
+                preparedStatement.setString(3, email);
+                preparedStatement.setString(4, mdp);
+                preparedStatement.setInt(5, 0); //  0 = client, 1 = admin
 
                 //Execution
                 preparedStatement.executeUpdate();
@@ -62,11 +70,12 @@ public class DAOFormulaireIMPL implements DAOFormulaire {
             }
 
             // 2. Requete SQL d'insertion dans la table Client
-            String insertClientSQL = "INSERT INTO Client (idUser, dateNaissanceClient, dateAjoutClient) VALUES (?, ?, ?)";
+            String insertClientSQL = "INSERT INTO Client (idUser, dateNaissanceClient, dateAjoutClient, adresseClient) VALUES (?, ?, ?, ?)";
             try (PreparedStatement preparedStatement = connexion.prepareStatement(insertClientSQL)) {
                 preparedStatement.setInt(1, newIdUser);
                 preparedStatement.setString(2, dateNaissance); // ATTENTION : Date au format "aaaa-mm-jj"
                 preparedStatement.setDate(3, new java.sql.Date(System.currentTimeMillis())); //Date du jour
+                preparedStatement.setString(4, adresse);
 
                 //Exécution de l'insertion dans Client
                 preparedStatement.executeUpdate();
@@ -98,13 +107,12 @@ public class DAOFormulaireIMPL implements DAOFormulaire {
             //Correspondance dans la base : création d'un objet User
             if (resultats.next()) {
                 int id = resultats.getInt("IDUser");
-                String login = resultats.getString("loginUser");
                 String mail = resultats.getString("mailUser");
                 String motDePasse = resultats.getString("mdpUser");
                 int statut = resultats.getInt("statutUSer");
 
-                // Crée l'utilisateur sans les infos inutiles (nom, prenom, etc.)
-                return new User(id, login, motDePasse, mail, statut, "", "", "", "");
+                // Crée l'utilisateur
+                return new User(id, motDePasse, mail, statut, "", "");
             } else {
                 return null; //Pas d'utilisateur corespondant trouvé
             }

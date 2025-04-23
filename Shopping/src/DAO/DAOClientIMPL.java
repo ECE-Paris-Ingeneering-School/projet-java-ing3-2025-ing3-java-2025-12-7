@@ -16,7 +16,7 @@ public class DAOClientIMPL implements DAOClient {
 
     @Override
     public Client getClientById(int id) throws SQLException {
-        String sql = "SELECT u.*, c.dateNaissanceClient, c.dateAjoutClient " +
+        String sql = "SELECT u.*, c.dateNaissanceClient, c.dateAjoutClient, c.adresseClient " +
                 "FROM User u JOIN Client c ON u.idUser = c.idUser " +
                 "WHERE u.idUser = ?";
 
@@ -27,16 +27,14 @@ public class DAOClientIMPL implements DAOClient {
             if (rs.next()) {
                 return new Client(
                         rs.getInt("idUser"),
-                        rs.getString("loginUser"),
                         rs.getString("mdpUser"),
                         rs.getString("mailUser"),
                         rs.getInt("statutUser"),
                         rs.getString("nomUser"),
                         rs.getString("prenomUser"),
-                        rs.getString("telephoneUser"),
-                        rs.getString("adresseUser"),
                         rs.getDate("dateNaissanceClient"),
-                        rs.getTimestamp("dateAjoutClient")
+                        rs.getTimestamp("dateAjoutClient"),
+                        rs.getString("adresseClient")
                 );
             }
         }

@@ -2,8 +2,7 @@ package Vue;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
+
 import DAO.DAOFormulaireIMPL;
 
 public class VueInscription extends JDialog {
@@ -15,6 +14,8 @@ public class VueInscription extends JDialog {
     private JPasswordField pfConfirmerMdp;
     private JButton btnConnectezVous;
     private JTextField tfDateNaissance;
+    private JTextField tfPrenom;
+    private JTextField tfAdresse;
     private DAOFormulaireIMPL daoFormulaire;
 
     public VueInscription(JFrame parent, DAOFormulaireIMPL daoFormulaire) {
@@ -30,7 +31,7 @@ public class VueInscription extends JDialog {
             @Override
             protected void paintComponent(Graphics g) {
                 super.paintComponent(g);
-                ImageIcon backgroundImage = new ImageIcon("Teatime.jpeg");
+                ImageIcon backgroundImage = new ImageIcon("/PHOTOS/Teatime.jpeg");
                 g.drawImage(backgroundImage.getImage(), 0, 0, getWidth(), getHeight(), this);
             }
         };
@@ -38,15 +39,17 @@ public class VueInscription extends JDialog {
         setContentPane(backgroundPanel);
 
         // Panneau du formulaire centré
-        inscriptionPanel = new JPanel(new GridLayout(6, 2, 10, 10));
+        inscriptionPanel = new JPanel(new GridLayout(9, 2, 10, 10));
         inscriptionPanel.setOpaque(false); // Rendre le panneau transparent pour voir l'image de fond
-        inscriptionPanel.setPreferredSize(new Dimension(400, 250));
+        inscriptionPanel.setPreferredSize(new Dimension(400, 600));
 
         //Initialisation des éléments du formulaire d'inscription
         tfNom = new JTextField();
+        tfPrenom = new JTextField();
         tfEmail = new JTextField();
         pfMdp = new JPasswordField();
         tfDateNaissance = new JFormattedTextField();
+        tfAdresse = new JTextField();
         pfConfirmerMdp = new JPasswordField();
         btnInscription = new JButton("S'inscrire");
         btnConnectezVous = new JButton("Connectez-vous");
@@ -54,15 +57,20 @@ public class VueInscription extends JDialog {
         //Ajout des éléments sur le panneau d'inscription
         inscriptionPanel.add(new JLabel("Nom"));
         inscriptionPanel.add(tfNom);
+        inscriptionPanel.add(new JLabel("Prénom"));
+        inscriptionPanel.add(tfPrenom);
         inscriptionPanel.add(new JLabel("Date de naissance"));
         inscriptionPanel.add(tfDateNaissance);
         inscriptionPanel.add(new JLabel("Adresse mail"));
         inscriptionPanel.add(tfEmail);
+        inscriptionPanel.add(new JLabel("Adresse"));
+        inscriptionPanel.add(tfAdresse);
         inscriptionPanel.add(new JLabel("Mot de passe"));
         inscriptionPanel.add(pfMdp);
         inscriptionPanel.add(new JLabel("Confirmation du mot de passe"));
         inscriptionPanel.add(pfConfirmerMdp);
         inscriptionPanel.add(btnInscription);
+        inscriptionPanel.add(new JLabel("Vous avez déjà un compte ?"));
         inscriptionPanel.add(btnConnectezVous);
 
         // Centrer le panneau du formulaire dans la fenêtre
@@ -72,13 +80,15 @@ public class VueInscription extends JDialog {
         // et on appelle le code DAOFormulaire pour inscrire le client
         btnInscription.addActionListener(e-> {
             String nom = getNom();
+            String prenom = getPrenom();
             String dateNaissance = getDateNaissance();
             String email = getEmail();
+            String adresse = getAdresse();
             String mdp = getMdp();
             String confirmerMdp = getConfirmerMdp();
 
             //Appel de la méthode inscrireClient() qui va enregistrer les informations d'inscription dans la base de données shoppingBD.sql
-            boolean success = daoFormulaire.inscrireClient(nom, dateNaissance, email, mdp, confirmerMdp);
+            boolean success = daoFormulaire.inscrireClient(nom, prenom, dateNaissance, email, adresse, mdp, confirmerMdp);
             if (success) {
                 JOptionPane.showMessageDialog(this, "Inscription réussie !");
                 dispose(); // Fermer la fenêtre
@@ -95,12 +105,16 @@ public class VueInscription extends JDialog {
             new VueConnexion(null, daoFormulaire).setVisible(true);
         });
 
-        setVisible(true);
+        //setVisible(true);
     }
 
     //Différents getters pour récupérer les infos de la Vue et les stocker pour les utiliser dans la DAOFormulaire
     public String getNom() {
         return tfNom.getText();
+    }
+
+    public String getPrenom() {
+        return tfPrenom.getText();
     }
 
     public String getDateNaissance() {
@@ -109,6 +123,10 @@ public class VueInscription extends JDialog {
 
     public String getEmail() {
         return tfEmail.getText();
+    }
+
+    public String getAdresse() {
+        return tfAdresse.getText();
     }
 
     public String getMdp() {

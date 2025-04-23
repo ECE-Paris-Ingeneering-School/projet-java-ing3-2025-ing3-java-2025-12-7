@@ -8,6 +8,7 @@ public class Client extends User{
     private Date dateNaissanceClient;
     private Timestamp dateAjoutClient;
     private Article[] articlesClient;
+    private String adresseClient;
 
     /**
      * Constructeur par défaut
@@ -17,29 +18,28 @@ public class Client extends User{
         this.dateNaissanceClient = null;
         this.dateAjoutClient = null;
         this.articlesClient = new Article[0];
+        this.dateAjoutClient = null;
     }
     /**
      * Constructeur
      * @param dateNaissance
      * @param dateAjout
      * @param id
-     * @param login
      * @param mdp
      * @param mail
      * @param statut
      * @param nom
      * @param prenom
-     * @param telephone
      * @param adresse
      */
-    public Client(int id, String login, String mdp, String mail,
+    public Client(int id, String mdp, String mail,
                   int statut, String nom, String prenom,
-                  String telephone, String adresse,
-                  Date dateNaissance, Timestamp dateAjout) {
-        super(id, login, mdp, mail, statut, nom, prenom, telephone, adresse);
+                  Date dateNaissance, Timestamp dateAjout, String adresse) {
+        super(id, mdp, mail, statut, nom, prenom);
         this.dateNaissanceClient = dateNaissance;
         this.dateAjoutClient = dateAjout;
         this.articlesClient = new Article[0];
+        this.adresseClient = adresse;
     }
 
 
@@ -50,8 +50,6 @@ public class Client extends User{
     public Article[] getArticlesClient() {
         return articlesClient;
     }
-
-
-
+    public String getAdresseClient() { return adresseClient; }
 
 }

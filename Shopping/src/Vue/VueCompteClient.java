@@ -140,7 +140,7 @@ public class VueCompteClient extends JPanel {
         String prenom = (client != null) ? client.getPrenomUser() : "Jean";
         String email = (client != null) ? client.getMailUser() : "jean.dupont@example.com";
         //String telephone = (client != null) ? client.getTelephoneUser() : "06 12 34 56 78";
-        String adresse = (client != null) ? client.getAdresseUser() : "123 Rue des Biscuits, 75015 Paris";
+        String adresse = (client != null) ? client.getAdresseClient() : "123 Rue des Biscuits, 75015 Paris";
         String dateNaissance = (client != null && client.getDateNaissanceClient() != null)
                 ? client.getDateNaissanceClient().toString().substring(0, 10)
                 : "13/04/2000";
