@@ -1,18 +1,26 @@
 package Vue;
 
+import Controleur.Session;
+import Modele.User;
+
 import javax.swing.*;
 import java.awt.*;
 
 //classe principale, la fenetre qui contient les JPanel et gere le passage d'un JPanel à un autre
 public class Mywindow extends JFrame {
+    private User currentUser;
     private JPanel mainPanel;
     private JPanel contentPanel;
     private CardLayout cardLayout;
     private Top top;
     private Nav nav;
 
-    public Mywindow() {
+    public Mywindow(){
+        this(Session.getCurrentUser()); // Utilise la session
+    }
+    public Mywindow(User user) {
         super("www.Biscuits&Drinks.co");
+        this.currentUser = user;
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setSize(1920, 1080);
 
@@ -48,6 +56,10 @@ public class Mywindow extends JFrame {
 
         add(mainPanel);
         setVisible(true);
+    }
+
+    public  User getCurrentUser(){
+        return this.currentUser;
     }
 
     // Méthode pour ajouter un panel et l'afficher

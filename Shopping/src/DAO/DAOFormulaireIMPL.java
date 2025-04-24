@@ -122,5 +122,9 @@ public class DAOFormulaireIMPL implements DAOFormulaire {
         }
 
     }
+    public DAOFactory getDaoFactory() {
+        return this.daoFactory;
+    }
+
 }
 

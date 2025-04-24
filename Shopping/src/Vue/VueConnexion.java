@@ -2,6 +2,9 @@ package Vue;
 
 import javax.swing.*;
 import java.awt.*;
+import Controleur.ControleurAdmin;
+import Controleur.ControleurClient;
+import Controleur.Session;
 import DAO.DAOFormulaireIMPL;
 import Modele.User;
 
@@ -75,15 +78,8 @@ public class VueConnexion extends JDialog {
                 showMessage("Connexion réussie !");
                 dispose();
 
-                //Vérification du statut de l'user pour le renvoyer vers la bonne page : Admin si statut=1 ou Client si =0
-                if (utilisateur.getStatutUser() == 1) {
-                    new VueCompteAdmin().setVisible(true);
-                } else {
-                    JFrame clientFrame = new JFrame("Compte Client");
-                    clientFrame.setContentPane(new VueCompteClient(clientFrame, utilisateur.getIdUser()));
-                    clientFrame.setLocationRelativeTo(null);
-                    clientFrame.setVisible(true);
-                }
+                Session.setCurrentUser(utilisateur); // Stocker l'utilisateur connecté
+                SwingUtilities.invokeLater(() -> new Mywindow()); // Ouvrir la fenetre principale (accueil)
 
             } else {
                 showError("Email ou mot de passe incorrect !");

@@ -1,5 +1,7 @@
 
 package Vue;
+import Controleur.ControleurAdmin;
+import Modele.Administrateur;
 import Vue.createInfoRow;
 import javax.swing.*;
 import java.awt.*;
@@ -11,9 +13,33 @@ public class VueCompteAdmin extends JPanel {
     private final Color headerColor = new Color(200, 203, 177);
     private final Color contentColor = new Color(235, 238, 212);
     private JFrame parentFrame;
+    private final ControleurAdmin controleurAdmin;
+    private Administrateur admin;
 
-    public VueCompteAdmin(JFrame parentFrame) {
-        this.parentFrame = parentFrame;
+    public VueCompteAdmin(JFrame parentFrame, int idAdmin, ControleurAdmin controleur) {
+        this.controleurAdmin = controleur;
+        try {
+            this.admin = controleurAdmin.getAdmin(idAdmin);
+            if (this.admin == null) {
+                JOptionPane.showMessageDialog(parentFrame,
+                        "Erreur: Impossible de charger les informations admin",
+                        "Erreur",
+                        JOptionPane.ERROR_MESSAGE);
+                return;
+            }
+            // Initialisation de l'interface
+            initUI();
+
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(parentFrame,
+                    "Erreur lors du chargement du compte admin: " + e.getMessage(),
+                    "Erreur",
+                    JOptionPane.ERROR_MESSAGE);
+            e.printStackTrace();
+        }
+    }
+
+    private void initUI() {
         setLayout(new BorderLayout());
 
         JPanel mainPanel = new JPanel();
@@ -40,7 +66,7 @@ public class VueCompteAdmin extends JPanel {
         gbc.gridx = 0;
         gbc.gridy = 0;
         gbc.weightx = 0.7;
-        JPanel infoClientPanel = createInfoClientPanel();
+        JPanel infoClientPanel = createInfoAdminPanel();
         topPanel.add(infoClientPanel, gbc);
 
 
@@ -71,11 +97,9 @@ public class VueCompteAdmin extends JPanel {
     }
 
     // Constructeur sans paramètre pour la compatibilité
-        public VueCompteAdmin() {
-        this(null);
-    }
 
-    private JPanel createInfoClientPanel() {
+
+    private JPanel createInfoAdminPanel() {
         JPanel panel = new JPanel();
         panel.setLayout(new GridLayout(0, 2, 15, 10)); // Disposition en grille pour les informations
         panel.setBackground(Color.WHITE);
@@ -95,30 +119,22 @@ public class VueCompteAdmin extends JPanel {
         titreSectionPanel.setBackground(Color.WHITE);
         titreSectionPanel.add(titreSection);
 
+        // Données admin (via controleur)
+        String nom = admin.getNomUser();
+        String prenom = admin.getPrenomUser();
+        String email = admin.getMailUser();
 
         JLabel nomLabel = new JLabel("Nom:");
         nomLabel.setFont(new Font("Arial", Font.BOLD, 12));
-        JLabel nomValue = new JLabel("Dupont");
+        JLabel nomValue = new JLabel(nom);
 
         JLabel prenomLabel = new JLabel("Prénom:");
         prenomLabel.setFont(new Font("Arial", Font.BOLD, 12));
-        JLabel prenomValue = new JLabel("Jean");
+        JLabel prenomValue = new JLabel(prenom);
 
         JLabel emailLabel = new JLabel("Email:");
         emailLabel.setFont(new Font("Arial", Font.BOLD, 12));
-        JLabel emailValue = new JLabel("jean.dupont@example.com");
-
-        /*JLabel telephoneLabel = new JLabel("Téléphone:");
-        telephoneLabel.setFont(new Font("Arial", Font.BOLD, 12));
-        JLabel telephoneValue = new JLabel("06 12 34 56 78");
-
-        JLabel adresseLabel = new JLabel("Adresse:");
-        adresseLabel.setFont(new Font("Arial", Font.BOLD, 12));
-        JLabel adresseValue = new JLabel("123 Rue des Biscuits, 75000 Paris");*/
-
-        JLabel dateNaissanceLabel = new JLabel("Date de naissance:");
-        dateNaissanceLabel.setFont(new Font("Arial", Font.BOLD, 12));
-        JLabel dateNaissanceValue = new JLabel("13/04/2000");
+        JLabel emailValue = new JLabel(email);
 
         panel.add(titreSectionPanel);
         JPanel emptyPanel = new JPanel();
@@ -131,12 +147,6 @@ public class VueCompteAdmin extends JPanel {
         panel.add(prenomValue);
         panel.add(emailLabel);
         panel.add(emailValue);
-        /*panel.add(telephoneLabel);
-        panel.add(telephoneValue);
-        panel.add(adresseLabel);
-        panel.add(adresseValue);*/
-        panel.add(dateNaissanceLabel);
-        panel.add(dateNaissanceValue);
 
         // Ajouter un bouton de modification en bas
         JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));

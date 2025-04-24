@@ -1,16 +1,29 @@
 package Vue;
+import Controleur.ControleurAdmin;
+import Controleur.ControleurClient;
+import DAO.DAOFactory;
+import Modele.User;
+import Vue.VueCompteAdmin;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+
+
 //classe qui gere la barre de recherche et les icones
 public class Top extends JPanel {
     public JButton utilisateur;
     public JButton panier;
+    private ControleurAdmin controleurAdmin;
+    private ControleurClient controleurClient;
     private Mywindow parent;
 
     public Top(Mywindow parent) {
         this.parent = parent;
+        DAOFactory daoFactory = DAOFactory.getInstance("shoppingBD", "root", "");
+        this.controleurAdmin = new ControleurAdmin(daoFactory);
+        this.controleurClient = new ControleurClient(daoFactory);
+
         setLayout(new BorderLayout());
         setMaximumSize(new Dimension(800, 50));
         setBackground(new Color(245, 225, 207));
@@ -31,10 +44,26 @@ public class Top extends JPanel {
             @Override
             public void mouseClicked(MouseEvent e) {
                 getIconTop(0);
-                //VueCompteClient pageClient = new VueCompteClient(parent,1);
-                //parent.addAndShowPanel(pageClient, "compteClient");
-                VueCompteAdmin pageAdmin = new VueCompteAdmin();
-                parent.addAndShowPanel(pageAdmin, "compteAdmin");
+                User currentUser = parent.getCurrentUser(); // Utiliser le getter
+
+                if (currentUser == null) {
+                    JOptionPane.showMessageDialog(parent,
+                            "Veuillez vous connecter",
+                            "Erreur",
+                            JOptionPane.WARNING_MESSAGE);
+                    return;
+                }
+
+                //Vérification du statut de l'user pour le renvoyer vers la bonne page : Admin si statut=1 ou Client si =0
+                if (currentUser != null) {
+                    if (currentUser.getStatutUser() == 1) { // Admin
+                        VueCompteAdmin pageAdmin = new VueCompteAdmin(parent, currentUser.getIdUser(), controleurAdmin);
+                        parent.addAndShowPanel(pageAdmin, "compteAdmin");
+                    } else { // Client
+                        VueCompteClient pageClient = new VueCompteClient(parent, currentUser.getIdUser(), controleurClient);
+                        parent.addAndShowPanel(pageClient, "compteClient");
+                    }
+                }
             }
         });
 

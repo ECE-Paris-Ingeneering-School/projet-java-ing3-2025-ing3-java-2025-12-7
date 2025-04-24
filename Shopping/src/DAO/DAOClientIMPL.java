@@ -8,10 +8,10 @@ import java.util.List;
 import java.util.Map;
 
 public class DAOClientIMPL implements DAOClient {
-    private final Connection connection;
+    private final Connection connexion;
 
-    public DAOClientIMPL(Connection connection) {
-        this.connection = connection;
+    public DAOClientIMPL(Connection connexion) {
+        this.connexion = connexion;
     }
 
     @Override
@@ -20,7 +20,7 @@ public class DAOClientIMPL implements DAOClient {
                 "FROM User u JOIN Client c ON u.idUser = c.idUser " +
                 "WHERE u.idUser = ?";
 
-        try (PreparedStatement stmt = connection.prepareStatement(sql)) {
+        try (PreparedStatement stmt = connexion.prepareStatement(sql)) {
             stmt.setInt(1, id);
             ResultSet rs = stmt.executeQuery();
 
@@ -45,14 +45,14 @@ public class DAOClientIMPL implements DAOClient {
         List<Map<String, Object>> commandes = new ArrayList<>();
 
         String query = "SELECT c.idCommande, c.dateCommande, p.nomProduit, " +
-                "hc.quantiteProdCom, c.montantCommande, 'Livrée' as statut " +
+                "c.quantiteProdCom, c.montantCommande, 'Livrée' as statut " +
                 "FROM Commande c " +
                 "JOIN HistoriqueCommande hc ON c.idCommande = hc.idCommande " +
                 "JOIN Produit p ON hc.idProduit = p.idProduit " +
                 "WHERE c.idUser = ? " +
                 "ORDER BY c.dateCommande DESC";
 
-        try (PreparedStatement stmt = connection.prepareStatement(query)) {
+        try (PreparedStatement stmt = connexion.prepareStatement(query)) {
             stmt.setInt(1, idClient);
             ResultSet rs = stmt.executeQuery();
 

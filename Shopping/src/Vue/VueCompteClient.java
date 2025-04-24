@@ -1,65 +1,56 @@
 package Vue;
 
+import Controleur.ControleurClient;
+import DAO.DAOFactory;
 import Modele.Client;
-import DAO.DAOClient;
-import DAO.DAOClientIMPL;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.SQLException;
 import java.text.SimpleDateFormat;
 import java.util.List;
-import java.util.ArrayList;
 import java.util.Map;
-import java.util.HashMap;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-
 
 public class VueCompteClient extends JPanel {
     private final Color backgroundColor = new Color(220, 223, 197);
     private final Color headerColor = new Color(200, 203, 177);
     private final Color contentColor = new Color(235, 238, 212);
+    private final ControleurClient controleur;
     private Client client;
-
-    // Référence au JFrame parent pour changer de panel
     private JFrame parentFrame;
 
-    public VueCompteClient(JFrame parentFrame, int idClient) {
+    public VueCompteClient(JFrame parentFrame, int idClient, ControleurClient controleur) {
         this.parentFrame = parentFrame;
-        this.client = getClientFromDB(idClient);
+        this.controleur = controleur;
+        this.client = controleur.getClient(idClient);
         setLayout(new BorderLayout());
 
         JPanel mainPanel = new JPanel();
         mainPanel.setLayout(new BoxLayout(mainPanel, BoxLayout.Y_AXIS));
         mainPanel.setBackground(backgroundColor);
 
+        // Titre
         JPanel titrePanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
         titrePanel.setBackground(backgroundColor);
-        JLabel titre = new JLabel("Votre compte");
+        JLabel titre = new JLabel("Votre compte : Client");
         titre.setFont(new Font("Serif", Font.BOLD, 26));
         titrePanel.add(titre);
         mainPanel.add(titrePanel);
-        mainPanel.add(Box.createVerticalStrut(15)); // Espace après le titre
+        mainPanel.add(Box.createVerticalStrut(15));
 
-        // Panneau supérieur avec info client et bouton commander
+        // Panneau supérieur
         JPanel topPanel = new JPanel(new GridBagLayout());
         topPanel.setBackground(backgroundColor);
 
         GridBagConstraints gbc = new GridBagConstraints();
         gbc.fill = GridBagConstraints.BOTH;
-        gbc.insets = new Insets(0, 0, 0, 15); // Espace entre les deux panneaux
-
+        gbc.insets = new Insets(0, 0, 0, 15);
 
         gbc.gridx = 0;
         gbc.gridy = 0;
         gbc.weightx = 0.7;
         JPanel infoClientPanel = createInfoClientPanel();
         topPanel.add(infoClientPanel, gbc);
-
 
         gbc.gridx = 1;
         gbc.weightx = 0.3;
@@ -87,36 +78,10 @@ public class VueCompteClient extends JPanel {
         add(mainPanel, BorderLayout.CENTER);
     }
 
-    // Constructeur sans paramètre pour la compatibilité
-
-    // public VueCompteClient() {
-    //    this(null);
-    //}
-
-    public VueCompteClient(JFrame parentFrame) {
-        this(parentFrame, 1); // ID par défaut (à adapter selon votre logique)
-    }
-
-    private Client getClientFromDB(int idClient) {
-        try {
-            Connection connection = DriverManager.getConnection(
-                    "jdbc:mysql://localhost:3306/shoppingBD",
-                    "root",
-                    ""
-            );
-            DAOClient daoClient = new DAOClientIMPL(connection);
-            return daoClient.getClientById(idClient);
-        } catch (SQLException e) {
-            Logger.getLogger(VueCompteClient.class.getName()).log(Level.SEVERE, null, e);
-            return null;
-        }
-
-    }
-
-
     private JPanel createInfoClientPanel() {
         JPanel panel = new JPanel();
         panel.setLayout(new GridLayout(0, 2, 15, 10)); // Disposition en grille pour les informations
+
         panel.setBackground(Color.WHITE);
         panel.setBorder(BorderFactory.createCompoundBorder(
                 BorderFactory.createLineBorder(new Color(180, 180, 180), 1),
@@ -134,17 +99,14 @@ public class VueCompteClient extends JPanel {
         titreSectionPanel.setBackground(Color.WHITE);
         titreSectionPanel.add(titreSection);
 
+        // Données client (via contrôleur)
+        String nom = client.getNomUser();
+        String prenom = client.getPrenomUser();
+        String email = client.getMailUser();
+        String adresse = client.getAdresseClient();
+        String dateNaissance = new SimpleDateFormat("dd/MM/yyyy").format(client.getDateNaissanceClient());
 
-        // Utilisation des données du client si disponible, sinon valeurs par défaut
-        String nom = (client != null) ? client.getNomUser() : "Dupont";
-        String prenom = (client != null) ? client.getPrenomUser() : "Jean";
-        String email = (client != null) ? client.getMailUser() : "jean.dupont@example.com";
-        //String telephone = (client != null) ? client.getTelephoneUser() : "06 12 34 56 78";
-        String adresse = (client != null) ? client.getAdresseClient() : "123 Rue des Biscuits, 75015 Paris";
-        String dateNaissance = (client != null && client.getDateNaissanceClient() != null)
-                ? client.getDateNaissanceClient().toString().substring(0, 10)
-                : "13/04/2000";
-
+        // Champs (interface inchangée)
         JLabel nomLabel = new JLabel("Nom:");
         nomLabel.setFont(new Font("Arial", Font.BOLD, 12));
         JLabel nomValue = new JLabel(nom);
@@ -156,10 +118,6 @@ public class VueCompteClient extends JPanel {
         JLabel emailLabel = new JLabel("Email:");
         emailLabel.setFont(new Font("Arial", Font.BOLD, 12));
         JLabel emailValue = new JLabel(email);
-
-       /* JLabel telephoneLabel = new JLabel("Téléphone:");
-        telephoneLabel.setFont(new Font("Arial", Font.BOLD, 12));
-        JLabel telephoneValue = new JLabel(telephone);*/
 
         JLabel adresseLabel = new JLabel("Adresse:");
         adresseLabel.setFont(new Font("Arial", Font.BOLD, 12));
@@ -180,8 +138,6 @@ public class VueCompteClient extends JPanel {
         panel.add(prenomValue);
         panel.add(emailLabel);
         panel.add(emailValue);
-        /*panel.add(telephoneLabel);
-        panel.add(telephoneValue);*/
         panel.add(adresseLabel);
         panel.add(adresseValue);
         panel.add(dateNaissanceLabel);
@@ -282,24 +238,11 @@ public class VueCompteClient extends JPanel {
 
         panel.add(headerPanel, BorderLayout.NORTH);
 
-        // Récupération des données réelles
-        List<Map<String, Object>> commandes = new ArrayList<>();
-        float totalAchats = 0;
+        // Récupération des données via le contrôleur
+        List<Map<String, Object>> commandes = controleur.getCommandesClient(client.getIdUser());
+        float totalAchats = controleur.calculerTotalAchats(commandes);
 
-        try (Connection connection = DriverManager.getConnection(
-                "jdbc:mysql://localhost:3306/shoppingBD", "root", "")) {
-            DAOClient daoClient = new DAOClientIMPL(connection);
-            commandes = daoClient.getCommandesByClientId(client.getIdUser());
-
-            // Calcul du total
-            for (Map<String, Object> cmd : commandes) {
-                totalAchats += (float) cmd.get("montant");
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-
-        // Conversion en format de tableau
+        // Construction du tableau (interface inchangée)
         String[] columns = {"N° Commande", "Date", "Produits", "Quantité", "Montant", "Statut"};
         Object[][] data = new Object[commandes.size()][6];
 
@@ -312,7 +255,6 @@ public class VueCompteClient extends JPanel {
             data[i][4] = String.format("%.2f€", cmd.get("montant"));
             data[i][5] = cmd.get("statut");
         }
-
 
         // Création du tableau
         JTable table = new JTable(data, columns);
@@ -333,6 +275,7 @@ public class VueCompteClient extends JPanel {
 
         panel.add(scrollPane, BorderLayout.CENTER);
 
+
         // Panneau de recap du total d'achats
         JPanel totalPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT));
         totalPanel.setBackground(headerColor);
@@ -345,5 +288,6 @@ public class VueCompteClient extends JPanel {
         panel.add(totalPanel, BorderLayout.SOUTH);
 
         return panel;
+
     }
 }

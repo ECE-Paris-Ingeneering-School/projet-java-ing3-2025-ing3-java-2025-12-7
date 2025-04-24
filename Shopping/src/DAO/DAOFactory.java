@@ -39,10 +39,12 @@ public class DAOFactory {
             Class.forName("com.mysql.cj.jdbc.Driver");
         }
         catch (ClassNotFoundException e) {
+
             System.out.println("Erreur de connexion à la base de données");
+            throw new RuntimeException("Driver MySQL introuvalble", e);
         }
 
-        url = "jdbc:mysql://localhost:/" + database; //REGARDER S'IL FAUT AJOUTER 8888 PARCE QUE POUR CERTAIN ORDI CE N'EST PAS LE MÊME LIEN
+        url = "jdbc:mysql://localhost:3306/" + database; //REGARDER S'IL FAUT AJOUTER 8888 PARCE QUE POUR CERTAIN ORDI CE N'EST PAS LE MÊME LIEN
 
         // Instancier une instance l'objet de DaoFactory
         DAOFactory instance = new DAOFactory(url, username,password );
