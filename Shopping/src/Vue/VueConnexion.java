@@ -11,59 +11,104 @@ import Modele.User;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-public class VueConnexion extends JDialog {
+public class VueConnexion extends JFrame {
 
-    private JPanel connexionPanel;
     private JTextField tfEmailC;
     private JPasswordField pfMdpC;
     private JButton btnInscrivezVous;
     private JButton btnConnexion;
     private DAOFormulaireIMPL daoFormulaire;
 
-    public VueConnexion(JFrame parent, DAOFormulaireIMPL daoFormulaire) {
-        super(parent);
+    public VueConnexion(DAOFormulaireIMPL daoFormulaire) {
         this.daoFormulaire = daoFormulaire;
         setTitle("Connexion");
-        setMinimumSize((new Dimension(1000,600)));
-        setModal(true);
-        setLocationRelativeTo(parent);
+        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        setSize(1920, 1080);
+        setLocationRelativeTo(null);
+        setResizable(false);
 
 
         //**************
         // PAS AU POINT
         //**************
         // Panneau principal avec image de fond
-        JPanel backgroundPanel = new JPanel() {
+        JPanel backgroundPanel = new JPanel(new GridBagLayout()) {
             @Override
             protected void paintComponent(Graphics g) {
                 super.paintComponent(g);
-                ImageIcon backgroundImage = new ImageIcon("C:\\Users\\kawid\\OneDrive\\Desktop\\ING3\\POO Java\\Projet\\welcomeSSSite.jpg");
+                ImageIcon backgroundImage = new ImageIcon("Shopping/PHOTOS/Teatime.jpeg");
                 g.drawImage(backgroundImage.getImage(), 0, 0, getWidth(), getHeight(), this);
             }
         };
-        backgroundPanel.setLayout(new GridBagLayout());
+        backgroundPanel.setOpaque(false);
         setContentPane(backgroundPanel);
 
-        // Panneau du formulaire centré
-        connexionPanel = new JPanel(new GridLayout(4, 2, 10, 10));
-        connexionPanel.setOpaque(false);
-        connexionPanel.setPreferredSize(new Dimension(400, 200));
+        JPanel connexionPanel = new JPanel();
+        connexionPanel.setLayout(new BoxLayout(connexionPanel, BoxLayout.Y_AXIS));
+        connexionPanel.setBackground(new Color(255, 255, 255, 230)); // blanc semi-transparent
+        connexionPanel.setBorder(BorderFactory.createEmptyBorder(40, 60, 40, 60));
+        /*connexionPanel.setOpaque(false);
+        connexionPanel.setAlignmentX(Component.CENTER_ALIGNMENT);
+        connexionPanel.setBorder(BorderFactory.createEmptyBorder(50, 300, 50, 300));*/
+
 
         //Initialisation des éléments du formulaire de connexion
-        tfEmailC = new JTextField();
-        pfMdpC = new JPasswordField();
+
+        // Titre
+        JLabel lblCo = new JLabel("Se connecter");
+        lblCo.setFont(new Font("Arial", Font.BOLD, 18));
+        lblCo.setAlignmentX(Component.CENTER_ALIGNMENT);
+
+        // Adresse mail
+        JLabel lblEmail = new JLabel("Adresse mail");
+        lblEmail.setAlignmentX(Component.CENTER_ALIGNMENT);
+        tfEmailC = new JTextField(20);
+        tfEmailC.setMaximumSize(new Dimension(300, 30));
+        tfEmailC.setAlignmentX(Component.CENTER_ALIGNMENT);
+
+        // Mot de passe
+        JLabel lblMdp = new JLabel("Mot de passe");
+        lblMdp.setAlignmentX(Component.CENTER_ALIGNMENT);
+        pfMdpC = new JPasswordField(20);
+        pfMdpC.setMaximumSize(new Dimension(300, 30));
+        pfMdpC.setAlignmentX(Component.CENTER_ALIGNMENT);
+
+        // Bouton connexion
         btnConnexion = new JButton("Se connecter");
+        btnConnexion.setBackground(new Color(76, 175, 80));
+        btnConnexion.setForeground(Color.WHITE);
+        btnConnexion.setFocusPainted(false);
+        btnConnexion.setCursor(new Cursor(Cursor.HAND_CURSOR));
+        btnConnexion.setAlignmentX(Component.CENTER_ALIGNMENT);
+
+        // Texte et bouton inscription
+        JLabel lblNoAccount = new JLabel("Vous n'avez pas de compte ?");
+        lblNoAccount.setAlignmentX(Component.CENTER_ALIGNMENT);
         btnInscrivezVous = new JButton("Inscrivez-vous");
+        btnInscrivezVous.setBackground(new Color(76, 160, 175));
+        btnInscrivezVous.setForeground(Color.WHITE);
+        btnInscrivezVous.setFocusPainted(false);
+        btnInscrivezVous.setCursor(new Cursor(Cursor.HAND_CURSOR));
+        btnInscrivezVous.setAlignmentX(Component.CENTER_ALIGNMENT);
 
         //Ajout des éléments sur le panneau de connexion
-        connexionPanel.add(new JLabel("Adresse mail"));
+        connexionPanel.add(lblCo);
+        connexionPanel.add(Box.createVerticalStrut(10));
+        connexionPanel.add(lblEmail);
+        connexionPanel.add(Box.createVerticalStrut(5));
         connexionPanel.add(tfEmailC);
-        connexionPanel.add(new JLabel("Mot de passe"));
+        connexionPanel.add(Box.createVerticalStrut(15));
+        connexionPanel.add(lblMdp);
+        connexionPanel.add(Box.createVerticalStrut(5));
         connexionPanel.add(pfMdpC);
+        connexionPanel.add(Box.createVerticalStrut(20));
         connexionPanel.add(btnConnexion);
+        connexionPanel.add(Box.createVerticalStrut(30));
+        connexionPanel.add(lblNoAccount);
+        connexionPanel.add(Box.createVerticalStrut(10));
         connexionPanel.add(btnInscrivezVous);
 
-        // Ajout du formulaire centré
+        // Centrage du panneau blanc
         backgroundPanel.add(connexionPanel, new GridBagConstraints());
 
         //Quand on clique sur le bouton "Connexion", on récupère les infos rentrées
@@ -90,9 +135,8 @@ public class VueConnexion extends JDialog {
         //Si jamais le client ne s'est pas inscrit il peut le faire en cliquant sur le bouton qui va le renvoyer vers la fenetre/formulaire d'inscription
         btnInscrivezVous.addActionListener(e -> {
             dispose(); // Fermer la fenêtre de connexion
-            new VueInscription(null, daoFormulaire).setVisible(true);
+            new VueInscription(daoFormulaire).setVisible(true);
         });
-
         setVisible(true);
     }
 
@@ -112,10 +156,6 @@ public class VueConnexion extends JDialog {
 
     public void showMessage(String message) {
         JOptionPane.showMessageDialog(this, message, "Info", JOptionPane.INFORMATION_MESSAGE);
-    }
-
-    public JPanel getConnexionPanel() {
-        return connexionPanel;
     }
 
 }

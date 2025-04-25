@@ -12,10 +12,10 @@ public class Main {
     public static void main(String[] args) throws UnsupportedLookAndFeelException {
         SwingUtilities.invokeLater(() -> {
             // Initialiser la DAOFactory
-            DAOFactory dao = DAOFactory.getInstance("shoppingBD", "root", "");
+            DAOFactory dao = DAOFactory.getInstance("shoppingBD", "root", "root");
 
             // Créer et afficher la fenêtre de connexion
-            new VueConnexion(null, new DAOFormulaireIMPL(dao));
+            new VueConnexion(new DAOFormulaireIMPL(dao));
         });
     }
 }

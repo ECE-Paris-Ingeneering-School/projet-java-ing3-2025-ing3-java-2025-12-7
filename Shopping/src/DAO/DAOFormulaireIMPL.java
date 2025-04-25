@@ -1,6 +1,4 @@
-/// * Ajouter un controle pour vérifier qu'il n'y a pas 2 logins identiques
-/// * Numéro de tel formaté
-/// *
+/// * Ajouter un controle pour vérifier qu'il n'y a pas 2 emails identiques
 /// *
 ///
 
