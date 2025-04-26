@@ -5,6 +5,7 @@ import DAO.DAOArticle;
 import DAO.DAOFactory;
 import Modele.Article;
 import Modele.Client;
+import Modele.User;
 
 import javax.swing.*;
 import java.awt.*;
@@ -13,10 +14,12 @@ import java.util.ArrayList;
 //classe qui affiche tous les produits
 public class VueProduits extends JPanel {
     private final Color backgroundColor = new Color(220, 223, 197);
+    private Mywindow parent;
 
-    public VueProduits() {
+    public VueProduits(Mywindow parent) {
         setLayout(new BorderLayout());
 
+        this.parent = parent;
         // Panel principal
         JPanel mainPanel = new JPanel();
         mainPanel.setLayout(new BoxLayout(mainPanel, BoxLayout.Y_AXIS));
@@ -37,7 +40,7 @@ public class VueProduits extends JPanel {
         // Conteneur principal
         JPanel contentContainer = new JPanel(new FlowLayout(FlowLayout.CENTER));
         contentContainer.setBackground(backgroundColor);
-        contentContainer.add(createMixedProductsPanel());
+        contentContainer.add(createMixedProductsPanel(parent));
         mainPanel.add(contentContainer);
 
         mainPanel.add(Box.createVerticalStrut(20));
@@ -47,7 +50,8 @@ public class VueProduits extends JPanel {
         setPreferredSize(new Dimension(800, 600));
     }
 
-    private JPanel createMixedProductsPanel() {
+    private JPanel createMixedProductsPanel(Mywindow parent) {
+        this.parent = parent;
         JPanel containerPanel = new JPanel(new BorderLayout());
         containerPanel.setBackground(backgroundColor);
         containerPanel.setPreferredSize(new Dimension(900, 500));
@@ -106,27 +110,46 @@ public class VueProduits extends JPanel {
             JLabel noProductsLabel = new JLabel("Aucun produit disponible");
             productsPanel.add(noProductsLabel);
         } else {
-            Client client= new Client();//RAJOUTER LE CODE POUR RECUPERER LE BON CLIENT, CELUI QUI EST CONNECTE
-            ControleurPanier controleurPanier = new ControleurPanier();
-            // Ajout de chaque produit dans son propre cadre
-            for (Article article : produits) {
-                String type= article.getImageArticle();
-                System.out.println(type);
+            User currentUser = parent.getCurrentUser(); // Utiliser le getter
 
-                    JButton bouton = new JButton();
-                    // Création du panneau produit à partir des informations de l'article
-                    JPanel productPanel = ProductPanelFactory.createProductPanel(
-                            article.getNomArticle(),         // Nom du produit
-                            article.getCategorieArticle(),   // Description ou catégorie
-                            article.getPrixArticle(),        // Prix
-                            article.getImageArticle(),        // Nom du porduit
-                            bouton
-                    );
-                    controleurPanier.attacherBouton(bouton,article,client);
-                    productsPanel.add(productPanel);
-
+            if (currentUser == null) {
+                JOptionPane.showMessageDialog(parent,
+                        "Veuillez vous connecter",
+                        "Erreur",
+                        JOptionPane.WARNING_MESSAGE);
 
             }
+            //Vérification du statut de l'user pour que le bouton fonctionne ou non : Admin si statut=1 ou Client si =0
+            if (currentUser != null) {
+                if (currentUser.getStatutUser() == 1) { // Admin
+
+                } else { // Client
+
+                    ControleurPanier controleurPanier = new ControleurPanier();
+                    // Ajout de chaque produit dans son propre cadre
+                    for (Article article : produits) {
+                        String type= article.getImageArticle();
+                        System.out.println(type);
+
+                        JButton bouton = new JButton();
+                        // Création du panneau produit à partir des informations de l'article
+                        JPanel productPanel = ProductPanelFactory.createProductPanel(
+                                article.getNomArticle(),         // Nom du produit
+                                article.getCategorieArticle(),   // Description ou catégorie
+                                article.getPrixArticle(),        // Prix
+                                article.getImageArticle(),        // Nom du porduit
+                                bouton
+                        );
+                        controleurPanier.attacherBouton(bouton,article,currentUser);
+                        productsPanel.add(productPanel);
+
+
+                    }
+
+                }
+            }
+
+
         }
 
         JScrollPane scrollPane = new JScrollPane(productsPanel);

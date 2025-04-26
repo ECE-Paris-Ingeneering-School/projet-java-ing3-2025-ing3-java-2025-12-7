@@ -3,6 +3,13 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import Controleur.ControleurAdmin;
+import Controleur.ControleurClient;
+import DAO.DAOFactory;
+import Modele.User;
+import Vue.VueCompteAdmin;
+
+
 
 //
 //rgb(93, 124, 166) bleu moyen
@@ -37,19 +44,19 @@ public class Nav extends JPanel {
 
                     switch(index) {
                         case 0:
-                            VueProduits produits = new VueProduits();
+                            VueProduits produits = new VueProduits(parent);
                             parent.addAndShowPanel(produits, "produits");
                             break;
                         case 1:
-                            VueProduitsBoissons boissons = new VueProduitsBoissons();
+                            VueProduitsBoissons boissons = new VueProduitsBoissons(parent);
                             parent.addAndShowPanel(boissons, "boissons");
                             break;
                         case 2:
-                            VueProduitsBiscuits biscuits = new VueProduitsBiscuits();
+                            VueProduitsBiscuits biscuits = new VueProduitsBiscuits(parent);
                             parent.addAndShowPanel(biscuits, "biscuits");
                             break;
                         case 3:
-                            VueBestSellers bestSellers = new VueBestSellers();
+                            VueBestSellers bestSellers = new VueBestSellers(parent);
                             parent.addAndShowPanel(bestSellers, "bestSellers");
                             break;
                         case 4:

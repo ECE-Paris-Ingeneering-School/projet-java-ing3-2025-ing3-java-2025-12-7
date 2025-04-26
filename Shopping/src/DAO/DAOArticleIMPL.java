@@ -168,6 +168,7 @@ public class DAOArticleIMPL implements DAOArticle {
             Connection connexion = daoFactory.getConnection();
 
             // récupération des paramètres de l'objet article en paramètre
+            int IDArticle = article.getIDArticle();
             String nom = article.getNomArticle();
             float prix = article.getPrixArticle();
             int quantite =article.getQuantiteArticle() ;
@@ -180,7 +181,7 @@ public class DAOArticleIMPL implements DAOArticle {
             String image=  article.getImageArticle();
 
             // Exécution de la requête INSERT INTO de l'objet article en paramètre
-            PreparedStatement preparedStatement = connexion.prepareStatement("UPDATE produit set nomProduit=nom, quantiteProduit=quantite, prixProduit=prix, marqueProduit=marque, typeProduit=type, categorieProduit=categorie, reductionProduit=reduction, dateAjoutProduit=ajout, datePeremptionProduit=peremption, photoProduit=image) ");
+            PreparedStatement preparedStatement = connexion.prepareStatement("UPDATE produit set nomProduit=nom, quantiteProduit=quantite, prixProduit=prix, marqueProduit=marque, typeProduit=type, categorieProduit=categorie, reductionProduit=reduction, dateAjoutProduit=ajout, datePeremptionProduit=peremption, photoProduit=image)WHERE idProduit= "+IDArticle);
             preparedStatement.executeUpdate();
         }
         catch (SQLException e) {
@@ -199,7 +200,7 @@ public class DAOArticleIMPL implements DAOArticle {
      * @params : product = objet de Produit en paramètre à supprimer de la base de données
      */
     public void retirer (int id) {
-        Article article1 = null;
+
 
         try {
             // connexion
@@ -228,7 +229,7 @@ public class DAOArticleIMPL implements DAOArticle {
             Statement statement = connexion.createStatement();
 
             // Exécution de la requête SELECT pour récupérer l'article de l'id dans la base de données
-            ResultSet resultats = statement.executeQuery("select * from produit where produitID="+id);
+            ResultSet resultats = statement.executeQuery("select * from produit where idProduit="+id);
 
             // 	Se déplacer sur le prochain enregistrement : retourne false si la fin est atteinte
             while (resultats.next()) {
@@ -243,8 +244,8 @@ public class DAOArticleIMPL implements DAOArticle {
                 String categorieArticle = resultats.getString(7);
                 float reductionArticle = resultats.getFloat(8);
                 java.util.Date dateAjoutArticle = resultats.getDate(9);
-                java.util.Date datePeremptionArticle = resultats.getDate(10);
-                String imageArticle = resultats.getString(11);
+                java.util.Date datePeremptionArticle = resultats.getDate(11);
+                String imageArticle = resultats.getString(10);
 
                 // Si l'id de l'article est trouvé, l'instancier et sortir de la boucle
                 if (id == IDArticle) {

@@ -7,14 +7,17 @@ import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import Controleur.ControleurPanier;
+import Modele.User;
 
 //classe qui affiche les produits les plus achetes
 public class VueBestSellers extends JPanel {
     private final Color backgroundColor = new Color(220, 223, 197);
+    private Mywindow parent;
 
-    public VueBestSellers() {
+    public VueBestSellers(Mywindow parent) {
         setLayout(new BorderLayout());
 
+        this.parent = parent;
         // Panel principal
         JPanel mainPanel = new JPanel();
         mainPanel.setLayout(new BoxLayout(mainPanel, BoxLayout.Y_AXIS));
@@ -34,7 +37,7 @@ public class VueBestSellers extends JPanel {
         // Conteneur principal pour le contenu
         JPanel contentContainer = new JPanel(new FlowLayout(FlowLayout.CENTER));
         contentContainer.setBackground(backgroundColor);
-        JPanel content = createBestSellersPanel();
+        JPanel content = createBestSellersPanel(parent);
         contentContainer.add(content);
         mainPanel.add(contentContainer);
 
@@ -46,7 +49,8 @@ public class VueBestSellers extends JPanel {
         setPreferredSize(new Dimension(800, 600));
     }
 
-    private JPanel createBestSellersPanel() {
+    private JPanel createBestSellersPanel(Mywindow parent) {
+        this.parent = parent;
         // Conteneur principal
         JPanel containerPanel = new JPanel(new BorderLayout());
         containerPanel.setBackground(backgroundColor);
@@ -93,26 +97,44 @@ public class VueBestSellers extends JPanel {
             JLabel noProductsLabel = new JLabel("Aucun produit disponible");
             productsPanel.add(noProductsLabel);
         } else {
-            Client client = new Client();
-            ControleurPanier controleurPanier = new ControleurPanier();
-            // Ajout de chaque produit dans son propre cadre
-            for (Article article : produits) {
-                String type= article.getNomArticle();
-                System.out.println(type);
-                if (article.getIDArticle()==6||article.getIDArticle()==11||article.getIDArticle()==23||article.getIDArticle()==28||article.getIDArticle()==36||article.getIDArticle()==37||article.getIDArticle()==44||article.getIDArticle()==49||article.getIDArticle()==56||article.getIDArticle()==62) {
-                    JButton bouton = new JButton();
-                    // Création du panneau produit à partir des informations de l'article
-                    JPanel productPanel = ProductPanelFactory.createProductPanel(
-                            article.getNomArticle(),         // Nom du produit
-                            article.getCategorieArticle(),   // Description ou catégorie
-                            article.getPrixArticle(),        // Prix
-                            article.getImageArticle(),      // Nom du porduit
-                            bouton
-                    );
-                    controleurPanier.attacherBouton(bouton,article, client);
-                    productsPanel.add(productPanel);
+            User currentUser = parent.getCurrentUser(); // Utiliser le getter
+
+            if (currentUser == null) {
+                JOptionPane.showMessageDialog(parent,
+                        "Veuillez vous connecter",
+                        "Erreur",
+                        JOptionPane.WARNING_MESSAGE);
+
+            }
+            //Vérification du statut de l'user pour que le bouton fonctionne ou non : Admin si statut=1 ou Client si =0
+            if (currentUser != null) {
+                if (currentUser.getStatutUser() == 1) { // Admin
+
+                } else { // Client
+
+                    ControleurPanier controleurPanier = new ControleurPanier();
+                    // Ajout de chaque produit dans son propre cadre
+                    for (Article article : produits) {
+                        String type= article.getNomArticle();
+                        System.out.println(type);
+                        if (article.getIDArticle()==6||article.getIDArticle()==11||article.getIDArticle()==23||article.getIDArticle()==28||article.getIDArticle()==36||article.getIDArticle()==37||article.getIDArticle()==44||article.getIDArticle()==49||article.getIDArticle()==56||article.getIDArticle()==62) {
+                            JButton bouton = new JButton();
+                            // Création du panneau produit à partir des informations de l'article
+                            JPanel productPanel = ProductPanelFactory.createProductPanel(
+                                    article.getNomArticle(),         // Nom du produit
+                                    article.getCategorieArticle(),   // Description ou catégorie
+                                    article.getPrixArticle(),        // Prix
+                                    article.getImageArticle(),      // Nom du porduit
+                                    bouton
+                            );
+                            controleurPanier.attacherBouton(bouton,article, currentUser);
+                            productsPanel.add(productPanel);
+                        }
+                    }
+
                 }
             }
+
         }
 
         // ScrollPane pour défiler

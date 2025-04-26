@@ -21,7 +21,7 @@ public class Top extends JPanel {
 
     public Top(Mywindow parent) {
         this.parent = parent;
-        DAOFactory daoFactory = DAOFactory.getInstance("shoppingBD", "root", "");
+        DAOFactory daoFactory = DAOFactory.getInstance("shoppingBD", "root", "root");
         this.controleurAdmin = new ControleurAdmin(daoFactory);
         this.controleurClient = new ControleurClient(daoFactory);
 
@@ -74,7 +74,7 @@ public class Top extends JPanel {
             @Override
             public void mouseClicked(MouseEvent e) {
                 getIconTop(1);
-                VuePanier pagePanier = new VuePanier();
+                VuePanier pagePanier = new VuePanier(parent);
                 parent.addAndShowPanel(pagePanier, "panier");
             }
         });

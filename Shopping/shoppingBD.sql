@@ -50,7 +50,7 @@ CREATE TABLE Commande (
 )ENGINE=MyISAM;
 
 CREATE TABLE Produit (
-   idProduit            INT NOT NULL,
+   idProduit            INT NOT NULL AUTO_INCREMENT,
    nomProduit           VARCHAR(254) NULL,
    quantiteProduit      INT NULL,
    prixProduit          FLOAT NULL,
@@ -65,7 +65,7 @@ CREATE TABLE Produit (
 )ENGINE=MyISAM;
 
 CREATE TABLE Panier (
-   idPanier             INT NOT NULL,
+   idPanier             INT NOT NULL AUTO_INCREMENT,
    idUser               INT NULL,
    listeIDProduits      VARCHAR(254)NULL,
    listeQuantite        VARCHAR(254)NULL,
@@ -94,7 +94,7 @@ CREATE TABLE Journalisation (
 -- Chargement des données de la table `panier`
 
 INSERT INTO `panier` (idPanier, idUser, listeIDProduits, listeQuantite, montantPanier)  VALUES
-    (1,23,'2,5,35', '2,1,1',10.27),
+    (1,2,'2,5,35', '2,1,1',10.27),
     (2,4,'12,44', '8,1',30.55);
 
 -- Insertion des utilisateurs (10 utilisateurs)

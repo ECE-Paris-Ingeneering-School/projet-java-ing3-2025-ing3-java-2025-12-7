@@ -4,6 +4,7 @@ import DAO.DAOFactory;
 import Modele.Article;
 import Modele.Client;
 import Controleur.ControleurPanier;
+import Modele.User;
 
 import javax.swing.*;
 import java.awt.*;
@@ -13,10 +14,12 @@ import java.util.ArrayList;
 public class VueProduitsBiscuits extends JPanel {
     private final Color backgroundColor = new Color(245, 225, 207);
     private JPanel productsPanel;
+    private Mywindow parent;
 
-    public VueProduitsBiscuits() {
+    public VueProduitsBiscuits(Mywindow parent) {
         setLayout(new BorderLayout());
 
+        this.parent = parent;
         // Panel principal
         JPanel mainPanel = new JPanel();
         mainPanel.setLayout(new BoxLayout(mainPanel, BoxLayout.Y_AXIS));
@@ -36,7 +39,7 @@ public class VueProduitsBiscuits extends JPanel {
         // Conteneur principal pour le contenu
         JPanel contentContainer = new JPanel(new FlowLayout(FlowLayout.CENTER));
         contentContainer.setBackground(backgroundColor);
-        JPanel content = createBiscuitsPanel();
+        JPanel content = createBiscuitsPanel(parent);
         contentContainer.add(content);
         mainPanel.add(contentContainer);
 
@@ -50,7 +53,8 @@ public class VueProduitsBiscuits extends JPanel {
         setPreferredSize(new Dimension(800, 600));
     }
 
-    private JPanel createBiscuitsPanel() {
+    private JPanel createBiscuitsPanel(Mywindow parent) {
+        this.parent = parent;
         // Conteneur principal
         JPanel containerPanel = new JPanel(new BorderLayout());
         containerPanel.setBackground(backgroundColor);
@@ -95,27 +99,49 @@ public class VueProduitsBiscuits extends JPanel {
             JLabel noProductsLabel = new JLabel("Aucun produit disponible");
             productsPanel.add(noProductsLabel);
         } else {
-            Client client = new Client();
-            ControleurPanier controleurPanier = new ControleurPanier();
-            // Ajout de chaque produit dans son propre cadre
-            for (Article article : produits) {
-                String type= article.getNomArticle();
-                System.out.println(type);
-                if (article.getTypeArticle().equals("Biscuit")) {
-                    JButton bouton = new JButton();
-                    // Création du panneau produit à partir des informations de l'article
-                    JPanel productPanel = ProductPanelFactory.createProductPanel(
-                            article.getNomArticle(),         // Nom du produit
-                            article.getCategorieArticle(),   // Description ou catégorie
-                            (Double)(double)article.getPrixArticle(),        // Prix
-                            article.getImageArticle(),       // Nom du porduit
-                            bouton
-                    );
-                    controleurPanier.attacherBouton(bouton,article,client);
-                    productsPanel.add(productPanel);
-                }
+            User currentUser = parent.getCurrentUser(); // Utiliser le getter
+
+            if (currentUser == null) {
+                JOptionPane.showMessageDialog(parent,
+                        "Veuillez vous connecter",
+                        "Erreur",
+                        JOptionPane.WARNING_MESSAGE);
 
             }
+
+            //Vérification du statut de l'user pour que le bouton fonctionne ou non : Admin si statut=1 ou Client si =0
+            if (currentUser != null) {
+                if (currentUser.getStatutUser() == 1) { // Admin
+
+                } else { // Client
+
+                    ControleurPanier controleurPanier = new ControleurPanier();
+                    // Ajout de chaque produit dans son propre cadre
+                    for (Article article : produits) {
+                        String type= article.getNomArticle();
+                        System.out.println(type);
+                        if (article.getTypeArticle().equals("Biscuit")) {
+                            JButton bouton = new JButton();
+                            // Création du panneau produit à partir des informations de l'article
+                            JPanel productPanel = ProductPanelFactory.createProductPanel(
+                                    article.getNomArticle(),         // Nom du produit
+                                    article.getCategorieArticle(),   // Description ou catégorie
+                                    (Double)(double)article.getPrixArticle(),        // Prix
+                                    article.getImageArticle(),       // Nom du porduit
+                                    bouton
+                            );
+                            controleurPanier.attacherBouton(bouton,article,currentUser);
+                            productsPanel.add(productPanel);
+                        }
+
+                    }
+
+
+
+                }
+            }
+
+
         }
 
         // ScrollPane pour défiler

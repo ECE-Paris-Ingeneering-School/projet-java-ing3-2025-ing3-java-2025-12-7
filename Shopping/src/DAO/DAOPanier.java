@@ -6,39 +6,45 @@ import Modele.Article;
 
 public interface DAOPanier {
 
-
+    /**
+     * Retourne tous les paniers de la base de données
+     * @return la liste des paniers
+     */
     public ArrayList<Panier> getAll();
 
 
     /**
-     * Récupérer de la base de données tous les articles d'un client dans une liste
-     * @return : liste retournée des articles dans un panier d'un client spécifique
+     * Récupérer dans la base de données le panier d'un client spécifique
+     * @return : le panier d'un client spécifique
      */
-    public Panier lesArticles(int IDClient);
+    public Panier UnPanier(int IDClient);
 
 
     /**
-     Ajouter un nouvel article en paramètre dans un panier dans la base de données
-     @params : article = objet de l'Article en paramètre à insérer dans le panier d'un client spécifique  dans la base de données
+     Créer un nouveau panier pour un client spécifique (lors de sa première connexion, ou après une commande)
+     @params : IDClient = Id du client qui n'a pas encore de panier
      */
     public void nouveauPanier(int IDClient);
 
 
     /**
-     Ajouter un nouvel article en paramètre dans un panier dans la base de données
-     @params : article = objet de l'Article en paramètre à insérer dans le panier d'un client spécifique  dans la base de données
+     * Permet d'ajouter un article dans le panier déjà existant d'un client
+     * @param article : l'article que l'on souhaite ajouter
+     * @param IDClient : le client dont on doit changer le panier
      */
     public void ajouter(Article article, int IDClient);
 
 
     /**
-     * Supprimer un objet de la classe Article en paramètre dans la base de données
-     * @params : article = objet de Article en paramètre à supprimer dans le panier d'un client spécifique de la base de données
+     * Permet de retirer un article du panier d'un client spécifique
+     * @param idClient: le client dont on doit modifier le panier
+     * @param article : l'article que l'on doit retirer du panier
      */
-    public void retirer (int idClient);
+    public void retirer (int idClient, Article article);
 
 
     /**
+     * PAS SURE QUE CE SOIT UTILE
      * Permet de commander un panier
      * @param idClient en parametre
      * @return  : objet panier commandé
@@ -46,14 +52,16 @@ public interface DAOPanier {
     public Panier commander (int idClient);
 
     /**
-     Ajouter un nouvel article en paramètre dans un panier dans la base de données
-     @params : article = objet de l'Article en paramètre à insérer dans le panier d'un client spécifique  dans la base de données
+     * Permet d'augmenter la quantité de 1 d'un article spécifique dans un panier
+     * @param article : l'article dont on souhaite augmenter la quantité
+     * @param IDClient : le client dont on souhaite modifier le panier
      */
     public void PLUS1(Article article, int IDClient);
 
     /**
-     Ajouter un nouvel article en paramètre dans un panier dans la base de données
-     @params : article = objet de l'Article en paramètre à insérer dans le panier d'un client spécifique  dans la base de données
+     * Permet de diminuer la quantité de 1 d'un article spécifique dans un panier
+     * @param article : l'article dont on souhaite diminuer la quantité
+     * @param IDClient : le client dont on souhaite modifier le panier
      */
     public void MOINS1(Article article, int IDClient);
 

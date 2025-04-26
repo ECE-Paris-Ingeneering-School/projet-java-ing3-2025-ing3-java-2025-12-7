@@ -1,6 +1,14 @@
 package Modele;
 
 import java.util.*;
+import Modele.Article;
+import DAO.*;
+import Modele.Article;
+import Modele.Panier;
+
+import java.sql.*;
+import java.util.ArrayList;
+import java.util.StringJoiner;
 
 public class Panier {
 
@@ -9,6 +17,7 @@ public class Panier {
     private String quantite;
     private float montant;
     private  int IDClient;
+    private DAOFactory daoFactory;
     //private Date dateJour;
 
     /**
@@ -59,6 +68,32 @@ public class Panier {
 //    public Date getDateJour() {
 //        return dateJour;
 //    }
+
+    public float calculMontant(int[] idArticles, int[] quantite) {
+        float montant=0;
+
+        // Récupérer tous les paniers depuis la base de données
+        DAOFactory daoFactory = DAOFactory.getInstance("shoppingbd","root","root");
+
+        // Utiliser DAOFactory pour obtenir une instance de DAOPanier
+        DAOArticle daoArticle = daoFactory.getDAOArticle();
+
+        for (int i = 0; i < idArticles.length; i++) {
+            Article article=daoArticle.unarticle(idArticles[i]);
+            float prix=article.getPrixArticle();
+
+            int qteAvecReduction = (quantite[i] / 6) * 6;
+            int qteSansReduction = quantite[i] % 6;
+
+            float prixAvecReduction = qteAvecReduction * prix * (1 - article.getReductionArticle());
+            float prixSansReduction = qteSansReduction * prix;
+
+            float prixTotal = prixAvecReduction + prixSansReduction;
+            montant += prixTotal;
+        }
+
+        return montant;
+    }
 
 
 

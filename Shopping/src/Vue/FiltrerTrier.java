@@ -8,8 +8,11 @@ import Modele.Article;
 public class FiltrerTrier extends JPanel {
     private VueProduitsBiscuits vueBiscuits;
     private JCheckBoxMenuItem filtre1, filtre2, filtre3, reinitialiser;
+    private Mywindow parent;
 
     public FiltrerTrier() {
+
+
 
         filtre1 = new JCheckBoxMenuItem("Boissons");
         filtre2 = new JCheckBoxMenuItem("Biscuits");
@@ -65,7 +68,7 @@ public class FiltrerTrier extends JPanel {
         switch(x){
             case 0: //Boissons
                 getParent().setVisible(true);
-                VueProduitsBoissons boissons = new VueProduitsBoissons();
+                VueProduitsBoissons boissons = new VueProduitsBoissons(parent);
                 break;
             case 1: //Biscuits
                 break;

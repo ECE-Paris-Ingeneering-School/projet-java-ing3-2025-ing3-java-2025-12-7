@@ -1,5 +1,11 @@
 package Vue;
 import Controleur.ControleurPanier;
+import DAO.DAOArticle;
+import DAO.DAOFactory;
+import DAO.DAOPanier;
+import Modele.Article;
+import Modele.Panier;
+import Modele.User;
 import Vue.createInfoRow;
 import javax.swing.*;
 import java.awt.*;
@@ -17,10 +23,11 @@ public class VuePanier extends JPanel {
     private int nbProducts = 0;
     private createInfoRow sousTotalRow;
     private createInfoRow nbProduitsRow;
+    private Mywindow parent;
 
-    public VuePanier() {
+    public VuePanier(Mywindow parent) {
         setLayout(new BorderLayout());
-
+        this.parent = parent;
         // Panel principal
         JPanel mainPanel = new JPanel();
         mainPanel.setLayout(new BoxLayout(mainPanel, BoxLayout.Y_AXIS));
@@ -45,8 +52,11 @@ public class VuePanier extends JPanel {
         content.setPreferredSize(new Dimension(900, 400));
 
         // Création des panneaux d'information
-        JPanel infosPanier = createInfoPanier();
         JPanel infoPanier = createInfoPanierPanel();
+        JPanel infosPanier = createInfoPanier(parent);
+
+
+
 
         content.add(infosPanier, BorderLayout.CENTER);
         content.add(infoPanier, BorderLayout.EAST);
@@ -133,7 +143,8 @@ public class VuePanier extends JPanel {
         return panel;
     }
 
-    private JPanel createInfoPanier() {
+    private JPanel createInfoPanier(Mywindow parent) {
+        this.parent = parent;
         JPanel panel = new JPanel(new BorderLayout());
         panel.setBackground(backgroundColor);
         panel.setBorder(BorderFactory.createCompoundBorder(
@@ -159,40 +170,96 @@ public class VuePanier extends JPanel {
         productsContainer.setBackground(backgroundColor);
         productsContainer.setBorder(BorderFactory.createEmptyBorder(5, 0, 5, 0));
 
-        // Données des produits avec leur prix unitaire
-        Object[][] produits = {
-                {"Cookies chocolat", "Cookies aux pépites de chocolat", 2, 5.99},
-                {"Sablés", "Sablés traditionnels", 1, 4.50},
-                {"Thé Earl Grey", "Thé noir aromatisé à la bergamote", 1, 7.25},
-                {"Café Arabica", "Café en grains, torréfaction moyenne", 3, 8.99},
-        };
+//        // Données des produits avec leur prix unitaire
+//        Object[][] produits = {
+//                {"Cookies chocolat", "Cookies aux pépites de chocolat", 2, 5.99},
+//                {"Sablés", "Sablés traditionnels", 1, 4.50},
+//                {"Thé Earl Grey", "Thé noir aromatisé à la bergamote", 1, 7.25},
+//                {"Café Arabica", "Café en grains, torréfaction moyenne", 3, 8.99},
+//        };
+//
+//        // Calculer le prix total initial et nombre de produits
+//        totalPrice = 0;
+//        nbProducts = 0;
+//
+//        for (Object[] produit : produits) {
+//            totalPrice += (int)produit[2] * (double)produit[3];
+//            nbProducts += (int)produit[2];
+//        }
 
-        // Calculer le prix total initial et nombre de produits
-        totalPrice = 0;
-        nbProducts = 0;
+        // Récupérer tous les produits depuis la base de données
+        DAOFactory daoFactory = DAOFactory.getInstance("shoppingbd","root","root");
 
-        for (Object[] produit : produits) {
-            totalPrice += (int)produit[2] * (double)produit[3];
-            nbProducts += (int)produit[2];
+        // Utiliser DAOFactory pour obtenir une instance de DAOArticle
+        DAOPanier daoPanier = daoFactory.getPanierDAO();
+        DAOArticle daoArticle = daoFactory.getDAOArticle();
+
+        Panier panier=null;
+        User currentUser = parent.getCurrentUser(); // Utiliser le getter
+
+        if (currentUser == null) {
+            JOptionPane.showMessageDialog(parent,
+                    "Veuillez vous connecter",
+                    "Erreur",
+                    JOptionPane.WARNING_MESSAGE);
+
+        }
+        //Vérification du statut de l'user pour que le bouton fonctionne ou non : Admin si statut=1 ou Client si =0
+        if (currentUser != null) {
+            if (currentUser.getStatutUser() == 1) { // Admin
+
+            } else { // Client
+
+                //Réupère le panier cu client connecté
+                panier = daoPanier.UnPanier(currentUser.getIdUser());
+
+            }
+        }
+        if (panier == null) {
+            JLabel noProductsLabel = new JLabel("Votre panier est vide");
+            productsContainer.add(noProductsLabel);
+        }else{
+            //Recupère les listes des id des produits et des quantites
+            String lesArticles= panier.getArticles();
+            String lesQuantites= panier.getQuantite();
+            int IDPanier = panier.getIDPanier();
+
+            //Trouve la position de l'article à augmenter
+            String[] articles = lesArticles.split(",");
+            String[] quantites = lesQuantites.split(",");
+
+            int[] arts=new int[articles.length];
+            for (int i=0;i<articles.length;i++){
+                arts[i]=Integer.parseInt(articles[i]);
+            }
+            int[] quants = new int[quantites.length];
+            for (int i=0;i<quantites.length;i++){
+                quants[i]=Integer.parseInt(quantites[i]);
+            }
+
+            for (int i=0;i<arts.length;i++){
+                Article article=daoArticle.unarticle(arts[i]);
+                JButton boutoncroix = new JButton();
+                JButton boutonplus = new JButton();
+                JButton boutonmoins = new JButton();
+                JPanel productPanel = createProductPanel(
+                        article.getNomArticle(),
+                        article.getCategorieArticle(),
+                        quants[i],
+                        article.getPrixArticle(),
+                        boutonmoins,
+                        boutonplus,
+                        boutoncroix,
+                        article.getReductionArticle(),
+                        article,
+                        currentUser
+                );
+                productsContainer.add(productPanel);
+                productsContainer.add(Box.createVerticalStrut(10));
+            }
+
         }
 
-        // Ajout de chaque produit dans son propre cadre
-        for (Object[] produit : produits) {
-            JButton boutoncroix = new JButton();
-            JButton boutonplus = new JButton();
-            JButton boutonmoins = new JButton();
-            JPanel productPanel = createProductPanel(
-                    (String)produit[0],
-                    (String)produit[1],
-                    (int)produit[2],
-                    (double)produit[3],
-                    boutonmoins,
-                    boutonplus,
-                    boutoncroix
-            );
-            productsContainer.add(productPanel);
-            productsContainer.add(Box.createVerticalStrut(10));
-        }
 
         // ScrollPane pour défiler si jamais il y a plusieurs produits
         JScrollPane scrollPane = new JScrollPane(productsContainer);
@@ -216,7 +283,7 @@ public class VuePanier extends JPanel {
         return panel;
     }
 
-    private JPanel createProductPanel(String name, String description, int quantity, double price, JButton minusButton, JButton plusButton, JButton deleteButton ) {
+    private JPanel createProductPanel(String name, String description, int quantity, double price, JButton minusButton, JButton plusButton, JButton deleteButton , float reduction,Article article,User client) {
         // Création du panneau principal du produit
         JPanel productPanel = new JPanel(new BorderLayout(10, 0));
         productPanel.setBackground(productColor);
@@ -315,40 +382,60 @@ public class VuePanier extends JPanel {
         priceLabel.setFont(new Font("Arial", Font.BOLD, 14));
         priceLabel.setHorizontalAlignment(SwingConstants.RIGHT);
 
+        totalLabel=new JLabel("Total: 0.00€");
+
+        final JLabel quantityLabelFinal=quantityLabel;
+        final JLabel priceLabelFinal = priceLabel;
+        final JLabel totalLabelFinal = totalLabel;
+        final createInfoRow sousTotalFinal = sousTotalRow;
+        final createInfoRow nbProduitsFinal = nbProduitsRow;
+
+
+
+
         ControleurPanier controleur = new ControleurPanier();
 
         controleur.boutonPLUS(
                 plusButton,
-                quantityLabel,
-                priceLabel,
-                totalLabel,
-                sousTotalRow,
-                nbProduitsRow,
+                quantityLabelFinal,
+                priceLabelFinal,
+                totalLabelFinal,
+                sousTotalFinal,
+                nbProduitsFinal,
                 price,
-                productTotalPrice
+                productTotalPrice,
+                reduction,
+                client,
+                article
+
         );
 
         controleur.boutonMOINS(
                 minusButton,
-                quantityLabel,
-                priceLabel,
-                totalLabel,
-                sousTotalRow,
-                nbProduitsRow,
+                quantityLabelFinal,
+                priceLabelFinal,
+                totalLabelFinal,
+                sousTotalFinal,
+                nbProduitsFinal,
                 price,
-                productTotalPrice
+                productTotalPrice,
+                reduction,
+                client,
+                article
         );
 
         controleur.boutonCROIX(
                 deleteButton,
                 productPanel,
                 productsContainer,
-                quantityLabel,
-                priceLabel,
-                sousTotalRow,
-                totalLabel,
-                nbProduitsRow,
-                productTotalPrice
+                quantityLabelFinal,
+                priceLabelFinal,
+                sousTotalFinal,
+                totalLabelFinal,
+                nbProduitsFinal,
+                productTotalPrice,
+                client,
+                article
         );
 
 //        // Actions pour les boutons + et -
