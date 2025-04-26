@@ -14,6 +14,7 @@ import java.awt.event.MouseEvent;
 public class Top extends JPanel {
     public JButton utilisateur;
     public JButton panier;
+    public JButton deconnexion;
     private ControleurAdmin controleurAdmin;
     private ControleurClient controleurClient;
     private Mywindow parent;
@@ -39,6 +40,8 @@ public class Top extends JPanel {
         this.utilisateur.setBackground(new Color(255, 255, 255));
         this.panier = new JButton("🛒");
         this.panier.setBackground(new Color(255, 255, 255));
+        this.deconnexion = new JButton("❌");
+        this.deconnexion.setBackground(new Color(170, 54, 54));
 
         utilisateur.addMouseListener(new MouseAdapter() {
             @Override
@@ -75,7 +78,22 @@ public class Top extends JPanel {
                 parent.addAndShowPanel(pagePanier, "panier");
             }
         });
-
+        deconnexion.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                getIconTop(-1);
+                int reponse = JOptionPane.showConfirmDialog(
+                        parent,
+                        "Voulez-vous vraiment vous déconnecter ?",
+                        "Confirmation de déconnexion",
+                        JOptionPane.YES_NO_OPTION,
+                        JOptionPane.QUESTION_MESSAGE
+                );
+                if (reponse == JOptionPane.YES_OPTION) {
+                    System.exit(0);
+                }
+            }
+        });
         // evenement pour revenir à l'accueil
         nomSite.addMouseListener(new MouseAdapter() {
             @Override
@@ -88,6 +106,7 @@ public class Top extends JPanel {
 
         icons.add(utilisateur);
         icons.add(panier);
+        icons.add(deconnexion);
 
         add(nomSite, BorderLayout.WEST);
         add(BarreRecherche, BorderLayout.CENTER);
@@ -98,6 +117,7 @@ public class Top extends JPanel {
         // Réinitialiser tous les boutons
         utilisateur.setBackground(new Color(255, 255, 255));
         panier.setBackground(new Color(255, 255, 255));
+        deconnexion.setBackground(Color.WHITE);
 
         switch(x) {
             case 0:
