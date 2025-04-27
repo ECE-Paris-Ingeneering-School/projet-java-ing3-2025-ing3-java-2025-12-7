@@ -89,6 +89,13 @@ public class ProductPanelFactory {
 
         productPanel.add(descPricePanel);
 
+        JLabel reductionLabel = new JLabel("Réduction sur le lot de 6");
+        reductionLabel.setFont(new Font("Arial", Font.ITALIC, 12));
+        reductionLabel.setForeground(new Color(178, 34, 34));
+        reductionLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
+
+        productPanel.add(reductionLabel);
+
         // Espace avant le bouton
         productPanel.add(Box.createVerticalStrut(15));
 
