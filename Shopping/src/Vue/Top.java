@@ -1,15 +1,15 @@
 package Vue;
 import Controleur.ControleurAdmin;
 import Controleur.ControleurClient;
+import Controleur.ControleurPanier;
+import Controleur.ControleurTop;
 import DAO.DAOFactory;
-import DAO.DAOFormulaireIMPL;
 import Modele.User;
-import Controleur.ControleurJournalisation;
 import Vue.VueCompteAdmin;
 import javax.swing.*;
-import java.sql.SQLException;
-import java.time.LocalDateTime;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
@@ -21,11 +21,12 @@ public class Top extends JPanel {
     public JButton deconnexion;
     private ControleurAdmin controleurAdmin;
     private ControleurClient controleurClient;
+   // private ControleurTop controleurTop;
     private Mywindow parent;
 
     public Top(Mywindow parent) {
         this.parent = parent;
-        DAOFactory daoFactory = DAOFactory.getInstance("shoppingBD", "root", "");
+        DAOFactory daoFactory = DAOFactory.getInstance("shoppingBD", "root", "root");
         this.controleurAdmin = new ControleurAdmin(daoFactory);
         this.controleurClient = new ControleurClient(daoFactory);
 
@@ -37,6 +38,9 @@ public class Top extends JPanel {
 
         JTextField BarreRecherche = new JTextField("Rechercher");
         BarreRecherche.setEditable(true);
+        ControleurTop controleur = new ControleurTop();
+        controleur.actionRecherche(BarreRecherche,parent);
+
 
         JPanel icons = new JPanel(new FlowLayout(FlowLayout.RIGHT));
         icons.setBackground(new Color(245, 225, 207));
@@ -64,7 +68,7 @@ public class Top extends JPanel {
                 //Vérification du statut de l'user pour le renvoyer vers la bonne page : Admin si statut=1 ou Client si =0
                 if (currentUser != null) {
                     if (currentUser.getStatutUser() == 1) { // Admin
-                        VueCompteAdmin pageAdmin = new VueCompteAdmin(parent, currentUser.getIdUser(), controleurAdmin, daoFactory);
+                        VueCompteAdmin pageAdmin = new VueCompteAdmin(parent, currentUser.getIdUser(), controleurAdmin);
                         parent.addAndShowPanel(pageAdmin, "compteAdmin");
                     } else { // Client
                         VueCompteClient pageClient = new VueCompteClient(parent, currentUser.getIdUser(), controleurClient);
@@ -84,8 +88,6 @@ public class Top extends JPanel {
 
             }
         });
-
-        // Lorsqu'on clique sue le boutton de connexion, celui-ci arrete le système
         deconnexion.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
@@ -98,19 +100,7 @@ public class Top extends JPanel {
                         JOptionPane.QUESTION_MESSAGE
                 );
                 if (reponse == JOptionPane.YES_OPTION) {
-                    // Journalisation
-                    User currentUser = parent.getCurrentUser();
-                    if (currentUser != null) {
-                        try {
-                            new ControleurJournalisation(daoFactory).enregistrerDeconnexion(currentUser.getIdUser());
-                        } catch (SQLException ex) {
-                            throw new RuntimeException(ex);
-                        }
-                    }
-
-                    // Fermeture propre
-                    parent.dispose();
-                    new VueConnexion(new DAOFormulaireIMPL(daoFactory)).setVisible(true);
+                    System.exit(0);
                 }
             }
         });

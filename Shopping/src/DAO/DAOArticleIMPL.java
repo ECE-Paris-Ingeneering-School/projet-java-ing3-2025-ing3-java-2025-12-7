@@ -29,7 +29,7 @@ public class DAOArticleIMPL implements DAOArticle {
         */
         try {
             // connexion
-            Connection connexion = daoFactory.getConnection();
+            Connection connexion = daoFactory.getConnection();;
             Statement statement = connexion.createStatement();
 
             // récupération des articles de la base de données avec la requete SELECT

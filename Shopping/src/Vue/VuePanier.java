@@ -215,7 +215,7 @@ public class VuePanier extends JPanel {
 //        }
 
         // Récupérer tous les produits depuis la base de données
-        DAOFactory daoFactory = DAOFactory.getInstance("shoppingbd","root","");
+        DAOFactory daoFactory = DAOFactory.getInstance("shoppingbd","root","root");
 
         // Utiliser DAOFactory pour obtenir une instance de DAOArticle
         DAOPanier daoPanier = daoFactory.getPanierDAO();
