@@ -12,7 +12,7 @@ import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 //classe qui affiche les produits biscuits
 public class VueProduitsBiscuits extends JPanel {
-    private final Color backgroundColor = new Color(245, 225, 207);
+    private final Color backgroundColor = new Color(198, 120, 96);
     private JPanel productsPanel;
     private Mywindow parent;
 

@@ -112,7 +112,7 @@ public class VueCompteAdmin extends JPanel {
         // Titre
         JLabel titreSection = new JLabel("Mes informations", JLabel.CENTER);
         titreSection.setFont(new Font("Arial", Font.BOLD, 16));
-        titreSection.setForeground(new Color(51, 85, 140));
+        titreSection.setForeground(new Color(3, 64, 38));
 
         // Ajouter le titre dans un panel séparé qui couvre les deux colonnes
         JPanel titreSectionPanel = new JPanel();

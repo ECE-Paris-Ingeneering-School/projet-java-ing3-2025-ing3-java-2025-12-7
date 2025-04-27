@@ -13,7 +13,7 @@ import java.util.ArrayList;
 
 //classe qui affiche tous les produits
 public class VueProduits extends JPanel {
-    private final Color backgroundColor = new Color(220, 223, 197);
+    private final Color backgroundColor = new Color(198, 120, 96);
     private Mywindow parent;
 
     public VueProduits(Mywindow parent) {

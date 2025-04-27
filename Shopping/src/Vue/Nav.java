@@ -35,7 +35,7 @@ public class Nav extends JPanel {
         for (int i = 0; i < nomsBoutons.length; i++) {
             boutons[i] = new JButton(nomsBoutons[i]);
             boutons[i].setForeground(new Color(255, 255, 255));
-            boutons[i].setBackground(new Color(255, 255, 255));
+            boutons[i].setBackground(new Color(170, 54, 54));
             final int index = i;
             boutons[i].addMouseListener(new MouseAdapter() {
                 @Override

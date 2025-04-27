@@ -19,7 +19,7 @@ import static java.lang.Integer.sum;
 
 public class VuePanier extends JPanel {
     private final Color backgroundColor = new Color(220, 223, 197);
-    private final Color headerColor = new Color(200, 203, 177);
+    private final Color headerColor = new Color(0, 0, 0);
     private final Color productColor = new Color(235, 238, 212);
     private JPanel productsContainer;
     private JLabel totalLabel;

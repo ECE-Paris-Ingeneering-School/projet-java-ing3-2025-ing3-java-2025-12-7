@@ -12,7 +12,7 @@ import Modele.User;
 
 //classe qui affiche les boissons
 public class VueProduitsBoissons extends JPanel {
-    private final Color backgroundColor = new Color(245, 225, 207);
+    private final Color backgroundColor = new Color(198, 120, 96);
     private Mywindow parent;
 
     public VueProduitsBoissons(Mywindow parent) {
