@@ -11,7 +11,7 @@ import java.awt.*;
 import java.awt.event.*;
 import java.awt.image.BufferedImage;
 import javax.swing.border.*;
-
+//
 public class VueCompteAdmin extends JPanel {
     private final Color backgroundColor = new Color(220, 223, 197);
     private final Color headerColor = new Color(200, 203, 177);
@@ -120,7 +120,7 @@ public class VueCompteAdmin extends JPanel {
         // Titre
         JLabel titreSection = new JLabel("Mes informations", JLabel.CENTER);
         titreSection.setFont(new Font("Arial", Font.BOLD, 16));
-        titreSection.setForeground(new Color(51, 85, 140));
+        titreSection.setForeground(new Color(3, 64, 38));
 
         // Ajouter le titre dans un panel séparé qui couvre les deux colonnes
         JPanel titreSectionPanel = new JPanel();

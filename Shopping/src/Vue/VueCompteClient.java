@@ -10,7 +10,7 @@ import java.awt.event.ActionListener;
 import java.text.SimpleDateFormat;
 import java.util.List;
 import java.util.Map;
-
+//
 public class VueCompteClient extends JPanel {
     private final Color backgroundColor = new Color(220, 223, 197);
     private final Color headerColor = new Color(200, 203, 177);
@@ -92,7 +92,7 @@ public class VueCompteClient extends JPanel {
         // Titre
         JLabel titreSection = new JLabel("Mes informations", JLabel.CENTER);
         titreSection.setFont(new Font("Arial", Font.BOLD, 16));
-        titreSection.setForeground(new Color(51, 85, 140));
+        titreSection.setForeground(new Color(3, 64, 38));
 
         // Ajouter le titre dans un panel séparé qui couvre les deux colonnes
         JPanel titreSectionPanel = new JPanel();
@@ -179,7 +179,7 @@ public class VueCompteClient extends JPanel {
         JTextArea messageLabel = new JTextArea("Vous n'avez\n" + "toujours pas\n" + "commandé ?");
         messageLabel.setFont(new Font("Arial", Font.BOLD, 15));
         messageLabel.setEditable(false);
-        messageLabel.setForeground(new Color(51, 85, 140));
+        messageLabel.setForeground(new Color(3, 64, 38));
         messagePanel.add(messageLabel, BorderLayout.CENTER);
 
         // Créer un panel pour que le label respecte l'alignement
@@ -195,7 +195,7 @@ public class VueCompteClient extends JPanel {
 
         // Bouton commander avec listener
         JButton commanderButton = new JButton("COMMANDER");
-        commanderButton.setBackground(new Color(76, 175, 80));
+        commanderButton.setBackground(new Color(3, 64, 38));
         commanderButton.setForeground(Color.WHITE);
         commanderButton.setFont(new Font("Arial", Font.BOLD, 14));
         commanderButton.setFocusPainted(false);

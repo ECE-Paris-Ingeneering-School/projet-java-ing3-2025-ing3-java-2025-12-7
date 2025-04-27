@@ -73,7 +73,7 @@ public class Panier {
         float montant=0;
 
         // Récupérer tous les paniers depuis la base de données
-        DAOFactory daoFactory = DAOFactory.getInstance("shoppingbd","root","root");
+        DAOFactory daoFactory = DAOFactory.getInstance("shoppingbd","root","");
 
         // Utiliser DAOFactory pour obtenir une instance de DAOPanier
         DAOArticle daoArticle = daoFactory.getDAOArticle();

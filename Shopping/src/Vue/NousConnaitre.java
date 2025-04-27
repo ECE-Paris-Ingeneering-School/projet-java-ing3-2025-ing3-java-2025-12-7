@@ -6,18 +6,18 @@ import java.awt.*;
 public class NousConnaitre extends JPanel {
     public NousConnaitre() {
         setLayout(new BorderLayout());
-        setBackground(new Color(220, 223, 197));
+        setBackground(new Color(216, 232, 173));
 
         JPanel mainPanel = new JPanel();
         mainPanel.setLayout(new BoxLayout(mainPanel, BoxLayout.Y_AXIS));
         mainPanel.setBackground(new Color(220, 223, 197));
-
+//
         // Titre
         JPanel titlePanel = new JPanel();
         titlePanel.setBackground(new Color(220, 223, 197));
         JLabel titre = new JLabel("Qui sommes-nous ?");
         titre.setFont(new Font("Serif", Font.BOLD, 26));
-        titre.setForeground(new Color(51, 85, 140));
+        titre.setForeground(new Color(3, 64, 38));
         titlePanel.add(titre);
         mainPanel.add(Box.createVerticalStrut(20));
         mainPanel.add(titlePanel);

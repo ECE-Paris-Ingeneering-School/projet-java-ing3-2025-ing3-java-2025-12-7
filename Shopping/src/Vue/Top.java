@@ -13,7 +13,7 @@ import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
-
+//
 //classe qui gere la barre de recherche et les icones
 public class Top extends JPanel {
     public JButton utilisateur;
@@ -32,7 +32,7 @@ public class Top extends JPanel {
 
         setLayout(new BorderLayout());
         setMaximumSize(new Dimension(800, 50));
-        setBackground(new Color(245, 225, 207));
+        setBackground(new Color(3, 64, 38));
         JLabel nomSite = new JLabel("Biscuits&Drinks.co", JLabel.LEFT);
         nomSite.setForeground(Color.BLACK);
 
