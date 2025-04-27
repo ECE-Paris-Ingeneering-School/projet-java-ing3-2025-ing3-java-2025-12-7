@@ -217,7 +217,7 @@ public class VueCompteClient extends JPanel {
                     newWindow.setVisible(true);
                 }
             }
-        });
+        });//
 
         panel.add(commanderButton);
 

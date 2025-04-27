@@ -37,7 +37,7 @@ public class Mywindow extends JFrame {
         headerPanel.setLayout(new BoxLayout(headerPanel, BoxLayout.Y_AXIS));
         headerPanel.add(top);
         headerPanel.add(nav);
-
+//
 
 
         // Créer le panel principal

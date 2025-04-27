@@ -87,7 +87,7 @@ public class VuePanier extends JPanel {
         titreSection.setFont(new Font("Arial", Font.BOLD, 16));
         titreSection.setAlignmentX(Component.CENTER_ALIGNMENT);
         panel.add(titreSection);
-        panel.add(Box.createVerticalStrut(80));
+        panel.add(Box.createVerticalStrut(80));//
 
         // Information de commande
         sousTotalRow = new createInfoRow("Sous total:", String.format("%.2f €", totalPrice));
