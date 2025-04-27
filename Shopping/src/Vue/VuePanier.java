@@ -122,11 +122,11 @@ public class VuePanier extends JPanel {
         validerButton.setFocusPainted(false);
         validerButton.setBorder(BorderFactory.createEmptyBorder(8, 15, 8, 15));
         validerButton.setCursor(new Cursor(Cursor.HAND_CURSOR));
-        validerButton.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                showConfirmationPopup();
-            }
-        });
+//        validerButton.addActionListener(new ActionListener() {
+//            public void actionPerformed(ActionEvent e) {
+//                showConfirmationPopup();
+//            }
+//        });
 
 
         ControleurPanier controleur = new ControleurPanier();
@@ -146,7 +146,7 @@ public class VuePanier extends JPanel {
 
             } else { // Client
 
-                //controleur.commander(validerButton,currentUser,this);
+                controleur.commander(validerButton,currentUser,this);
 
             }
         }
@@ -215,7 +215,7 @@ public class VuePanier extends JPanel {
 //        }
 
         // Récupérer tous les produits depuis la base de données
-        DAOFactory daoFactory = DAOFactory.getInstance("shoppingbd","root","");
+        DAOFactory daoFactory = DAOFactory.getInstance("shoppingbd","root","root");
 
         // Utiliser DAOFactory pour obtenir une instance de DAOArticle
         DAOPanier daoPanier = daoFactory.getPanierDAO();
@@ -369,11 +369,7 @@ public class VuePanier extends JPanel {
         imagePanel.setBorder(BorderFactory.createLineBorder(Color.GRAY));
 
         File imgFile = new File("Shopping/"+article.getImageArticle());
-        if (!imgFile.exists()) {
-            System.out.println("Image non trouvée : " + imgFile.getAbsolutePath());
-        } else {
-            System.out.println("Image trouvée : " + imgFile.getAbsolutePath());
-        }
+
         ImageIcon imageIcon = new ImageIcon("Shopping/"+article.getImageArticle());
         Image image = imageIcon.getImage().getScaledInstance(60, 60, Image.SCALE_SMOOTH); // redimensionne l'image
         JLabel imageLabel = new JLabel(new ImageIcon(image));

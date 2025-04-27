@@ -1,5 +1,7 @@
 package Vue;
 
+import Controleur.ControleurArticle;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
@@ -94,20 +96,24 @@ public class VueFicheSupprimer extends JFrame {
         mainPanel.add(buttonPanel, BorderLayout.SOUTH);
 
         // Listeners pour les boutons supprimer et annuler
-        SupprimerArticle.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                JOptionPane.showMessageDialog(
-                        VueFicheSupprimer.this,"Produit supprimé avec succès!", "Confirmation", JOptionPane.INFORMATION_MESSAGE);
-            }
-        });
 
-        Annuler.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                dispose();
-            }
-        });
+        ControleurArticle controleurArticle=new ControleurArticle();
+        controleurArticle.ValiderSupprimer(SupprimerArticle,this);
+        controleurArticle.AnnulerSupprimer(Annuler,this);
+//        SupprimerArticle.addActionListener(new ActionListener() {
+//            @Override
+//            public void actionPerformed(ActionEvent e) {
+//                JOptionPane.showMessageDialog(
+//                        VueFicheSupprimer.this,"Produit supprimé avec succès!", "Confirmation", JOptionPane.INFORMATION_MESSAGE);
+//            }
+//        });
+//
+//        Annuler.addActionListener(new ActionListener() {
+//            @Override
+//            public void actionPerformed(ActionEvent e) {
+//                dispose();
+//            }
+//        });
 
         setContentPane(mainPanel);
         setVisible(true);

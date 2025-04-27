@@ -29,6 +29,8 @@ public interface DAOArticle {
      */
     public ArrayList<Article> rechercher(String demande);
 
+
+
     /**
      * Permet de modifier les données du nom de l'objet de la classe Article en paramètre
      * dans la base de données à partir de l'id de cet objet en paramètre
