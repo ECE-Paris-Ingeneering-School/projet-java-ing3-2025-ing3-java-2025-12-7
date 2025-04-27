@@ -1,11 +1,15 @@
 package Vue;
 import Controleur.ControleurAdmin;
 import Controleur.ControleurClient;
+import Controleur.ControleurPanier;
+import Controleur.ControleurTop;
 import DAO.DAOFactory;
 import Modele.User;
 import Vue.VueCompteAdmin;
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
@@ -17,6 +21,7 @@ public class Top extends JPanel {
     public JButton deconnexion;
     private ControleurAdmin controleurAdmin;
     private ControleurClient controleurClient;
+   // private ControleurTop controleurTop;
     private Mywindow parent;
 
     public Top(Mywindow parent) {
@@ -33,6 +38,9 @@ public class Top extends JPanel {
 
         JTextField BarreRecherche = new JTextField("Rechercher");
         BarreRecherche.setEditable(true);
+        ControleurTop controleur = new ControleurTop();
+        controleur.actionRecherche(BarreRecherche,parent);
+
 
         JPanel icons = new JPanel(new FlowLayout(FlowLayout.RIGHT));
         icons.setBackground(new Color(245, 225, 207));

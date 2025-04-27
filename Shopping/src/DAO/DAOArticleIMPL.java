@@ -121,7 +121,15 @@ public class DAOArticleIMPL implements DAOArticle {
 
 
             // Exécution de la requête SELECT pour récupérer les produit de la demande dans la base de données
-            ResultSet resultats = statement.executeQuery("select * from produit where nomArticle="+demande+"or marqueArticle="+demande+"or typeArticle="+demande+"or categorieArticle="+demande);
+
+            String sql = "SELECT * FROM produit WHERE nomProduit =? OR marqueProduit=? OR typeProduit=? OR categorieProduit=?";
+            PreparedStatement stmt = connexion.prepareStatement(sql);
+            stmt.setString(1, demande);
+            stmt.setString(2, demande);
+            stmt.setString(3, demande);
+            stmt.setString(4, demande);
+
+            ResultSet resultats = stmt.executeQuery();
 
             // 	Se déplacer sur le prochain enregistrement : retourne false si la fin est atteinte
             while (resultats.next()) {
@@ -136,15 +144,16 @@ public class DAOArticleIMPL implements DAOArticle {
                 String categorieArticle = resultats.getString(7);
                 float reductionArticle = resultats.getFloat(8);
                 java.util.Date dateAjoutArticle = resultats.getDate(9);
-                java.util.Date datePeremptionArticle = resultats.getDate(10);
-                String imageArticle = resultats.getString(11);
+                java.util.Date datePeremptionArticle = resultats.getDate(11);
+                String imageArticle = resultats.getString(10);
 
                 // Si un article correspondant à la demande est trouvé, l'instancier et l'ajouter à la liste
-                if (demande == nomArticle || demande == marqueArticle || demande==categorieArticle || demande==typeArticle) {
+
                     // instanciation de l'objet d'Article avec Ses 11 champs puis ajout dans la liste
                     article = new Article(IDArticle,nomArticle,quantiteArticle,prixArticle,marqueArticle,typeArticle,categorieArticle,reductionArticle,dateAjoutArticle,datePeremptionArticle,imageArticle);
                     listeArticles.add(article);
-                }
+                    System.out.println(listeArticles.size());
+
             }
         }
         catch (SQLException e) {
