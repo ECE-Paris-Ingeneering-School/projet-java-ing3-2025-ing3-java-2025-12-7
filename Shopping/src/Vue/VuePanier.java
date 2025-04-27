@@ -11,6 +11,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
 import javax.swing.border.*;
+import java.io.File;
 import java.util.ArrayList;
 import java.util.Arrays;
 
@@ -364,11 +365,24 @@ public class VuePanier extends JPanel {
         // Cadre simple pour l'image
         JPanel imagePanel = new JPanel();
         imagePanel.setPreferredSize(new Dimension(60, 60));
-        imagePanel.setBackground(new Color(240, 240, 240));
+        //imagePanel.setBackground(new Color(240, 240, 240));
+        imagePanel.setBackground(new Color(220, 223, 197));
         imagePanel.setBorder(BorderFactory.createLineBorder(Color.GRAY));
-        JLabel imageLabel = new JLabel("Image");
+        imagePanel.setAlignmentX(Component.CENTER_ALIGNMENT);
+
+        File imgFile = new File(article.getImageArticle());
+        if (!imgFile.exists()) {
+            System.out.println("Image non trouvée : " + imgFile.getAbsolutePath());
+        } else {
+            System.out.println("Image trouvée : " + imgFile.getAbsolutePath());
+        }
+        ImageIcon imageIcon = new ImageIcon("Shopping/"+article.getImageArticle());
+        Image image = imageIcon.getImage().getScaledInstance(60, 60, Image.SCALE_SMOOTH); // redimensionne l’image
+        JLabel imageLabel = new JLabel(new ImageIcon(image));
         imageLabel.setForeground(Color.GRAY);
         imageLabel.setHorizontalAlignment(SwingConstants.CENTER);
+        imageLabel.setBorder(BorderFactory.createEmptyBorder(5, 5, 10, 5));
+
         imagePanel.add(imageLabel);
 
         contentPanel.add(imagePanel, BorderLayout.WEST);
