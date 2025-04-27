@@ -50,17 +50,17 @@ public class Marques extends JPanel {
         marquesPanel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
 
         String[][] marques = {
-                {"FIZZ", "C:\\Users\\kawid\\OneDrive\\Desktop\\ING3\\POO Java\\Projet\\welcomeSSSite.jpg"},
-                {"Alian Milliat", "C:\\Users\\kawid\\OneDrive\\Desktop\\ING3\\POO Java\\Projet\\welcomeSSSite.jpg"},
-                {"Meneau", "C:\\Users\\kawid\\OneDrive\\Desktop\\ING3\\POO Java\\Projet\\welcomeSSSite.jpg"},
-                {"Buddy", "C:\\Users\\kawid\\OneDrive\\Desktop\\ING3\\POO Java\\Projet\\welcomeSSSite.jpg"},
-                {"Ossa", "C:\\Users\\kawid\\OneDrive\\Desktop\\ING3\\POO Java\\Projet\\welcomeSSSite.jpg"},
-                {"Monin", "C:\\Users\\kawid\\OneDrive\\Desktop\\ING3\\POO Java\\Projet\\welcomeSSSite.jpg"},
-                {"Fauchon", "C:\\Users\\kawid\\OneDrive\\Desktop\\ING3\\POO Java\\Projet\\welcomeSSSite.jpg"},
-                {"Maison Colibri", "C:\\Users\\kawid\\OneDrive\\Desktop\\ING3\\POO Java\\Projet\\welcomeSSSite.jpg"},
-                {"La Sablésienne", "C:\\Users\\kawid\\OneDrive\\Desktop\\ING3\\POO Java\\Projet\\welcomeSSSite.jpg"},
-                {"Generous", "C:\\Users\\kawid\\OneDrive\\Desktop\\ING3\\POO Java\\Projet\\welcomeSSSite.jpg"},
-                {"KoRo", "C:\\Users\\kawid\\OneDrive\\Desktop\\ING3\\POO Java\\Projet\\welcomeSSSite.jpg"}
+                {"FIZZ", "Shopping/PHOTOS/fizz.jpg"},
+                {"Alain Milliat", "Shopping/PHOTOS/milliat.jpg"},
+                {"Meneau", "Shopping/PHOTOS/meneau.jpg"},
+                {"Buddy", "Shopping/PHOTOS/buddy.jpg"},
+                {"Ossa", "Shopping/PHOTOS/ossa.jpg"},
+                {"Monin", "Shopping/PHOTOS/monin.jpg"},
+                {"Fauchon", "Shopping/PHOTOS/fauchon.jpg"},
+                {"Maison Colibri", "Shopping/PHOTOS/colibri.jpg"},
+                {"La Sablésienne", "Shopping/PHOTOS/sablesienne.jpg"},
+                {"Generous", "Shopping/PHOTOS/generous.jpg"},
+                {"KoRo", "Shopping/PHOTOS/koro.jpg"}
         };
 
         for (String[] marque : marques) {
