@@ -1,5 +1,7 @@
 package Vue;
 
+import Controleur.ControleurArticle;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
@@ -14,6 +16,7 @@ public class VueFicheAjouter extends JFrame {
     private JTextField MARQUE;
     private JTextField PRIX;
     private JComboBox<String> categorie;
+    private JComboBox<String> type;
     private JTextField datePeremp;
     private JButton AjouterArticle;
     private JButton Annuler;
@@ -47,27 +50,32 @@ public class VueFicheAjouter extends JFrame {
         gbc.insets = new Insets(4, 4, 4, 4);
         gbc.anchor = GridBagConstraints.WEST;
 
-        ID = createStyledTextField();
+        //ID = createStyledTextField();
         NOM = createStyledTextField();
         QUANTITE = createStyledTextField();
         MARQUE = createStyledTextField();
         PRIX = createStyledTextField();
-        String[] categories = {"Biscuit", "Boisson"};
+        String[] categories = {"Limonade", "Jus de fruit","Sirop","Thé glacé","Boisson énergisante","Cookies","Biscuits","Madeleines","Sablés","Gaufrettes"};
         categorie = new JComboBox<>(categories);
         categorie.setBackground(Color.WHITE);
         categorie.setPreferredSize(new Dimension(150, 25));
+        String[] types = {"Biscuit", "Boisson"};
+        type = new JComboBox<>(types);
+        type.setBackground(Color.WHITE);
+        type.setPreferredSize(new Dimension(150, 25));
         datePeremp = new JTextField(10);
         datePeremp.setPreferredSize(new Dimension(150, 25));
         datePeremp.setBorder(BorderFactory.createCompoundBorder(BorderFactory.createLineBorder(new Color(180, 180, 180)), BorderFactory.createEmptyBorder(3, 5, 3, 5)));
         datePeremp.setText("");
 
         int row = 0;
-        addFormField(formPanel, gbc, "ID:", ID, row++);
+        //addFormField(formPanel, gbc, "ID:", ID, row++);
         addFormField(formPanel, gbc, "Nom:", NOM, row++);
         addFormField(formPanel, gbc, "Quantité:", QUANTITE, row++);
         addFormField(formPanel, gbc, "Prix (€):", PRIX, row++);
         addFormField(formPanel, gbc, "Marque:", MARQUE, row++);
         addFormField(formPanel, gbc, "Catégorie:", categorie, row++);
+        addFormField(formPanel, gbc, "Type:", type, row++);
         addFormField(formPanel, gbc, "Date de péremption:", datePeremp, row++);
 
         JScrollPane scrollPane = new JScrollPane(formPanel);
@@ -93,21 +101,25 @@ public class VueFicheAjouter extends JFrame {
 
         mainPanel.add(buttonPanel, BorderLayout.SOUTH);
 
-        // Listeners pour les boutons ajouter et annuler
-        AjouterArticle.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                JOptionPane.showMessageDialog(
-                        VueFicheAjouter.this,"Produit ajoute avec succès!", "Confirmation", JOptionPane.INFORMATION_MESSAGE);
-            }
-        });
+        ControleurArticle controleurArticle = new ControleurArticle();
+        controleurArticle.ValiderAjouter(AjouterArticle,this);
+        controleurArticle.AnnulerAjouter(Annuler,this);
 
-        Annuler.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                dispose();
-            }
-        });
+//        // Listeners pour les boutons ajouter et annuler
+//        AjouterArticle.addActionListener(new ActionListener() {
+//            @Override
+//            public void actionPerformed(ActionEvent e) {
+//                JOptionPane.showMessageDialog(
+//                        VueFicheAjouter.this,"Produit ajoute avec succès!", "Confirmation", JOptionPane.INFORMATION_MESSAGE);
+//            }
+//        });
+
+//        Annuler.addActionListener(new ActionListener() {
+//            @Override
+//            public void actionPerformed(ActionEvent e) {
+//                dispose();
+//            }
+//        });
 
         setContentPane(mainPanel);
         setVisible(true);

@@ -1,13 +1,17 @@
 
 package Vue;
+
 import Controleur.ControleurAdmin;
+import Controleur.ControleurArticle;
 import Modele.Administrateur;
 import Vue.createInfoRow;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
 import java.awt.image.BufferedImage;
 import javax.swing.border.*;
+
 public class VueCompteAdmin extends JPanel {
     private final Color backgroundColor = new Color(220, 223, 197);
     private final Color headerColor = new Color(200, 203, 177);
@@ -73,7 +77,11 @@ public class VueCompteAdmin extends JPanel {
         gbc.gridx = 1;
         gbc.weightx = 0.3;
         gbc.insets = new Insets(0, 0, 0, 0);
-        JPanel commanderPanel = createModifsPanelAdmin();
+
+        JButton ajouter = new JButton();
+        JButton modifier = new JButton();
+        JButton supprimer = new JButton();
+        JPanel commanderPanel = createModifsPanelAdmin(ajouter, modifier, supprimer);
         topPanel.add(commanderPanel, gbc);
 
         // Ajouter le panneau supérieur au panneau principal
@@ -166,7 +174,7 @@ public class VueCompteAdmin extends JPanel {
         return panel;
     }
 
-    private JPanel createModifsPanelAdmin() {
+    private JPanel createModifsPanelAdmin(JButton ajouterProduitButton, JButton modifierProduitButton, JButton supprimerProduitButton) {
         JPanel panel = new JPanel();
         panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
         panel.setBackground(Color.WHITE);
@@ -182,7 +190,8 @@ public class VueCompteAdmin extends JPanel {
 
 
         // Boutons ajouter modifier et supprimer et stats avec listener
-        JButton ajouterProduitButton = new JButton("Ajouter un Produit");
+        //JButton ajouterProduitButton = new JButton("Ajouter un Produit");
+        ajouterProduitButton.setText("Ajouter un Produit");
         ajouterProduitButton.setBackground(new Color(175, 99, 76));
         ajouterProduitButton.setForeground(Color.WHITE);
         ajouterProduitButton.setFont(new Font("Arial", Font.BOLD, 10));
@@ -190,17 +199,18 @@ public class VueCompteAdmin extends JPanel {
         ajouterProduitButton.setBorder(BorderFactory.createEmptyBorder(10, 20, 10, 20));
         ajouterProduitButton.setCursor(new Cursor(Cursor.HAND_CURSOR));
         ajouterProduitButton.setAlignmentX(Component.CENTER_ALIGNMENT);
-        ajouterProduitButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                VueFicheAjouter vueAjoutP = new VueFicheAjouter();
-                vueAjoutP.setVisible(true);
-            }
-
-        });
+//        ajouterProduitButton.addActionListener(new ActionListener() {
+//            @Override
+//            public void actionPerformed(ActionEvent e) {
+//                VueFicheAjouter vueAjoutP = new VueFicheAjouter();
+//                vueAjoutP.setVisible(true);
+//            }
+//
+//        });
         panel.add(ajouterProduitButton);
         panel.add(Box.createVerticalStrut(30));
-        JButton modifierProduitButton = new JButton("Modifier un Produit");
+        //JButton modifierProduitButton = new JButton("Modifier un Produit");
+        modifierProduitButton.setText("Modifier un Produit");
         modifierProduitButton.setBackground(new Color(175, 99, 76));
         modifierProduitButton.setForeground(Color.WHITE);
         modifierProduitButton.setFont(new Font("Arial", Font.BOLD, 10));
@@ -208,17 +218,18 @@ public class VueCompteAdmin extends JPanel {
         modifierProduitButton.setBorder(BorderFactory.createEmptyBorder(10, 20, 10, 20));
         modifierProduitButton.setCursor(new Cursor(Cursor.HAND_CURSOR));
         modifierProduitButton.setAlignmentX(Component.CENTER_ALIGNMENT);
-        modifierProduitButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                VueFicheModifier vueModifP = new VueFicheModifier();
-                vueModifP.setVisible(true);
-            }
-
-        });
+//        modifierProduitButton.addActionListener(new ActionListener() {
+//            @Override
+//            public void actionPerformed(ActionEvent e) {
+//                VueFicheModifier vueModifP = new VueFicheModifier();
+//                vueModifP.setVisible(true);
+//            }
+//
+//        });
         panel.add(modifierProduitButton);
         panel.add(Box.createVerticalStrut(30));
-        JButton supprimerProduitButton = new JButton("Supprimer un Produit");
+        //JButton supprimerProduitButton = new JButton("Supprimer un Produit");
+        supprimerProduitButton.setText("Supprimer un Produit");
         supprimerProduitButton.setBackground(new Color(175, 99, 76));
         supprimerProduitButton.setForeground(Color.WHITE);
         supprimerProduitButton.setFont(new Font("Arial", Font.BOLD, 10));
@@ -226,16 +237,21 @@ public class VueCompteAdmin extends JPanel {
         supprimerProduitButton.setBorder(BorderFactory.createEmptyBorder(10, 20, 10, 20));
         supprimerProduitButton.setCursor(new Cursor(Cursor.HAND_CURSOR));
        supprimerProduitButton.setAlignmentX(Component.CENTER_ALIGNMENT);
-        supprimerProduitButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                VueFicheSupprimer vueSupP = new VueFicheSupprimer();
-                vueSupP.setVisible(true);
-            }
-
-        });
+//        supprimerProduitButton.addActionListener(new ActionListener() {
+//            @Override
+//            public void actionPerformed(ActionEvent e) {
+//                VueFicheSupprimer vueSupP = new VueFicheSupprimer();
+//                vueSupP.setVisible(true);
+//            }
+//
+//        });
         panel.add(supprimerProduitButton);
         panel.add(Box.createVerticalStrut(30));
+
+        ControleurArticle controleurArticle = new ControleurArticle();
+        controleurArticle.boutonAjouter(ajouterProduitButton);
+        controleurArticle.boutonModifier(modifierProduitButton);
+        controleurArticle.boutonSupprimer(supprimerProduitButton);
 
         JButton statButton = new JButton("Vos statistiques");
         statButton.setBackground(new Color(51, 85, 140));

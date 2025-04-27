@@ -1,4 +1,6 @@
 package Vue;
+import Controleur.ControleurArticle;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
@@ -98,19 +100,23 @@ public class VueFicheModifier extends JFrame {
         mainPanel.add(buttonPanel, BorderLayout.SOUTH);
 
         // Listeners pour les boutons
-        ModifierArticle.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                JOptionPane.showMessageDialog(VueFicheModifier.this, "Produit modifié avec succès!", "Confirmation", JOptionPane.INFORMATION_MESSAGE);
-            }
-        });
+        ControleurArticle controleurArticle=new ControleurArticle();
+        controleurArticle.ValiderModifier(ModifierArticle,this);
+        controleurArticle.AnnulerModifier(Annuler,this);
 
-        Annuler.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                dispose();
-            }
-        });
+//        ModifierArticle.addActionListener(new ActionListener() {
+//            @Override
+//            public void actionPerformed(ActionEvent e) {
+//                JOptionPane.showMessageDialog(VueFicheModifier.this, "Produit modifié avec succès!", "Confirmation", JOptionPane.INFORMATION_MESSAGE);
+//            }
+//        });
+//
+//        Annuler.addActionListener(new ActionListener() {
+//            @Override
+//            public void actionPerformed(ActionEvent e) {
+//                dispose();
+//            }
+//        });
 
         setContentPane(mainPanel);
         setVisible(true);
