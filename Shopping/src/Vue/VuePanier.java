@@ -14,6 +14,8 @@ import javax.swing.border.*;
 import java.util.ArrayList;
 import java.util.Arrays;
 
+import static java.lang.Integer.sum;
+
 public class VuePanier extends JPanel {
     private final Color backgroundColor = new Color(220, 223, 197);
     private final Color headerColor = new Color(200, 203, 177);
@@ -52,8 +54,10 @@ public class VuePanier extends JPanel {
         content.setMaximumSize(new Dimension(900, 400));
         content.setPreferredSize(new Dimension(900, 400));
 
+        JButton validerButton = new JButton();
+
         // Création des panneaux d'information
-        JPanel infoPanier = createInfoPanierPanel();
+        JPanel infoPanier = createInfoPanierPanel(validerButton,parent);
         JPanel infosPanier = createInfoPanier(parent);
 
 
@@ -72,7 +76,8 @@ public class VuePanier extends JPanel {
         setVisible(true);
     }
 
-    private JPanel createInfoPanierPanel() {
+    private JPanel createInfoPanierPanel(JButton validerButton, Mywindow parent) {
+        this.parent = parent;
         JPanel panel = new JPanel();
         panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
         panel.setBackground(Color.WHITE);
@@ -107,7 +112,8 @@ public class VuePanier extends JPanel {
         panel.add(Box.createVerticalStrut(25));
 
         // Bouton de validation
-        JButton validerButton = new JButton("VALIDER MA COMMANDE");
+
+        validerButton.setText("VALIDER MA COMMANDE");
         validerButton.setAlignmentX(Component.CENTER_ALIGNMENT);
         validerButton.setBackground(new Color(76, 175, 80));
         validerButton.setForeground(Color.WHITE);
@@ -120,6 +126,32 @@ public class VuePanier extends JPanel {
                 showConfirmationPopup();
             }
         });
+
+
+        ControleurPanier controleur = new ControleurPanier();
+
+        User currentUser = parent.getCurrentUser(); // Utiliser le getter
+
+        if (currentUser == null) {
+            JOptionPane.showMessageDialog(parent,
+                    "Veuillez vous connecter",
+                    "Erreur",
+                    JOptionPane.WARNING_MESSAGE);
+
+        }
+
+        if (currentUser != null) {
+            if (currentUser.getStatutUser() == 1) { // Admin
+
+            } else { // Client
+
+                controleur.commander(validerButton,currentUser,this);
+
+            }
+        }
+
+
+
         panel.add(validerButton);
 
         return panel;
@@ -236,6 +268,12 @@ public class VuePanier extends JPanel {
             totalPrice = panier.calculMontant(arts, quants);
             nbProducts = Arrays.stream(quants).sum(); // mise à jour du nombre de produits
             totalLabel.setText(String.format("Total: %.2f €", totalPrice));
+            sousTotalRow.setText(String.format("%.2f €", totalPrice));
+            int nbProduits = 0;
+            for (int q : quants) {
+                nbProduits += q;
+            }
+            nbProduitsRow.setText(String.valueOf(nbProduits));
 
             //Création des panels pour chaque article
             for (int i=0;i<arts.length;i++){
@@ -516,7 +554,7 @@ public class VuePanier extends JPanel {
         return productPanel;
     }
 
-    private void showConfirmationPopup() {
+    public void showConfirmationPopup() {
         // Création de la fenêtre popup
         JDialog popup = new JDialog();
 

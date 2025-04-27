@@ -49,7 +49,7 @@ public interface DAOPanier {
      * @param idClient en parametre
      * @return  : objet panier commandé
      */
-    public Panier commander (int idClient);
+    public Panier supprimer (int idClient);
 
     /**
      * Permet d'augmenter la quantité de 1 d'un article spécifique dans un panier

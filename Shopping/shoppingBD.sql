@@ -40,7 +40,7 @@ CREATE TABLE Client (
 )ENGINE=MyISAM;
 
 CREATE TABLE Commande (
-   idCommande           INT NOT NULL,
+   idCommande           INT NOT NULL AUTO_INCREMENT,
    idUser               INT NULL,
    montantCommande      FLOAT NULL,
    produitsCommandes    VARCHAR (254) NULL,

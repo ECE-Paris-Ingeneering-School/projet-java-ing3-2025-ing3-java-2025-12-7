@@ -345,8 +345,36 @@ public class DAOPanierIMPL implements DAOPanier{
      * @param idClient en parametre
      * @return  : objet panier commandé
      */
-    public Panier commander (int idClient){
-        //1. recupere le panier avec l'id 2. appelle le Dao de créer une commande 3; juste utile parce qu'il faut vider le panier -> update retirer
+    public Panier supprimer (int idClient){
+
+        Panier panier = new Panier();
+        try{
+            Connection connexion = daoFactory.getConnection();
+            Statement statement = connexion.createStatement();
+
+            DAOPanier daoPanier = daoFactory.getPanierDAO();
+
+            panier=daoPanier.UnPanier(idClient);
+
+
+
+            // Exécution de la requête UPDATE avec la nouvelle liste
+            PreparedStatement preparedStatement = connexion.prepareStatement(
+                    "DELETE FROM panier WHERE idPanier = ?"
+            );
+
+            preparedStatement.setInt(1, panier.getIDPanier());
+
+            //Execution
+            preparedStatement.executeUpdate();
+
+            System.out.println("Panier supprimé");
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+            System.out.println("Impossible de supprimer le panier");
+        }
+
         return null;
     }
 
