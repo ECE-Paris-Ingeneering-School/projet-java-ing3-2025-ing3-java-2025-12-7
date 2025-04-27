@@ -1,7 +1,9 @@
-/// * Ajouter un controle pour vérifier qu'il n'y a pas 2 emails identiques
-/// *
-///
+/* Source : https://sql.sh/cours/create-table/auto_increment
+Série de vidéo : https://www.youtube.com/watch?v=n2_1tYv5oY8
+Vidéo : https://www.youtube.com/watch?v=nIQatIpL_GE
 
+ALLER VOIR L INTERFACE DAOFormulaire.java POUR LES COMMENTAIRES JAVADOC DE CE FICHIER
+ */
 
 package DAO;
 
@@ -13,10 +15,11 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 
+// Gestion de l'inscription et de la connexion des utilisateurs
 public class DAOFormulaireIMPL implements DAOFormulaire {
     private DAOFactory daoFactory;
 
-    // constructeur dépendant de la classe DAOFactory
+    //Constructeur de la classe DAOFormulaireIMPL
     public DAOFormulaireIMPL(DAOFactory daoFactory) {
         this.daoFactory = daoFactory;
     }
@@ -24,7 +27,7 @@ public class DAOFormulaireIMPL implements DAOFormulaire {
     //Méthode inscrireClient(), vérifie le remplissage des champs, enregistrement du client dans la table mère User et fille Client
     public boolean inscrireClient(String nom, String prenom, String dateNaissance, String email, String adresse, String mdp, String confirmerMdp) {
 
-        // Vérification du remplissage des champs
+        //Vérification du remplissage des champs d'inscription
         if (nom.isEmpty() || prenom.isEmpty() || email.isEmpty() || adresse.isEmpty()|| mdp.isEmpty()) {
             return false;
         }
@@ -55,7 +58,7 @@ public class DAOFormulaireIMPL implements DAOFormulaire {
                 // Récupération de la clé primaire générée (idUser)
                 try (ResultSet generatedKeys = preparedStatement.getGeneratedKeys()) {
                     if (generatedKeys.next()) {
-                        newIdUser = generatedKeys.getInt(1); // ID généré automatiquement et enregistré dans la table Client
+                        newIdUser = generatedKeys.getInt(1); // Lire l'ID généré automatiquement dans la BD et l'enregistré dans la table Client
                     } else {
                         return false; //Erreur : pas de clé générée
                     }
@@ -80,6 +83,7 @@ public class DAOFormulaireIMPL implements DAOFormulaire {
             }
 
             return true; // Inscription réussie
+
         } catch(SQLException e) {
             e.printStackTrace();
             return false; // Erreur SQL
@@ -100,16 +104,18 @@ public class DAOFormulaireIMPL implements DAOFormulaire {
             PreparedStatement preparedStatement = connexion.prepareStatement(query);
             preparedStatement.setString(1, email);
             preparedStatement.setString(2, mdp);
+
+            //Exécution
             ResultSet resultats = preparedStatement.executeQuery();
 
-            //Correspondance dans la base : création d'un objet User
+            //Correspondance dans la base
             if (resultats.next()) {
                 int id = resultats.getInt("IDUser");
                 String mail = resultats.getString("mailUser");
                 String motDePasse = resultats.getString("mdpUser");
                 int statut = resultats.getInt("statutUSer");
 
-                // Crée l'utilisateur
+                // Création d'un objet User à partir des infos de l'utilisateur
                 return new User(id, motDePasse, mail, statut, "", "");
             } else {
                 return null; //Pas d'utilisateur corespondant trouvé
@@ -120,6 +126,8 @@ public class DAOFormulaireIMPL implements DAOFormulaire {
         }
 
     }
+
+
     public DAOFactory getDaoFactory() {
         return this.daoFactory;
     }
