@@ -87,7 +87,7 @@ public class VuePanier extends JPanel {
         titreSection.setFont(new Font("Arial", Font.BOLD, 16));
         titreSection.setAlignmentX(Component.CENTER_ALIGNMENT);
         panel.add(titreSection);
-        panel.add(Box.createVerticalStrut(15));
+        panel.add(Box.createVerticalStrut(80));
 
         // Information de commande
         sousTotalRow = new createInfoRow("Sous total:", String.format("%.2f €", totalPrice));
@@ -103,26 +103,7 @@ public class VuePanier extends JPanel {
         panel.add(separator);
         panel.add(Box.createVerticalStrut(15));
 
-        // Connexion
-        JLabel messageConnexion = new JLabel("Veuillez vous connecter pour commander");
-        messageConnexion.setAlignmentX(Component.CENTER_ALIGNMENT);
-        messageConnexion.setFont(new Font("Arial", Font.ITALIC, 12));
-        panel.add(messageConnexion);
-        panel.add(Box.createVerticalStrut(10));
 
-        JButton connectButton = createStyledButton("Se Connecter");
-        panel.add(connectButton);
-        panel.add(Box.createVerticalStrut(15));
-
-        // Inscription
-        JLabel messageInscription = new JLabel("Vous n'êtes pas encore inscrit ?");
-        messageInscription.setAlignmentX(Component.CENTER_ALIGNMENT);
-        messageInscription.setFont(new Font("Arial", Font.ITALIC, 12));
-        panel.add(messageInscription);
-        panel.add(Box.createVerticalStrut(5));
-
-        JButton inscriptionButton = createStyledButton("S'inscrire");
-        panel.add(inscriptionButton);
         panel.add(Box.createVerticalStrut(25));
 
         // Bouton de validation

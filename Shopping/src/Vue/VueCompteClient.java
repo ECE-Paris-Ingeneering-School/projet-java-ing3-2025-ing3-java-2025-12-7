@@ -206,8 +206,17 @@ public class VueCompteClient extends JPanel {
         // Ajout du listener pour naviguer vers VueProduits
         commanderButton.addActionListener(new ActionListener() {
             @Override
-            public void actionPerformed(ActionEvent e) {}
-
+            public void actionPerformed(ActionEvent e) {
+                if (parentFrame instanceof Mywindow) {
+                    Mywindow window = (Mywindow) parentFrame;
+                    VueProduits produits = new VueProduits(window);
+                    window.addAndShowPanel(produits, "produits");
+                } else {
+                    // Cas où parentFrame n'est pas une instance de Mywindow
+                    Mywindow newWindow = new Mywindow(client);
+                    newWindow.setVisible(true);
+                }
+            }
         });
 
         panel.add(commanderButton);

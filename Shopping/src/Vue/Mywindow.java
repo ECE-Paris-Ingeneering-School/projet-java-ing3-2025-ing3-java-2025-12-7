@@ -28,25 +28,30 @@ public class Mywindow extends JFrame {
         mainPanel = new JPanel();
         mainPanel.setLayout(new BoxLayout(mainPanel, BoxLayout.Y_AXIS));
         mainPanel.setBackground(new Color(220, 223, 197));
+
         // Créer les composants Top et Nav avec référence à cette fenêtre
         top = new Top(this);
         nav = new Nav(this);
 
-        // Panel fixe du haut avec Top et Nav
         JPanel headerPanel = new JPanel();
         headerPanel.setLayout(new BoxLayout(headerPanel, BoxLayout.Y_AXIS));
         headerPanel.add(top);
         headerPanel.add(nav);
 
-        // Panel de contenu avec CardLayout pour les différentes vues, le cardlayout nous permet de naviger entre les différents panels
+
+
+        // Créer le panel principal
+        JPanel productsPanel = new VueProduits(this);
+
+        // Panel de contenu avec CardLayout pour les différentes vues
         cardLayout = new CardLayout();
         contentPanel = new JPanel(cardLayout);
 
         // Ajouter la page d'accueil par défaut
         JPanel homePage = new JPanel();
         homePage.setLayout(new BoxLayout(homePage, BoxLayout.Y_AXIS));
-        homePage.add(new FiltrerTrier());
-        homePage.add(new ImageP());
+
+        homePage.add(productsPanel);
         homePage.add(new Bottom());
         contentPanel.add(homePage, "home");
 
@@ -58,7 +63,7 @@ public class Mywindow extends JFrame {
         setVisible(true);
     }
 
-    public  User getCurrentUser(){
+    public User getCurrentUser(){
         return this.currentUser;
     }
 
