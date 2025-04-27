@@ -64,18 +64,39 @@ public class Mywindow extends JFrame {
 
     // Méthode pour ajouter un panel et l'afficher
     public void addAndShowPanel(JPanel panel, String name) {
-        boolean exists = false;
+//        boolean exists = false;
+//        Component[] components = contentPanel.getComponents();
+//        for (Component comp : components) {
+//            if (comp.getName() != null && comp.getName().equals(name)) {
+//                exists = true;
+//                break;
+//            }
+//        }
+//        if (!exists) {
+//            panel.setName(name);
+//            contentPanel.add(panel, name);
+//        }
+//        cardLayout.show(contentPanel, name);
+
+
+        // Supprimer l'ancien panel s'il existe déjà
         Component[] components = contentPanel.getComponents();
         for (Component comp : components) {
             if (comp.getName() != null && comp.getName().equals(name)) {
-                exists = true;
+                contentPanel.remove(comp);
                 break;
             }
         }
-        if (!exists) {
-            panel.setName(name);
-            contentPanel.add(panel, name);
-        }
+
+        // Ajouter le nouveau panel
+        panel.setName(name);
+        contentPanel.add(panel, name);
+
+        // Afficher le panel avec CardLayout
         cardLayout.show(contentPanel, name);
+
+        // Rafraîchir l'affichage
+        contentPanel.revalidate();
+        contentPanel.repaint();
     }
 }

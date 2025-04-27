@@ -76,6 +76,8 @@ public class Top extends JPanel {
                 getIconTop(1);
                 VuePanier pagePanier = new VuePanier(parent);
                 parent.addAndShowPanel(pagePanier, "panier");
+
+
             }
         });
         deconnexion.addMouseListener(new MouseAdapter() {

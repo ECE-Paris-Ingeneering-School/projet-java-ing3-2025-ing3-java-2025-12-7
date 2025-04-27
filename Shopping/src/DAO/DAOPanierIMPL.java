@@ -5,6 +5,8 @@ import Modele.Panier;
 
 import java.sql.*;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 import java.util.StringJoiner;
 
 //DANS CHAQUE CODE DU DAO POUR LA CONNEXION A LA BASE DE DONNEES; IL FAUT ADAPTER LE MESSAGE ET LE STATEMENT DU CATCH A CHAQUE CODE
@@ -265,41 +267,53 @@ public class DAOPanierIMPL implements DAOPanier{
             String lesQuantites= panier.getQuantite();
             int IDPanier = panier.getIDPanier();
 
-            //Trouve la position de l'article à supprimer
-            int position = lesArticles.indexOf(article.getIDArticle());
+
 
             //Supprime l'article
             String[] articles = lesArticles.split(",");
-            articles[position]="";
 
-            //Retransforme en string la nouvelle liste des ID
-            StringJoiner stringJoiner =  new StringJoiner(",",  "",  "") ;
-            for (int i=0;i<articles.length;i++){
-                stringJoiner.add(articles[i]);
-            }
-            String NlesArticles = stringJoiner.toString() ;
+            //Trouve la position de l'article à supprimer
+            int position = -1;
 
-
-            //Supprime la quantité
-            String[] quantites = lesQuantites.split(",");
-            quantites[position]="";
-
-            //Retransforme en string la nouvelle liste des quantités
-            StringJoiner stringJoiner2 =  new StringJoiner(",",  "",  "") ;
-            for (int i=0;i<quantites.length;i++){
-                stringJoiner2.add(quantites[i]);
-            }
-            String NlesQuantites = stringJoiner2.toString() ;
-
-            int[] arts=new int[articles.length];
-            for (int i=0;i<articles.length;i++){
-                arts[i]=Integer.parseInt(articles[i]);
+            for (int i = 0; i < articles.length; i++) {
+                if (articles[i].equals(String.valueOf(article.getIDArticle()))) {
+                    position = i;
+                    break;
+                }
             }
 
-            int[] quants = new int[quantites.length];
-            for (int i=0;i<quantites.length;i++){
-                quants[i]=Integer.parseInt(quantites[i]);
+            if (position == -1) {
+                System.out.println("Article non trouvé dans le panier");
+                return;
             }
+
+            List<String> listeArticles = new ArrayList<>(Arrays.asList(lesArticles.split(",")));
+            List<String> listeQuantites = new ArrayList<>(Arrays.asList(lesQuantites.split(",")));
+
+
+            for (int i = 0; i < listeArticles.size(); i++) {
+                if (listeArticles.get(i).equals(String.valueOf(article.getIDArticle()))) {
+                    position = i;
+                    break;
+                }
+            }
+
+            if (position == -1) {
+                System.out.println("Article non trouvé dans le panier");
+                return;
+            }
+
+            // Supprime l'article et sa quantité
+            listeArticles.remove(position);
+            listeQuantites.remove(position);
+
+            // Reformate les chaînes
+            String NlesArticles = String.join(",", listeArticles);
+            String NlesQuantites = String.join(",", listeQuantites);
+
+            // Conversion en tableaux d'entiers pour le calcul du montant
+            int[] arts = listeArticles.stream().mapToInt(Integer::parseInt).toArray();
+            int[] quants = listeQuantites.stream().mapToInt(Integer::parseInt).toArray();
 
 
             float montant=panier.calculMontant(arts,quants);

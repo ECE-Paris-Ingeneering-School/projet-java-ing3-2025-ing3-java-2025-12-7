@@ -12,6 +12,7 @@ import java.awt.*;
 import java.awt.event.*;
 import javax.swing.border.*;
 import java.util.ArrayList;
+import java.util.Arrays;
 
 public class VuePanier extends JPanel {
     private final Color backgroundColor = new Color(220, 223, 197);
@@ -170,6 +171,18 @@ public class VuePanier extends JPanel {
         productsContainer.setBackground(backgroundColor);
         productsContainer.setBorder(BorderFactory.createEmptyBorder(5, 0, 5, 0));
 
+
+        // Panneau de sous-total en bas
+        JPanel totalPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT));
+        totalPanel.setBackground(headerColor);
+        totalPanel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 20));
+
+        totalLabel = new JLabel(String.format("Total: %.2f €", totalPrice));
+        totalLabel.setFont(new Font("Arial", Font.BOLD, 16));
+        totalPanel.add(totalLabel);
+
+        panel.add(totalPanel, BorderLayout.SOUTH);
+
 //        // Données des produits avec leur prix unitaire
 //        Object[][] produits = {
 //                {"Cookies chocolat", "Cookies aux pépites de chocolat", 2, 5.99},
@@ -212,13 +225,14 @@ public class VuePanier extends JPanel {
 
                 //Réupère le panier cu client connecté
                 panier = daoPanier.UnPanier(currentUser.getIdUser());
+                System.out.println("On a bien le panier du User");
 
             }
         }
-        if (panier == null) {
-            JLabel noProductsLabel = new JLabel("Votre panier est vide");
-            productsContainer.add(noProductsLabel);
-        }else{
+        if (panier != null) {
+
+
+            System.out.println("JESUISLA");
             //Recupère les listes des id des produits et des quantites
             String lesArticles= panier.getArticles();
             String lesQuantites= panier.getQuantite();
@@ -237,6 +251,12 @@ public class VuePanier extends JPanel {
                 quants[i]=Integer.parseInt(quantites[i]);
             }
 
+            // Calcul du montant total avant de créer les labels pour la première vue
+            totalPrice = panier.calculMontant(arts, quants);
+            nbProducts = Arrays.stream(quants).sum(); // mise à jour du nombre de produits
+            totalLabel.setText(String.format("Total: %.2f €", totalPrice));
+
+            //Création des panels pour chaque article
             for (int i=0;i<arts.length;i++){
                 Article article=daoArticle.unarticle(arts[i]);
                 JButton boutoncroix = new JButton();
@@ -252,12 +272,21 @@ public class VuePanier extends JPanel {
                         boutoncroix,
                         article.getReductionArticle(),
                         article,
-                        currentUser
+                        currentUser,
+                        totalLabel,
+                        nbProduitsRow,
+                        sousTotalRow
+
                 );
                 productsContainer.add(productPanel);
                 productsContainer.add(Box.createVerticalStrut(10));
             }
 
+        }else{
+
+            JLabel noProductsLabel = new JLabel("Votre panier est vide");
+            System.out.println("Je recharge a chaque appuie");
+            productsContainer.add(noProductsLabel);
         }
 
 
@@ -269,21 +298,12 @@ public class VuePanier extends JPanel {
 
         panel.add(scrollPane, BorderLayout.CENTER);
 
-        // Panneau de sous-total en bas
-        JPanel totalPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT));
-        totalPanel.setBackground(headerColor);
-        totalPanel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 20));
 
-        totalLabel = new JLabel(String.format("Total: %.2f €", totalPrice));
-        totalLabel.setFont(new Font("Arial", Font.BOLD, 16));
-        totalPanel.add(totalLabel);
-
-        panel.add(totalPanel, BorderLayout.SOUTH);
 
         return panel;
     }
 
-    private JPanel createProductPanel(String name, String description, int quantity, double price, JButton minusButton, JButton plusButton, JButton deleteButton , float reduction,Article article,User client) {
+    private JPanel createProductPanel(String name, String description, int quantity, double price, JButton minusButton, JButton plusButton, JButton deleteButton , float reduction,Article article,User client, JLabel totalLabel, createInfoRow nbProduitsRow, createInfoRow sousTotalRow) {
         // Création du panneau principal du produit
         JPanel productPanel = new JPanel(new BorderLayout(10, 0));
         productPanel.setBackground(productColor);
@@ -382,13 +402,6 @@ public class VuePanier extends JPanel {
         priceLabel.setFont(new Font("Arial", Font.BOLD, 14));
         priceLabel.setHorizontalAlignment(SwingConstants.RIGHT);
 
-        totalLabel=new JLabel("Total: 0.00€");
-
-        final JLabel quantityLabelFinal=quantityLabel;
-        final JLabel priceLabelFinal = priceLabel;
-        final JLabel totalLabelFinal = totalLabel;
-        final createInfoRow sousTotalFinal = sousTotalRow;
-        final createInfoRow nbProduitsFinal = nbProduitsRow;
 
 
 
@@ -397,11 +410,11 @@ public class VuePanier extends JPanel {
 
         controleur.boutonPLUS(
                 plusButton,
-                quantityLabelFinal,
-                priceLabelFinal,
-                totalLabelFinal,
-                sousTotalFinal,
-                nbProduitsFinal,
+                quantityLabel,
+                priceLabel,
+                totalLabel,
+                sousTotalRow,
+                nbProduitsRow,
                 price,
                 productTotalPrice,
                 reduction,
@@ -412,11 +425,11 @@ public class VuePanier extends JPanel {
 
         controleur.boutonMOINS(
                 minusButton,
-                quantityLabelFinal,
-                priceLabelFinal,
-                totalLabelFinal,
-                sousTotalFinal,
-                nbProduitsFinal,
+                quantityLabel,
+                priceLabel,
+                totalLabel,
+                sousTotalRow,
+                nbProduitsRow,
                 price,
                 productTotalPrice,
                 reduction,
@@ -428,14 +441,15 @@ public class VuePanier extends JPanel {
                 deleteButton,
                 productPanel,
                 productsContainer,
-                quantityLabelFinal,
-                priceLabelFinal,
-                sousTotalFinal,
-                totalLabelFinal,
-                nbProduitsFinal,
+                quantityLabel,
+                priceLabel,
+                sousTotalRow,
+                totalLabel,
+                nbProduitsRow,
                 productTotalPrice,
                 client,
                 article
+
         );
 
 //        // Actions pour les boutons + et -
@@ -582,4 +596,10 @@ public class VuePanier extends JPanel {
 
         return button;
     }
+
+
+
+
+
+
 }
