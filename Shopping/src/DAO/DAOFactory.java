@@ -65,21 +65,49 @@ public class DAOFactory {
 
     /**
      * Récupération du Dao pour le produit
-     * @return : objet de la classe ProduitDAOImpl
+     * @return : objet de la classe DAOArticleIMPL
      */
     public DAOArticle getDAOArticle() {
-        // Retourner un objet de ProduitDAOImpl qui implémente ProduitDAO
+        // Retourner un objet de DAOArticleIMPL qui implémente DAOArticle
         return new DAOArticleIMPL(this);
     }
 
     /**
-     * Récupération du Dao pour les commandes
-     * @return : objet de la classe CommanderDAOImpl
+     * Récupération du Dao pour les paniers
+     * @return : objet de la classe DAOPanierIMPL
      */
     public DAOPanier getPanierDAO() {
-        // Retourner un objet de CommanderDAOImpl qui implémente CommanderDAO
+        // Retourner un objet de DAOPanierIMPL qui implémente DAOPanier
         return new DAOPanierIMPL(this);
     }
+
+    /**
+     * Récupération du Dao pour les commandes
+     * @return : objet de la classe DAOCommandeIMPL
+     */
+    public DAOCommande getCommandeDAO() {
+        // Retourner un objet de DAOCommandeIMPL qui implémente DAOCommande
+        return new DAOCommandeIMPL(this);
+    }
+
+    /**
+     * Récupération du Dao pour les administrateurs
+     * @return : objet de la classe DAOAdminIMPL
+     */
+    public DAOAdmin getAdminDAO() {
+        // Retourner un objet de DAOCommandeIMPL qui implémente DAOCommande
+        return new DAOAdminIMPL(this);
+    }
+
+    /**
+     * Récupération du Dao pour les clients
+     * @return : objet de la classe DAOClientIMPL
+     */
+    public DAOClient getClientDAO() {
+        // Retourner un objet de DAOCommandeIMPL qui implémente DAOCommande
+        return new DAOClientIMPL(this);
+    }
+
 
     /**
      *     Fermer la connexion à la base de données
