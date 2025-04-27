@@ -46,7 +46,7 @@ public class ControleurPanier {
 
                 Panier panier = new Panier();
                 // Récupérer tous les paniers depuis la base de données
-                DAOFactory daoFactory = DAOFactory.getInstance("shoppingbd","root","root");
+                DAOFactory daoFactory = DAOFactory.getInstance("shoppingbd","root","");
 
                 // Utiliser DAOFactory pour obtenir une instance de DAOPanier
                 DAOPanier daoPanier = daoFactory.getPanierDAO();
@@ -137,7 +137,7 @@ public class ControleurPanier {
 
                 Panier panier = new Panier();
                 // Récupérer tous les paniers depuis la base de données
-                DAOFactory daoFactory = DAOFactory.getInstance("shoppingbd","root","root");
+                DAOFactory daoFactory = DAOFactory.getInstance("shoppingbd","root","");
 
                 // Utiliser DAOFactory pour obtenir une instance de DAOPanier
                 DAOPanier daoPanier = daoFactory.getPanierDAO();
@@ -237,7 +237,7 @@ public class ControleurPanier {
 
                     Panier panier = new Panier();
                     // Récupérer tous les paniers depuis la base de données
-                    DAOFactory daoFactory = DAOFactory.getInstance("shoppingbd","root","root");
+                    DAOFactory daoFactory = DAOFactory.getInstance("shoppingbd","root","");
 
                     // Utiliser DAOFactory pour obtenir une instance de DAOPanier
                     DAOPanier daoPanier = daoFactory.getPanierDAO();
@@ -350,7 +350,7 @@ public class ControleurPanier {
 
                     Panier panier = new Panier();
                     // Récupérer tous les paniers depuis la base de données
-                    DAOFactory daoFactory = DAOFactory.getInstance("shoppingbd", "root", "root");
+                    DAOFactory daoFactory = DAOFactory.getInstance("shoppingbd", "root", "");
 
                     // Utiliser DAOFactory pour obtenir une instance de DAOPanier
                     DAOPanier daoPanier = daoFactory.getPanierDAO();
@@ -427,7 +427,7 @@ public class ControleurPanier {
 
                 Panier panier = new Panier();
                 // Récupérer tous les paniers depuis la base de données
-                DAOFactory daoFactory = DAOFactory.getInstance("shoppingbd", "root", "root");
+                DAOFactory daoFactory = DAOFactory.getInstance("shoppingbd", "root", "");
 
                 // Utiliser DAOFactory pour obtenir une instance de DAOCommande
                 DAOCommande daoCommande = daoFactory.getCommandeDAO();

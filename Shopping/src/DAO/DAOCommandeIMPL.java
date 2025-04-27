@@ -11,6 +11,7 @@ import java.sql.SQLException;
 import DAO.DAOFactory;
 
 import java.sql.*;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.*;
 
@@ -36,12 +37,9 @@ public class DAOCommandeIMPL implements DAOCommande{
         String listeProduits = panier.getArticles();
         String lesquantite = panier.getQuantite();
         float montant = panier.getMontant();
-        //java.util.Date date = ;//HELP SALIM
+        LocalDateTime date = LocalDateTime.now();//HELP SALIM
 
-        System.out.println("les quantite : ");
-        System.out.println(lesquantite);
-
-        String[] resultat = lesquantite.split(",");
+        String[] resultat = listeProduits.split(",");
         int nombre=0;
         for (int i = 0; i < resultat.length; i++) {
             nombre += Integer.parseInt(resultat[i]);
@@ -56,14 +54,14 @@ public class DAOCommandeIMPL implements DAOCommande{
 
             // Exécution de la requête INSERT INTO de l'objet article en paramètre
             PreparedStatement preparedStatement = connexion.prepareStatement(
-                    "INSERT INTO commande(idUser, montantCommande, produitsCommandes, quantiteProdCom) VALUES (?, ?, ?, ?)"
+                    "INSERT INTO commande(idUser, montantCommande, produitsCommandes, quantiteProdCom, dateCommande) VALUES (?, ?, ?, ?, ?)"
             );
 
             preparedStatement.setInt(1, IDClient);
             preparedStatement.setFloat(2, montant);
             preparedStatement.setString(3, listeProduits);
-            preparedStatement.setInt(4, nombre);
-           // preparedStatement.setDate(5, new java.sql.Date(date.getTime()));
+            preparedStatement.setString(4, lesquantite);
+            preparedStatement.setDate(5, java.sql.Date.valueOf(date.toLocalDate()));
 
             preparedStatement.executeUpdate();
         }

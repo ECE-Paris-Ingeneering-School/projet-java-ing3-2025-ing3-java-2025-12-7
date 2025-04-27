@@ -13,7 +13,7 @@ public class Main {
         SwingUtilities.invokeLater(() -> {
 
             // Initialiser la DAOFactory
-            DAOFactory dao = DAOFactory.getInstance("shoppingBD", "root", "root");
+            DAOFactory dao = DAOFactory.getInstance("shoppingBD", "root", "");
 
 
             // Créer et afficher la fenêtre de connexion

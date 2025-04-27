@@ -124,4 +124,8 @@ public class DAOFactory {
             System.out.println("Erreur de déconnexion à la base de données");
         }
     }
+
+    public DAOCommande getCommandeDAO() {
+        return null;
+    }
 }

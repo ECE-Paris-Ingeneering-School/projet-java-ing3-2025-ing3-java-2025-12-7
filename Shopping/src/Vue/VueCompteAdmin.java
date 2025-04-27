@@ -3,6 +3,8 @@ package Vue;
 
 import Controleur.ControleurAdmin;
 import Controleur.ControleurArticle;
+import Controleur.ControleurStatistique;
+import DAO.DAOFactory;
 import Modele.Administrateur;
 import Vue.createInfoRow;
 
@@ -10,18 +12,22 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
 import java.awt.image.BufferedImage;
+import java.sql.SQLException;
 import javax.swing.border.*;
 //
 public class VueCompteAdmin extends JPanel {
     private final Color backgroundColor = new Color(220, 223, 197);
     private final Color headerColor = new Color(200, 203, 177);
     private final Color contentColor = new Color(235, 238, 212);
+    private final DAOFactory daoFactory;
     private JFrame parentFrame;
     private final ControleurAdmin controleurAdmin;
     private Administrateur admin;
 
-    public VueCompteAdmin(JFrame parentFrame, int idAdmin, ControleurAdmin controleur) {
+    public VueCompteAdmin(JFrame parentFrame, int idAdmin, ControleurAdmin controleur, DAOFactory daoFactory) {
+        this.daoFactory = daoFactory;
         this.controleurAdmin = controleur;
+
         try {
             this.admin = controleurAdmin.getAdmin(idAdmin);
             if (this.admin == null) {
@@ -264,8 +270,19 @@ public class VueCompteAdmin extends JPanel {
         statButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                VueStatistiques vueStatistiques = new VueStatistiques();
-                vueStatistiques.setVisible(true);
+                ControleurStatistique controleurStats = new ControleurStatistique(daoFactory);
+                VueStatistique statsPanel = null;
+                try {
+                    statsPanel = new VueStatistique(controleurStats);
+                } catch (SQLException ex) {
+                    throw new RuntimeException(ex);
+                }
+
+                JFrame statsFrame = new JFrame("Statistiques");
+                statsFrame.setContentPane(statsPanel);
+                statsFrame.pack();
+                statsFrame.setLocationRelativeTo(null);
+                statsFrame.setVisible(true);
             }
 
 
