@@ -146,7 +146,7 @@ public class VuePanier extends JPanel {
 
             } else { // Client
 
-                controleur.commander(validerButton,currentUser,this);
+                //controleur.commander(validerButton,currentUser,this);
 
             }
         }
@@ -215,7 +215,7 @@ public class VuePanier extends JPanel {
 //        }
 
         // Récupérer tous les produits depuis la base de données
-        DAOFactory daoFactory = DAOFactory.getInstance("shoppingbd","root","root");
+        DAOFactory daoFactory = DAOFactory.getInstance("shoppingbd","root","");
 
         // Utiliser DAOFactory pour obtenir une instance de DAOArticle
         DAOPanier daoPanier = daoFactory.getPanierDAO();
@@ -363,27 +363,25 @@ public class VuePanier extends JPanel {
         contentPanel.setBackground(productColor);
 
         // Cadre simple pour l'image
-        JPanel imagePanel = new JPanel();
+        JPanel imagePanel = new JPanel(new BorderLayout());
         imagePanel.setPreferredSize(new Dimension(60, 60));
-        //imagePanel.setBackground(new Color(240, 240, 240));
         imagePanel.setBackground(new Color(220, 223, 197));
         imagePanel.setBorder(BorderFactory.createLineBorder(Color.GRAY));
-        imagePanel.setAlignmentX(Component.CENTER_ALIGNMENT);
 
-        File imgFile = new File(article.getImageArticle());
+        File imgFile = new File("Shopping/"+article.getImageArticle());
         if (!imgFile.exists()) {
             System.out.println("Image non trouvée : " + imgFile.getAbsolutePath());
         } else {
             System.out.println("Image trouvée : " + imgFile.getAbsolutePath());
         }
         ImageIcon imageIcon = new ImageIcon("Shopping/"+article.getImageArticle());
-        Image image = imageIcon.getImage().getScaledInstance(60, 60, Image.SCALE_SMOOTH); // redimensionne l’image
+        Image image = imageIcon.getImage().getScaledInstance(60, 60, Image.SCALE_SMOOTH); // redimensionne l'image
         JLabel imageLabel = new JLabel(new ImageIcon(image));
-        imageLabel.setForeground(Color.GRAY);
         imageLabel.setHorizontalAlignment(SwingConstants.CENTER);
-        imageLabel.setBorder(BorderFactory.createEmptyBorder(5, 5, 10, 5));
+        imageLabel.setBorder(null);
+        imageLabel.setVerticalAlignment(SwingConstants.CENTER);
 
-        imagePanel.add(imageLabel);
+        imagePanel.add(imageLabel, BorderLayout.CENTER);
 
         contentPanel.add(imagePanel, BorderLayout.WEST);
 
