@@ -13,7 +13,7 @@ import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
-
+//
 //classe qui gere la barre de recherche et les icones
 public class Top extends JPanel {
     public JButton utilisateur;

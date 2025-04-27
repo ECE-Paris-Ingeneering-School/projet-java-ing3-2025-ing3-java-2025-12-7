@@ -15,7 +15,7 @@ import java.util.ArrayList;
 public class VueProduits extends JPanel {
     private final Color backgroundColor = new Color(198, 120, 96);
     private Mywindow parent;
-
+//
     public VueProduits(Mywindow parent) {
         setLayout(new BorderLayout());
 

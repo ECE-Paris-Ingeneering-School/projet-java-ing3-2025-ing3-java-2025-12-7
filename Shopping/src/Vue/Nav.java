@@ -18,7 +18,7 @@ import Vue.VueCompteAdmin;
 // rgb(245, 225, 207) beige
 //rgb(89, 54, 46) marron
 //
-
+ //
 //classe qui gere les boutons de navigation dans le site
 public class Nav extends JPanel {
     private JButton[] boutons;
@@ -82,7 +82,7 @@ public class Nav extends JPanel {
 
         // Met en surbrillance le bouton cliqué
         if (y >= 0 && y < boutons.length) {
-            boutons[y].setBackground(new Color(2, 48, 89));
+            boutons[y].setBackground(new Color(198, 120, 96));
         }
     }
 }

@@ -10,7 +10,7 @@ import java.awt.event.ActionListener;
 import java.text.SimpleDateFormat;
 import java.util.List;
 import java.util.Map;
-
+//
 public class VueCompteClient extends JPanel {
     private final Color backgroundColor = new Color(220, 223, 197);
     private final Color headerColor = new Color(200, 203, 177);

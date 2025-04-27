@@ -357,7 +357,7 @@ public class VuePanier extends JPanel {
 
         topPanel.add(deleteButton, BorderLayout.EAST);
         productPanel.add(topPanel, BorderLayout.NORTH);
-
+//
         // Panneau central
         JPanel contentPanel = new JPanel(new BorderLayout(10, 0));
         contentPanel.setBackground(productColor);

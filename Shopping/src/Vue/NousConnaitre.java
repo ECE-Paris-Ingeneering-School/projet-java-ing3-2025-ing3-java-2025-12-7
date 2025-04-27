@@ -11,7 +11,7 @@ public class NousConnaitre extends JPanel {
         JPanel mainPanel = new JPanel();
         mainPanel.setLayout(new BoxLayout(mainPanel, BoxLayout.Y_AXIS));
         mainPanel.setBackground(new Color(220, 223, 197));
-
+//
         // Titre
         JPanel titlePanel = new JPanel();
         titlePanel.setBackground(new Color(220, 223, 197));

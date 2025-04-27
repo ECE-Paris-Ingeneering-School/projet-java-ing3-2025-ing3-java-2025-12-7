@@ -15,7 +15,7 @@ public class VueProduitsBiscuits extends JPanel {
     private final Color backgroundColor = new Color(198, 120, 96);
     private JPanel productsPanel;
     private Mywindow parent;
-
+//
     public VueProduitsBiscuits(Mywindow parent) {
         setLayout(new BorderLayout());
 

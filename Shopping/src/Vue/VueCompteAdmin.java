@@ -11,7 +11,7 @@ import java.awt.*;
 import java.awt.event.*;
 import java.awt.image.BufferedImage;
 import javax.swing.border.*;
-
+//
 public class VueCompteAdmin extends JPanel {
     private final Color backgroundColor = new Color(220, 223, 197);
     private final Color headerColor = new Color(200, 203, 177);
